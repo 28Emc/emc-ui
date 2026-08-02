@@ -2,6 +2,8 @@
 @import "@angular/cdk/overlay-prebuilt.css";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@source "../**/*.ts";
+
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 

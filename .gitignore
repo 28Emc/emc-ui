@@ -28,3 +28,6 @@ coverage/
 # OS
 Thumbs.db
 .DS_Store
+
+# Library compiled stylesheet
+projects/ui/styles.css

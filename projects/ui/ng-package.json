@@ -9,6 +9,11 @@
     "tailwind-merge"
   ],
   "assets": [
+    {
+      "glob": "styles.css",
+      "input": ".",
+      "output": "."
+    },
     "src/lib/styles/theme.css"
   ]
 }
