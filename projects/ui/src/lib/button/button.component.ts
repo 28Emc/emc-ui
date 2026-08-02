@@ -29,7 +29,7 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
   imports: [SpinnerComponent],
   template: `
     <button
-      type="button"
+      [type]="type()"
       [class]="classes()"
       [disabled]="disabled() || loading()"
       [attr.aria-busy]="loading() || null"
@@ -42,6 +42,7 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
   `,
 })
 export class ButtonComponent {
+  readonly type = input<'button' | 'submit' | 'reset'>('button');
   readonly variant = input<ButtonVariant>('primary');
   readonly size = input<ButtonSize>('md');
   readonly loading = input(false, { transform: booleanAttribute });

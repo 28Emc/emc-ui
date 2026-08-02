@@ -1,11 +1,36 @@
 import { Component } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { LucidePlus } from '@lucide/angular';
-import { AvatarComponent, BadgeComponent, ButtonComponent, SpinnerComponent } from 'emc-ui';
+import {
+  AvatarComponent,
+  BadgeComponent,
+  ButtonComponent,
+  FieldComponent,
+  InputComponent,
+  SelectComponent,
+  SpinnerComponent,
+  SwitchComponent,
+  TextareaComponent,
+} from 'emc-ui';
 
 @Component({
   selector: 'app-showcase',
   standalone: true,
-  imports: [AvatarComponent, BadgeComponent, ButtonComponent, SpinnerComponent, LucidePlus],
+  imports: [
+    JsonPipe,
+    ReactiveFormsModule,
+    AvatarComponent,
+    BadgeComponent,
+    ButtonComponent,
+    FieldComponent,
+    InputComponent,
+    SelectComponent,
+    SpinnerComponent,
+    SwitchComponent,
+    TextareaComponent,
+    LucidePlus,
+  ],
   template: `
     <div class="space-y-12">
       <section>
@@ -67,7 +92,85 @@ import { AvatarComponent, BadgeComponent, ButtonComponent, SpinnerComponent } fr
           <ui-spinner [size]="28" />
         </div>
       </section>
+
+      <section>
+        <h2 class="mb-5 text-lg font-semibold text-fg">Forms</h2>
+        <p class="mb-4 text-sm text-muted">
+          Reactive Forms con formControlName — valida el ControlValueAccessor de cada componente.
+        </p>
+        <form
+          class="max-w-xl space-y-5"
+          [formGroup]="form"
+          (ngSubmit)="submit()"
+        >
+          <ui-field label="Email" [required]="true" [error]="emailError">
+            <ui-input
+              type="email"
+              placeholder="you@example.com"
+              formControlName="email"
+              [invalid]="emailInvalid"
+            />
+          </ui-field>
+
+          <ui-field label="Plan" hint="Elige un plan de suscripción">
+            <ui-select formControlName="plan" placeholder="Selecciona…">
+              <option value="free">Free</option>
+              <option value="pro">Pro</option>
+              <option value="team">Team</option>
+            </ui-select>
+          </ui-field>
+
+          <ui-field label="Notas" hint="Opcional">
+            <ui-textarea
+              formControlName="notes"
+              placeholder="Escribe algo…"
+              [rows]="3"
+            />
+          </ui-field>
+
+          <ui-switch
+            label="Enviar resumen semanal"
+            description="Recibirás un email cada lunes"
+            formControlName="digest"
+          />
+
+          <div class="flex items-center gap-3">
+            <ui-button type="submit" [disabled]="form.invalid">Enviar</ui-button>
+            <span class="text-sm text-muted">Valid: {{ form.valid }}</span>
+          </div>
+
+          @if (submitted) {
+            <pre class="rounded-xl bg-surface-2 p-4 text-xs text-fg">{{ submitted | json }}</pre>
+          }
+        </form>
+      </section>
     </div>
   `,
 })
-export class ShowcasePage {}
+export class ShowcasePage {
+  protected readonly form = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    plan: new FormControl('free'),
+    notes: new FormControl(''),
+    digest: new FormControl(false),
+  });
+
+  protected submitted: Record<string, unknown> | null = null;
+
+  protected get emailError(): string | null {
+    const control = this.form.controls.email;
+    if (control.invalid && control.touched) {
+      return control.hasError('required') ? 'El email es obligatorio' : 'Email inválido';
+    }
+    return null;
+  }
+
+  protected get emailInvalid(): boolean {
+    const control = this.form.controls.email;
+    return control.invalid && control.touched;
+  }
+
+  protected submit(): void {
+    this.submitted = this.form.value;
+  }
+}
