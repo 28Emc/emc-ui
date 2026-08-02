@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { LucidePlus, LucideDollarSign, LucideTrendingUp, LucideUsers, LucideBadgeCheck, LucideEdit, LucideDownload, LucideSettings, LucideTrash2 } from '@lucide/angular';
+import { LucidePlus, LucideDollarSign, LucideTrendingUp, LucideUsers, LucideBadgeCheck, LucideEdit, LucideDownload, LucideSettings, LucideTrash2, LucideInbox } from '@lucide/angular';
 import {
   AvatarComponent,
   BadgeComponent,
@@ -12,12 +12,16 @@ import {
   ConfirmModalComponent,
   DrawerComponent,
   DropdownComponent,
+  EmptyStateActionDirective,
+  EmptyStateComponent,
   FieldComponent,
   InputComponent,
   MenuDividerComponent,
   MenuItemComponent,
   ModalComponent,
+  PageLoaderComponent,
   SelectComponent,
+  SkeletonComponent,
   SpinnerComponent,
   StatCardComponent,
   SwitchComponent,
@@ -41,12 +45,16 @@ import {
     ConfirmModalComponent,
     DrawerComponent,
     DropdownComponent,
+    EmptyStateActionDirective,
+    EmptyStateComponent,
     FieldComponent,
     InputComponent,
     MenuDividerComponent,
     MenuItemComponent,
     ModalComponent,
+    PageLoaderComponent,
     SelectComponent,
+    SkeletonComponent,
     SpinnerComponent,
     StatCardComponent,
     SwitchComponent,
@@ -296,6 +304,41 @@ import {
           <p class="mt-6 text-sm text-green-600 dark:text-green-400">{{ confirmed }}</p>
         }
       </section>
+
+      <section>
+        <h2 class="mb-5 text-lg font-semibold text-fg">Feedback</h2>
+
+        <p class="mb-2 text-sm font-medium text-muted">Skeleton (pulso animado)</p>
+        <div class="mb-8 space-y-3 rounded-2xl border border-default bg-surface p-6">
+          <div class="flex items-center gap-4">
+            <ui-skeleton class="h-12 w-12 rounded-full" />
+            <div class="flex-1 space-y-2">
+              <ui-skeleton class="h-4 w-2/5" />
+              <ui-skeleton class="h-4 w-3/5" />
+            </div>
+          </div>
+          <ui-skeleton class="h-4 w-full" />
+          <ui-skeleton class="h-4 w-4/5" />
+        </div>
+
+        <p class="mb-2 text-sm font-medium text-muted">PageLoader (inline)</p>
+        <div class="mb-8 rounded-2xl border border-default bg-surface p-6">
+          <ui-page-loader [fullScreen]="false" label="Cargando proyectos…" />
+        </div>
+
+        <p class="mb-2 text-sm font-medium text-muted">EmptyState</p>
+        <div class="rounded-2xl border border-dashed border-default bg-surface">
+          <ui-empty-state
+            [icon]="LucideInbox"
+            title="Sin proyectos todavía"
+            description="Crea tu primer proyecto para empezar a construir formularios con Inteligencia Artificial."
+          >
+            <div uiEmptyStateAction>
+              <ui-button variant="primary"><svg lucidePlus [size]="16" [strokeWidth]="2" /> Nuevo proyecto</ui-button>
+            </div>
+          </ui-empty-state>
+        </div>
+      </section>
     </div>
   `,
 })
@@ -304,6 +347,7 @@ export class ShowcasePage {
   protected readonly LucideTrendingUp = LucideTrendingUp;
   protected readonly LucideUsers = LucideUsers;
   protected readonly LucideBadgeCheck = LucideBadgeCheck;
+  protected readonly LucideInbox = LucideInbox;
 
   protected readonly modalOpen = signal(false);
   protected readonly confirmOpen = signal(false);
