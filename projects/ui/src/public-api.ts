@@ -4,12 +4,8 @@
  * siguiendo el orden del plan de ejecución en AGENT_PROMPT.md.
  */
 
-// export * from './lib/button/button.component';
-// export * from './lib/input/input.component';
-// export * from './lib/card/card.component';
-// export * from './lib/modal/modal.component';
-// export * from './lib/drawer/drawer.component';
-// export * from './lib/dropdown/dropdown.component';
-// export * from './lib/switch/switch.component';
-// export * from './lib/avatar/avatar.component';
-// export * from './lib/feedback/feedback.component';
+export * from './lib/utils/cn';
+export * from './lib/button/button.component';
+export * from './lib/feedback/badge.component';
+export * from './lib/feedback/spinner.component';
+export * from './lib/avatar/avatar.component';

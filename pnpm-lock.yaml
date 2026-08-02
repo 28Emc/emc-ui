@@ -99,6 +99,15 @@ importers:
       '@lucide/angular':
         specifier: ^1.28.0
         version: 1.28.0(@angular/common@22.1.0(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.1.0(@angular/compiler@22.1.0)(rxjs@7.8.2))
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      tailwind-merge:
+        specifier: ^3.6.0
+        version: 3.6.0
+      tslib:
+        specifier: ^2.3.0
+        version: 2.8.1
 
 packages:
 

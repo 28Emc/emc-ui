@@ -50,6 +50,15 @@
   color: transparent;
 }
 
+@theme inline {
+  --color-app: var(--app-bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-default: var(--border);
+}
+
 :root {
   --app-bg: #ffffff;
   --surface: #ffffff;
@@ -81,15 +90,12 @@
   ::selection { background: var(--color-brand-500); color: white; }
 }
 
-@layer utilities {
-  .bg-app { background-color: var(--app-bg); }
-  .bg-surface { background-color: var(--surface); }
-  .bg-surface-2 { background-color: var(--surface-2); }
-  .text-fg { color: var(--fg); }
-  .text-muted { color: var(--fg-muted); }
-  .border-default { border-color: var(--border); }
-  .glass { background: color-mix(in srgb, var(--surface) 72%, transparent); backdrop-filter: blur(14px) saturate(160%); }
-  .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
-  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+@utility glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(160%);
+}
+@utility scrollbar-thin {
+  &::-webkit-scrollbar { width: 8px; height: 8px; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+  &::-webkit-scrollbar-track { background: transparent; }
 }
