@@ -33,6 +33,8 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
       [class]="classes()"
       [disabled]="disabled() || loading()"
       [attr.aria-busy]="loading() || null"
+      [attr.aria-expanded]="ariaExpanded() || null"
+      [attr.aria-haspopup]="ariaHaspopup() || null"
     >
       @if (loading()) {
         <ui-spinner [size]="spinnerSize()" class="text-current" />
@@ -47,6 +49,8 @@ export class ButtonComponent {
   readonly size = input<ButtonSize>('md');
   readonly loading = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly ariaExpanded = input<string>();
+  readonly ariaHaspopup = input<string>();
 
   protected readonly classes = computed(() =>
     cn(

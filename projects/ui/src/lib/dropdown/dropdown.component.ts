@@ -26,15 +26,17 @@ import { cn } from '../utils/cn';
       #trigger
       variant="secondary"
       size="sm"
-      [attr.aria-expanded]="isOpen()"
+      [ariaExpanded]="isOpen().toString()"
+      ariaHaspopup="menu"
       (click)="toggle()"
+      (keydown)="onTriggerKeydown($event)"
     >
       {{ label() }}
       <svg lucideChevronDown [size]="14" [strokeWidth]="2" [class]="chevronClasses()" />
     </ui-button>
 
     <ng-template #panel>
-      <div [class]="panelClasses()" role="menu">
+      <div [class]="panelClasses()" role="menu" (keydown)="onMenuKeydown($event)">
         <ng-content />
       </div>
     </ng-template>
@@ -77,6 +79,42 @@ export class DropdownComponent {
     }
   }
 
+  protected onTriggerKeydown(event: KeyboardEvent): void {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      this.open();
+    }
+  }
+
+  protected onMenuKeydown(event: KeyboardEvent): void {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const items = this.menuItems();
+      if (!items.length) {
+        return;
+      }
+      const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+      const delta = event.key === 'ArrowDown' ? 1 : -1;
+      const nextIndex = (currentIndex + delta + items.length) % items.length;
+      items[nextIndex]?.focus();
+    } else if (event.key === 'Home') {
+      event.preventDefault();
+      this.menuItems()[0]?.focus();
+    } else if (event.key === 'End') {
+      event.preventDefault();
+      const items = this.menuItems();
+      items[items.length - 1]?.focus();
+    }
+  }
+
+  private menuItems(): HTMLElement[] {
+    return Array.from(
+      this.overlayRef?.overlayElement.querySelectorAll<HTMLElement>(
+        '[role="menuitem"]',
+      ) ?? [],
+    );
+  }
+
   private open(): void {
     if (this.overlayRef) {
       return;
@@ -109,6 +147,9 @@ export class DropdownComponent {
       new TemplatePortal(this.panelTemplate(), this.viewContainerRef),
     );
     this.isOpen.set(true);
+    const firstItem =
+      this.overlayRef.overlayElement.querySelector<HTMLElement>('[role="menuitem"]');
+    firstItem?.focus();
   }
 
   private close(): void {
@@ -119,5 +160,6 @@ export class DropdownComponent {
       this.overlayRef = null;
     }
     this.isOpen.set(false);
+    this.triggerEl().nativeElement.querySelector('button')?.focus();
   }
 }

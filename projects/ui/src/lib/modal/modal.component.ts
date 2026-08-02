@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { filter } from 'rxjs';
 import { LucideX } from '@lucide/angular';
 import { ButtonComponent } from '../button/button.component';
@@ -28,10 +29,12 @@ const SIZE_WIDTHS: Record<ModalSize, string> = {
   xl: '42rem',
 };
 
+let modalUid = 0;
+
 @Component({
   selector: 'ui-modal',
   standalone: true,
-  imports: [ButtonComponent, LucideX],
+  imports: [ButtonComponent, LucideX, CdkTrapFocus],
   template: `
     <ng-template #panel>
       <div
@@ -39,10 +42,13 @@ const SIZE_WIDTHS: Record<ModalSize, string> = {
         class="flex max-h-[90vh] flex-col rounded-2xl border border-default bg-surface text-fg shadow-pop animate-scale-in"
         role="dialog"
         aria-modal="true"
+        cdkTrapFocus
+        tabindex="-1"
+        [attr.aria-labelledby]="title() ? titleId : null"
       >
         <header class="flex items-start justify-between gap-4 px-6 pt-6">
           <div class="space-y-0.5">
-            <h2 class="text-lg font-semibold text-fg">{{ title() }}</h2>
+            <h2 [id]="titleId" class="text-lg font-semibold text-fg">{{ title() }}</h2>
             @if (subtitle()) {
               <p class="text-sm text-muted">{{ subtitle() }}</p>
             }
@@ -79,6 +85,9 @@ export class ModalComponent {
   private readonly panelTemplate = viewChild.required<TemplateRef<unknown>>('panel');
 
   private overlayRef: OverlayRef | null = null;
+  private previouslyFocused: HTMLElement | null = null;
+  private readonly uid = ++modalUid;
+  protected readonly titleId = `ui-modal-title-${this.uid}`;
 
   private readonly footerSlot = contentChildren(UiModalFooterDirective);
   protected readonly hasFooter = computed(() => this.footerSlot().length > 0);
@@ -104,6 +113,7 @@ export class ModalComponent {
     if (this.overlayRef) {
       return;
     }
+    this.previouslyFocused = document.activeElement as HTMLElement | null;
     this.overlayRef = this.overlay.create({
       positionStrategy: this.overlay
         .position()
@@ -124,6 +134,9 @@ export class ModalComponent {
     this.overlayRef.attach(
       new TemplatePortal(this.panelTemplate(), this.viewContainerRef),
     );
+    const dialog =
+      this.overlayRef.overlayElement.querySelector<HTMLElement>('[role="dialog"]');
+    dialog?.focus();
   }
 
   private detach(): void {
@@ -132,6 +145,8 @@ export class ModalComponent {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
+    this.previouslyFocused?.focus();
+    this.previouslyFocused = null;
   }
 
   protected requestClose(): void {

@@ -1,10 +1,14 @@
-import { Component, input, booleanAttribute } from '@angular/core';
+import { Component, computed, input, booleanAttribute } from '@angular/core';
 import { FieldErrorComponent } from './field-error.component';
+import { FieldContext, FIELD_CONTEXT } from './field-context.token';
+
+let fieldUid = 0;
 
 @Component({
   selector: 'ui-field',
   standalone: true,
   imports: [FieldErrorComponent],
+  providers: [{ provide: FIELD_CONTEXT, useExisting: FieldComponent }],
   template: `
     <label class="flex flex-col gap-1.5">
       <span class="text-sm font-medium text-fg">
@@ -15,16 +19,24 @@ import { FieldErrorComponent } from './field-error.component';
       </span>
       <ng-content />
       @if (error()) {
-        <ui-field-error>{{ error() }}</ui-field-error>
+        <ui-field-error [id]="errorId() || undefined">{{ error() }}</ui-field-error>
       } @else if (hint()) {
-        <p class="text-sm text-muted">{{ hint() }}</p>
+        <p [id]="hintId() || undefined" class="text-sm text-muted">{{ hint() }}</p>
       }
     </label>
   `,
 })
-export class FieldComponent {
+export class FieldComponent implements FieldContext {
   readonly label = input('');
   readonly hint = input<string | null>(null);
   readonly error = input<string | null>(null);
   readonly required = input(false, { transform: booleanAttribute });
+
+  private readonly uid = ++fieldUid;
+  readonly errorId = computed(() =>
+    this.error() ? `ui-field-error-${this.uid}` : null,
+  );
+  readonly hintId = computed(() =>
+    this.hint() ? `ui-field-hint-${this.uid}` : null,
+  );
 }

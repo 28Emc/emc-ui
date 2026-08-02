@@ -1,7 +1,8 @@
-import { Component, computed, forwardRef, signal, input, booleanAttribute } from '@angular/core';
+import { Component, computed, forwardRef, inject, signal, input, booleanAttribute } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { cn } from '../utils/cn';
 import { FIELD_CLASSES, FIELD_INVALID_CLASSES } from './field-base';
+import { FIELD_CONTEXT } from './field-context.token';
 
 @Component({
   selector: 'ui-textarea',
@@ -21,6 +22,8 @@ import { FIELD_CLASSES, FIELD_INVALID_CLASSES } from './field-base';
       [id]="id() || null"
       [disabled]="disabled() || formDisabled()"
       [attr.aria-invalid]="invalid() || null"
+      [attr.aria-required]="ariaRequired() || null"
+      [attr.aria-describedby]="describedBy() || null"
       (input)="onInput($event)"
       (blur)="onTouched()"
     ></textarea>
@@ -32,6 +35,13 @@ export class TextareaComponent implements ControlValueAccessor {
   readonly id = input<string>();
   readonly invalid = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
+
+  private readonly field = inject(FIELD_CONTEXT);
+  protected readonly describedBy = computed(() => {
+    const ids = [this.field.errorId(), this.field.hintId()].filter(Boolean);
+    return ids.length ? ids.join(' ') : null;
+  });
+  protected readonly ariaRequired = computed(() => this.field.required() || null);
 
   private onChange: (value: string) => void = () => {};
   protected onTouched: () => void = () => {};

@@ -13,22 +13,32 @@ import {
 } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { filter } from 'rxjs';
 import { LucideX } from '@lucide/angular';
 import { ButtonComponent } from '../button/button.component';
 import { cn } from '../utils/cn';
 import { UiDrawerFooterDirective } from './drawer-footer.directive';
 
+let drawerUid = 0;
+
 @Component({
   selector: 'ui-drawer',
   standalone: true,
-  imports: [ButtonComponent, LucideX],
+  imports: [ButtonComponent, LucideX, CdkTrapFocus],
   template: `
     <ng-template #panel>
-      <div [class]="panelClasses()" role="dialog" aria-modal="true">
+      <div
+        [class]="panelClasses()"
+        role="dialog"
+        aria-modal="true"
+        cdkTrapFocus
+        tabindex="-1"
+        [attr.aria-labelledby]="title() ? titleId : null"
+      >
         <header class="flex items-start justify-between gap-4 border-b border-default px-6 py-5">
           <div class="space-y-0.5">
-            <h2 class="text-lg font-semibold text-fg">{{ title() }}</h2>
+            <h2 [id]="titleId" class="text-lg font-semibold text-fg">{{ title() }}</h2>
             @if (subtitle()) {
               <p class="text-sm text-muted">{{ subtitle() }}</p>
             }
@@ -65,6 +75,9 @@ export class DrawerComponent {
   private readonly panelTemplate = viewChild.required<TemplateRef<unknown>>('panel');
 
   private overlayRef: OverlayRef | null = null;
+  private previouslyFocused: HTMLElement | null = null;
+  private readonly uid = ++drawerUid;
+  protected readonly titleId = `ui-drawer-title-${this.uid}`;
 
   private readonly footerSlot = contentChildren(UiDrawerFooterDirective);
   protected readonly hasFooter = computed(() => this.footerSlot().length > 0);
@@ -94,6 +107,7 @@ export class DrawerComponent {
     if (this.overlayRef) {
       return;
     }
+    this.previouslyFocused = document.activeElement as HTMLElement | null;
     this.overlayRef = this.overlay.create({
       positionStrategy: this.overlay.position().global().right('0px').top('0px'),
       hasBackdrop: true,
@@ -110,6 +124,9 @@ export class DrawerComponent {
     this.overlayRef.attach(
       new TemplatePortal(this.panelTemplate(), this.viewContainerRef),
     );
+    const dialog =
+      this.overlayRef.overlayElement.querySelector<HTMLElement>('[role="dialog"]');
+    dialog?.focus();
   }
 
   private detach(): void {
@@ -118,6 +135,8 @@ export class DrawerComponent {
       this.overlayRef.dispose();
       this.overlayRef = null;
     }
+    this.previouslyFocused?.focus();
+    this.previouslyFocused = null;
   }
 
   protected requestClose(): void {
