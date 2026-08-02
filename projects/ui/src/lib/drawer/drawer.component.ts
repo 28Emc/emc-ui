@@ -97,7 +97,7 @@ export class DrawerComponent {
     this.overlayRef = this.overlay.create({
       positionStrategy: this.overlay.position().global().right('0px').top('0px'),
       hasBackdrop: true,
-      backdropClass: 'bg-black/40 backdrop-blur-sm',
+      backdropClass: ['bg-black/40', 'backdrop-blur-sm'],
       scrollStrategy: this.overlay.scrollStrategies.block(),
     });
     this.overlayRef

@@ -91,6 +91,10 @@
     text-rendering: optimizeLegibility;
   }
   ::selection { background: var(--color-brand-500); color: white; }
+  option {
+    background-color: var(--surface);
+    color: var(--fg);
+  }
 }
 
 @utility glass {

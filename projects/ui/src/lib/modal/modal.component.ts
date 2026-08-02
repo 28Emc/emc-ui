@@ -111,7 +111,7 @@ export class ModalComponent {
         .centerHorizontally()
         .centerVertically(),
       hasBackdrop: true,
-      backdropClass: 'bg-black/50 backdrop-blur-sm',
+      backdropClass: ['bg-black/50', 'backdrop-blur-sm'],
       scrollStrategy: this.overlay.scrollStrategies.block(),
     });
     this.overlayRef

@@ -35,7 +35,7 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
       [attr.aria-busy]="loading() || null"
     >
       @if (loading()) {
-        <ui-spinner [size]="spinnerSize()" />
+        <ui-spinner [size]="spinnerSize()" class="text-current" />
       }
       <ng-content />
     </button>

@@ -46,7 +46,11 @@ export class SelectComponent implements ControlValueAccessor {
   protected readonly chevron = SELECT_CHEVRON;
 
   protected readonly classes = computed(() =>
-    cn(FIELD_CLASSES, 'appearance-none pr-10', this.invalid() ? FIELD_INVALID_CLASSES : ''),
+    cn(
+      FIELD_CLASSES,
+      'appearance-none pr-10 scheme-light dark:scheme-dark',
+      this.invalid() ? FIELD_INVALID_CLASSES : '',
+    ),
   );
 
   writeValue(value: string | null): void {
