@@ -17,3 +17,7 @@ export * from './lib/input/input.component';
 export * from './lib/input/textarea.component';
 export * from './lib/input/select.component';
 export * from './lib/switch/switch.component';
+export * from './lib/card/card.component';
+export * from './lib/card/card-header.component';
+export * from './lib/card/card-body.component';
+export * from './lib/card/stat-card.component';
