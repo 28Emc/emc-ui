@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { LucidePlus, LucideDollarSign, LucideTrendingUp, LucideUsers, LucideBadgeCheck } from '@lucide/angular';
+import { LucidePlus, LucideDollarSign, LucideTrendingUp, LucideUsers, LucideBadgeCheck, LucideEdit, LucideDownload, LucideSettings, LucideTrash2 } from '@lucide/angular';
 import {
   AvatarComponent,
   BadgeComponent,
@@ -9,13 +9,21 @@ import {
   CardBodyComponent,
   CardComponent,
   CardHeaderComponent,
+  ConfirmModalComponent,
+  DrawerComponent,
+  DropdownComponent,
   FieldComponent,
   InputComponent,
+  MenuDividerComponent,
+  MenuItemComponent,
+  ModalComponent,
   SelectComponent,
   SpinnerComponent,
   StatCardComponent,
   SwitchComponent,
   TextareaComponent,
+  UiDrawerFooterDirective,
+  UiModalFooterDirective,
 } from 'emc-ui';
 
 @Component({
@@ -30,14 +38,26 @@ import {
     CardBodyComponent,
     CardComponent,
     CardHeaderComponent,
+    ConfirmModalComponent,
+    DrawerComponent,
+    DropdownComponent,
     FieldComponent,
     InputComponent,
+    MenuDividerComponent,
+    MenuItemComponent,
+    ModalComponent,
     SelectComponent,
     SpinnerComponent,
     StatCardComponent,
     SwitchComponent,
     TextareaComponent,
+    UiDrawerFooterDirective,
+    UiModalFooterDirective,
     LucidePlus,
+    LucideEdit,
+    LucideDownload,
+    LucideSettings,
+    LucideTrash2,
   ],
   template: `
     <div class="space-y-12">
@@ -193,6 +213,89 @@ import {
           <ui-stat-card [icon]="LucideBadgeCheck" label="Formularios completados" value="892" sublabel="98% de precisión" accent="pink" />
         </div>
       </section>
+
+      <section>
+        <h2 class="mb-5 text-lg font-semibold text-fg">Overlays</h2>
+        <p class="mb-4 text-sm text-muted">
+          Modal, ConfirmModal, Drawer y Dropdown construidos con el CDK Overlay.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <ui-button variant="primary" (click)="modalOpen.set(true)">Abrir Modal</ui-button>
+          <ui-button variant="danger" (click)="confirmOpen.set(true)">Eliminar proyecto</ui-button>
+          <ui-button variant="secondary" (click)="drawerOpen.set(true)">Abrir Drawer</ui-button>
+        </div>
+
+        <p class="mb-2 mt-8 text-sm font-medium text-muted">Dropdown</p>
+        <ui-dropdown label="Acciones">
+          <ui-menu-item (click)="menuAction = 'edit'">
+            <svg lucideEdit [size]="14" [strokeWidth]="2" class="text-muted" />
+            Editar
+          </ui-menu-item>
+          <ui-menu-item (click)="menuAction = 'download'">
+            <svg lucideDownload [size]="14" [strokeWidth]="2" class="text-muted" />
+            Descargar
+          </ui-menu-item>
+          <ui-menu-item (click)="menuAction = 'settings'">
+            <svg lucideSettings [size]="14" [strokeWidth]="2" class="text-muted" />
+            Ajustes
+          </ui-menu-item>
+          <ui-menu-divider />
+          <ui-menu-item [danger]="true" (click)="menuAction = 'delete'">
+            <svg lucideTrash2 [size]="14" [strokeWidth]="2" class="text-red-600 dark:text-red-400" />
+            Eliminar
+          </ui-menu-item>
+        </ui-dropdown>
+        @if (menuAction) {
+          <span class="ml-3 text-sm text-muted">Acción: {{ menuAction }}</span>
+        }
+
+        <ui-modal
+          [(open)]="modalOpen"
+          title="Nuevo proyecto"
+          subtitle="Configura los detalles básicos"
+          size="md"
+        >
+          <p class="text-sm text-muted">
+            Contenido del modal. El pie se proyecta con <code>[uiModalFooter]</code> y se muestra
+            automáticamente al detectarse.
+          </p>
+          <div uiModalFooter class="flex items-center justify-end gap-3">
+            <ui-button variant="secondary" (click)="modalOpen.set(false)">Cancelar</ui-button>
+            <ui-button variant="primary" (click)="modalOpen.set(false)">Crear proyecto</ui-button>
+          </div>
+        </ui-modal>
+
+        <ui-confirm-modal
+          [(open)]="confirmOpen"
+          title="¿Eliminar proyecto?"
+          description="Esta acción no se puede deshacer. Se eliminarán todos los datos asociados."
+          confirmLabel="Eliminar"
+          cancelLabel="Cancelar"
+          [danger]="true"
+          (confirm)="confirmDelete()"
+        />
+
+        <ui-drawer
+          [(open)]="drawerOpen"
+          title="Ajustes"
+          subtitle="Preferencias del workspace"
+          width="w-[22rem]"
+        >
+          <p class="text-sm text-muted">
+            Drawer lateral con CDK Overlay posicionado a la derecha. Usa <code>[uiDrawerFooter]</code>
+            para el pie.
+          </p>
+          <div uiDrawerFooter class="flex items-center justify-end gap-3">
+            <ui-button variant="secondary" (click)="drawerOpen.set(false)">Cancelar</ui-button>
+            <ui-button variant="primary" (click)="drawerOpen.set(false)">Guardar</ui-button>
+          </div>
+        </ui-drawer>
+
+        @if (confirmed) {
+          <p class="mt-6 text-sm text-green-600 dark:text-green-400">{{ confirmed }}</p>
+        }
+      </section>
     </div>
   `,
 })
@@ -201,6 +304,18 @@ export class ShowcasePage {
   protected readonly LucideTrendingUp = LucideTrendingUp;
   protected readonly LucideUsers = LucideUsers;
   protected readonly LucideBadgeCheck = LucideBadgeCheck;
+
+  protected readonly modalOpen = signal(false);
+  protected readonly confirmOpen = signal(false);
+  protected readonly drawerOpen = signal(false);
+
+  protected confirmed: string | null = null;
+  protected menuAction: string | null = null;
+
+  protected confirmDelete(): void {
+    this.confirmed = 'Proyecto eliminado';
+    this.confirmOpen.set(false);
+  }
 
   protected readonly form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
