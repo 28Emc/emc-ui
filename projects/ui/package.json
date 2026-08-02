@@ -4,12 +4,12 @@
   "description": "Timely Forms AI design system, ported to Angular — standalone components (Button, Input, Card, Modal, Drawer, Dropdown, Switch, Avatar, Feedback).",
   "license": "MIT",
   "peerDependencies": {
-    "@angular/animations": "^19.0.0",
-    "@angular/cdk": "^19.0.0",
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "@angular/forms": "^19.0.0",
-    "lucide-angular": "^0.460.0"
+    "@angular/animations": "^22.0.0",
+    "@angular/cdk": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@lucide/angular": "^1.28.0"
   },
   "sideEffects": false
 }

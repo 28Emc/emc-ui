@@ -3,13 +3,52 @@
   "version": "0.0.1",
   "description": "Timely Forms AI design system, ported to Angular — standalone components (Button, Input, Card, Modal, Drawer, Dropdown, Switch, Avatar, Feedback).",
   "license": "MIT",
+  "private": true,
+  "packageManager": "pnpm@11.5.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve demo",
+    "serve": "ng serve demo",
+    "build": "ng build",
+    "build:ui": "ng build ui",
+    "build:demo": "ng build demo",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
   "peerDependencies": {
-    "@angular/animations": "^19.0.0",
-    "@angular/cdk": "^19.0.0",
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "@angular/forms": "^19.0.0",
-    "lucide-angular": "^0.460.0"
+    "@angular/animations": "^22.0.0",
+    "@angular/cdk": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@lucide/angular": "^1.28.0"
+  },
+  "dependencies": {
+    "@angular/animations": "^22.1.0",
+    "@angular/cdk": "^22.1.0",
+    "@angular/common": "^22.1.0",
+    "@angular/compiler": "^22.1.0",
+    "@angular/core": "^22.1.0",
+    "@angular/forms": "^22.1.0",
+    "@angular/platform-browser": "^22.1.0",
+    "@angular/router": "^22.1.0",
+    "clsx": "^2.1.1",
+    "@lucide/angular": "^1.28.0",
+    "rxjs": "~7.8.0",
+    "tailwind-merge": "^3.6.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^22.1.0",
+    "@angular/cli": "^22.1.0",
+    "@angular/compiler-cli": "^22.1.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "jsdom": "^28.0.0",
+    "ng-packagr": "^22.1.0",
+    "prettier": "^3.8.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vitest": "^4.0.8"
   },
   "sideEffects": false
 }
