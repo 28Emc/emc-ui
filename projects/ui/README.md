@@ -6,10 +6,10 @@ tree-shakeable, con soporte de dark mode y theming vía CSS custom properties.
 ## Instalación
 
 ```bash
-pnpm add emc-ui @angular/cdk lucide-angular
+pnpm add emc-ui @angular/cdk @lucide/angular
 ```
 
-`@angular/cdk` y `lucide-angular` son **peer dependencies** — la librería los necesita
+`@angular/cdk` y `@lucide/angular` son **peer dependencies** — la librería los necesita
 pero no los reinstala por ti, para evitar versiones duplicadas en tu proyecto.
 
 ## Configuración (un solo paso)
