@@ -1,6 +1,16 @@
-<main class="shell">
-  <header class="shell__header">
-    <h1>{{ title() }} — design system demo</h1>
+<div class="min-h-dvh bg-app">
+  <header class="sticky top-0 z-10 border-b border-default bg-surface/70 backdrop-blur">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
+      <span class="text-lg font-semibold tracking-tight text-fg">{{ title() }}</span>
+      <span class="rounded-full bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-700">
+        design system
+      </span>
+    </div>
   </header>
-  <router-outlet />
-</main>
+  <main class="mx-auto max-w-5xl px-5 py-8 text-fg">
+    <p class="text-muted">
+      Tailwind v4 + theme tokens wired — shell listo para los componentes.
+    </p>
+    <router-outlet />
+  </main>
+</div>

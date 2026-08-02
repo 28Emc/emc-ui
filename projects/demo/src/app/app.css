@@ -1,13 +1,3 @@
 :host {
   display: block;
-  min-height: 100dvh;
-}
-
-.shell {
-  padding: 2rem;
-}
-
-.shell__header h1 {
-  margin: 0 0 1.5rem;
-  font-size: 1.25rem;
 }
