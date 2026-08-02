@@ -4,11 +4,30 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'showcase',
+    redirectTo: 'inputs',
   },
   {
-    path: 'showcase',
+    path: 'inputs',
     loadComponent: () =>
-      import('./pages/showcase/showcase').then((m) => m.ShowcasePage),
+      import('./pages/inputs/inputs').then((m) => m.InputsPage),
+  },
+  {
+    path: 'overlays',
+    loadComponent: () =>
+      import('./pages/overlays/overlays').then((m) => m.OverlaysPage),
+  },
+  {
+    path: 'feedback',
+    loadComponent: () =>
+      import('./pages/feedback/feedback').then((m) => m.FeedbackPage),
+  },
+  {
+    path: 'layout',
+    loadComponent: () =>
+      import('./pages/layout/layout').then((m) => m.LayoutPage),
+  },
+  {
+    path: '**',
+    redirectTo: 'inputs',
   },
 ];
