@@ -6,7 +6,6 @@ import { ButtonComponent } from '../button/button.component';
 const meta: Meta<TooltipDirective> = {
   title: 'Data Display/Tooltip',
   component: TooltipDirective,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [ButtonComponent],

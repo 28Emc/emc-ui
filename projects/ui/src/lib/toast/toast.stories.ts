@@ -49,7 +49,6 @@ class ToastGalleryComponent {
 const meta: Meta<ToastComponent> = {
   title: 'Feedback/Toast',
   component: ToastComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [ToastGalleryComponent],

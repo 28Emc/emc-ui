@@ -1,0 +1,94 @@
+import { Component, signal } from '@angular/core';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { ComboboxComponent } from './combobox.component';
+
+const OPTIONS = [
+  { label: 'Angular', value: 'angular' },
+  { label: 'React', value: 'react' },
+  { label: 'Vue', value: 'vue' },
+  { label: 'Svelte', value: 'svelte' },
+];
+
+@Component({
+  selector: 'combobox-host',
+  standalone: true,
+  imports: [ComboboxComponent, FormsModule],
+  template: `
+    <ui-combobox [options]="options()" [ngModel]="value()" (ngModelChange)="value.set($event)" />
+  `,
+})
+class ComboboxHost {
+  readonly options = signal(OPTIONS);
+  readonly value = signal<string | null>(null);
+}
+
+describe('ComboboxComponent', () => {
+  let fixture: ComponentFixture<ComboboxHost>;
+  let host: ComboboxHost;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({ imports: [ComboboxHost] }).compileComponents();
+    fixture = TestBed.createComponent(ComboboxHost);
+    host = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  function input(): HTMLInputElement {
+    return fixture.nativeElement.querySelector('input[role="combobox"]') as HTMLInputElement;
+  }
+
+  function comp(): ComboboxComponent {
+    return fixture.debugElement.query(By.directive(ComboboxComponent))
+      .componentInstance as ComboboxComponent;
+  }
+
+  function listboxOptions(): HTMLLIElement[] {
+    return Array.from(
+      document.querySelectorAll('ul[role="listbox"] li[role="option"]'),
+    ) as HTMLLIElement[];
+  }
+
+  it('starts empty with all options available', () => {
+    expect(input().value).toBe('');
+    input().dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    expect((comp() as any).isOpen()).toBe(true);
+    expect(listboxOptions().length).toBe(4);
+  });
+
+  it('filters options while typing', () => {
+    input().dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    input().value = 're';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    expect(listboxOptions().map((o) => o.textContent?.trim())).toEqual(['React']);
+  });
+
+  it('selects an option on click', () => {
+    input().dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    listboxOptions()[0].click();
+    fixture.detectChanges();
+    expect(host.value()).toBe('angular');
+    expect(input().value).toBe('Angular');
+  });
+
+  it('reflects a programmatic value', () => {
+    comp().writeValue('vue');
+    fixture.detectChanges();
+    expect(input().value).toBe('Vue');
+  });
+
+  it('shows "Sin resultados" when nothing matches', () => {
+    input().dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    input().value = 'zzz';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    const listbox = document.querySelector('ul[role="listbox"]');
+    expect(listbox?.textContent).toContain('Sin resultados');
+  });
+});

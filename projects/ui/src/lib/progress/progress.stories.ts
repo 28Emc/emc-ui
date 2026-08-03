@@ -4,7 +4,6 @@ import { ProgressComponent } from './progress.component';
 const meta: Meta<ProgressComponent> = {
   title: 'Data Display/Progress',
   component: ProgressComponent,
-  tags: ['autodocs'],
   args: {
     value: 65,
     max: 100,

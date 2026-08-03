@@ -10,7 +10,6 @@ import { StatCardComponent } from './stat-card.component';
 const meta: Meta<StatCardComponent> = {
   title: 'Data Display/StatCard',
   component: StatCardComponent,
-  tags: ['autodocs'],
   args: {
     icon: LucideUsers,
     label: 'Usuarios activos',

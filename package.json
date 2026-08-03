@@ -18,10 +18,14 @@
     "test:watch": "ng test ui --watch",
     "storybook": "pnpm build:styles && storybook dev -p 6006",
     "build-storybook": "pnpm build:styles && storybook build",
+    "chromatic": "chromatic --storybook-build-dir storybook-static --exit-zero-on-changes",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build:ui && cd dist/ui && pnpm publish --no-git-checks"
   },
   "peerDependencies": {
     "@angular/animations": "^22.0.0",
@@ -53,6 +57,7 @@
     "@angular/build": "^22.1.0",
     "@angular/cli": "^22.1.0",
     "@angular/compiler-cli": "^22.1.0",
+    "@changesets/cli": "^2.31.1",
     "@compodoc/compodoc": "^2.0.0",
     "@eslint/js": "^10.0.1",
     "@storybook/addon-a11y": "^10.5.5",
@@ -61,6 +66,7 @@
     "@tailwindcss/cli": "^4.3.3",
     "@tailwindcss/postcss": "^4.3.3",
     "angular-eslint": "^22.1.0",
+    "chromatic": "^18.1.0",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
     "jsdom": "^28.0.0",

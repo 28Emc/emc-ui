@@ -4,7 +4,6 @@ import { SkeletonComponent } from './skeleton.component';
 const meta: Meta<SkeletonComponent> = {
   title: 'Feedback/Skeleton',
   component: SkeletonComponent,
-  tags: ['autodocs'],
   render: () => ({
     template: `
       <div class="flex w-72 flex-col gap-3">

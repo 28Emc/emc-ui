@@ -4,7 +4,6 @@ import { FieldErrorComponent } from './field-error.component';
 const meta: Meta<FieldErrorComponent> = {
   title: 'Input/FieldError',
   component: FieldErrorComponent,
-  tags: ['autodocs'],
   render: (args) => ({
     props: args,
     template: `<ui-field-error [id]="id">Este campo es obligatorio.</ui-field-error>`,

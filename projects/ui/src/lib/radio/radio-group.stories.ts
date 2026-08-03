@@ -6,7 +6,6 @@ import { RadioComponent } from './radio.component';
 const meta: Meta<RadioGroupComponent> = {
   title: 'Input/RadioGroup',
   component: RadioGroupComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [RadioComponent],

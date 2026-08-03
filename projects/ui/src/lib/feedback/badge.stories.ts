@@ -4,7 +4,6 @@ import { BadgeComponent } from './badge.component';
 const meta: Meta<BadgeComponent> = {
   title: 'Feedback/Badge',
   component: BadgeComponent,
-  tags: ['autodocs'],
   args: { variant: 'default' },
   render: (args) => ({
     props: args,

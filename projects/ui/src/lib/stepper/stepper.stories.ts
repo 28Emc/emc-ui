@@ -4,7 +4,6 @@ import { StepperComponent } from './stepper.component';
 const meta: Meta<StepperComponent> = {
   title: 'Navigation/Stepper',
   component: StepperComponent,
-  tags: ['autodocs'],
   args: {
     steps: 4,
     labels: ['Datos personales', 'Verificación', 'Pago', 'Confirmación'],

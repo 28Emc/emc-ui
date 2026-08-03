@@ -1,0 +1,27 @@
+import { Meta, Canvas, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as ToastStories from './toast.stories';
+
+<Meta of={ToastStories} />
+
+# Toast
+
+Notificaciones transitorias manejadas por `ToastService`. Para usarlas:
+
+1. Montar `ui-toast-host` una vez en el root.
+2. Inyectar `ToastService` y llamar `info / success / warning / error`.
+
+<Canvas of={ToastStories.Default} />
+
+<Source
+  code={`// app.component.html
+<ui-toast-host />
+
+// componente
+import { ToastService } from 'emc-ui';
+
+private readonly toast = inject(ToastService);
+
+this.toast.success('Éxito', 'Datos guardados');
+this.toast.error('Error', 'No se pudo guardar');`}
+language="ts"
+/>

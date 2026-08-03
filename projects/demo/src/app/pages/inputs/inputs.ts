@@ -1,13 +1,22 @@
 import { Component } from '@angular/core';
 import { JsonPipe } from '@angular/common';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { LucidePlus } from '@lucide/angular';
 import {
   ButtonComponent,
   ButtonSize,
   ButtonVariant,
+  ComboboxComponent,
+  DatePickerComponent,
   FieldComponent,
   InputComponent,
+  RatingComponent,
   SelectComponent,
   SwitchComponent,
   TextareaComponent,
@@ -19,9 +28,13 @@ import {
   imports: [
     JsonPipe,
     ReactiveFormsModule,
+    FormsModule,
     ButtonComponent,
+    ComboboxComponent,
+    DatePickerComponent,
     FieldComponent,
     InputComponent,
+    RatingComponent,
     SelectComponent,
     SwitchComponent,
     TextareaComponent,
@@ -114,6 +127,50 @@ import {
       <ui-switch label="Deshabilitado" description="No se puede cambiar" [disabled]="true" />
     </div>
 
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Rating</h2>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <div>
+        <div class="mb-1 flex items-center justify-between text-sm">
+          <span class="text-muted">Calidad del servicio</span>
+          <span class="font-medium text-fg">{{ ratingVal }} / 5</span>
+        </div>
+        <ui-rating [(ngModel)]="ratingVal" label="Calidad del servicio" />
+      </div>
+      <div>
+        <div class="mb-1 text-sm text-muted">Solo lectura</div>
+        <ui-rating [(ngModel)]="ratingReadonly" label="Solo lectura" [readonly]="true" />
+      </div>
+      <div>
+        <div class="mb-1 text-sm text-muted">Deshabilitado</div>
+        <ui-rating [(ngModel)]="ratingVal" label="Deshabilitado" [disabled]="true" />
+      </div>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Combobox</h2>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <ui-field label="Framework" hint="Filtra mientras escribes">
+        <ui-combobox
+          [options]="frameworkOptions"
+          placeholder="Buscar framework…"
+          [(ngModel)]="frameworkVal"
+        />
+      </ui-field>
+      <p class="text-sm text-muted">Seleccionado: {{ frameworkVal || '—' }}</p>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">DatePicker</h2>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <ui-field label="Fecha de nacimiento" hint="Se guarda en formato ISO">
+        <ui-datepicker
+          placeholder="Elige una fecha"
+          [min]="minDate"
+          [max]="maxDate"
+          [(ngModel)]="dateVal"
+        />
+      </ui-field>
+      <p class="text-sm text-muted">Valor ISO: {{ dateVal || '—' }}</p>
+    </div>
+
     <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Reactive Forms (ControlValueAccessor)</h2>
     <form class="max-w-xl space-y-5" [formGroup]="form" (ngSubmit)="submit()">
       <ui-field label="Email" [required]="true" [error]="emailError">
@@ -164,6 +221,22 @@ export class InputsPage {
     'subtle',
   ];
   protected readonly sizes: ButtonSize[] = ['sm', 'md', 'lg'];
+
+  protected readonly ratingVal = 3;
+  protected readonly ratingReadonly = 5;
+
+  protected readonly frameworkOptions = [
+    { label: 'Angular', value: 'angular' },
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+    { label: 'Svelte', value: 'svelte' },
+    { label: 'SolidJS', value: 'solid' },
+    { label: 'Astro', value: 'astro' },
+  ];
+  protected readonly frameworkVal: string | null = null;
+  protected readonly dateVal: string | null = null;
+  protected readonly minDate = '2026-01-01';
+  protected readonly maxDate = '2026-12-31';
 
   protected readonly form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),

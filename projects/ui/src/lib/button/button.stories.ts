@@ -4,7 +4,6 @@ import { ButtonComponent } from './button.component';
 const meta: Meta<ButtonComponent> = {
   title: 'UI/Button',
   component: ButtonComponent,
-  tags: ['autodocs'],
   args: {
     variant: 'primary',
     size: 'md',

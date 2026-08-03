@@ -4,7 +4,6 @@ import { ConfirmModalComponent } from './confirm-modal.component';
 const meta: Meta<ConfirmModalComponent> = {
   title: 'Overlays/ConfirmModal',
   component: ConfirmModalComponent,
-  tags: ['autodocs'],
   args: {
     title: 'Eliminar usuario',
     description: 'Esta acción no se puede deshacer. El usuario perderá el acceso permanentemente.',

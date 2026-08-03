@@ -5,7 +5,6 @@ import { EmptyStateComponent } from './empty-state.component';
 const meta: Meta<EmptyStateComponent> = {
   title: 'Feedback/EmptyState',
   component: EmptyStateComponent,
-  tags: ['autodocs'],
   args: {
     title: 'No hay resultados',
     description: 'Intenta ajustar los filtros para encontrar lo que buscas.',

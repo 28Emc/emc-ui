@@ -8,7 +8,6 @@ import { MenuDividerComponent } from './menu-divider.component';
 const meta: Meta<DropdownComponent> = {
   title: 'Overlays/Dropdown',
   component: DropdownComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [MenuItemComponent, MenuDividerComponent, LucidePencil, LucideCopy, LucideTrash2],

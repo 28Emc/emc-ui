@@ -12,7 +12,6 @@ const OPTIONS = `
 const meta: Meta<SelectComponent> = {
   title: 'Input/Select',
   component: SelectComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [FieldComponent],

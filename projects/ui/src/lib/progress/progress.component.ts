@@ -22,7 +22,7 @@ const SIZE_CLASSES: Record<ProgressSize, string> = {
       [class]="trackClasses()"
     >
       @if (indeterminate()) {
-        <div class="indeterminate-bar animate-indeterminate"></div>
+        <div class="indeterminate-bar h-full w-2/5 rounded-full bg-brand-gradient animate-indeterminate"></div>
       } @else {
         <div [class]="fillClasses()" [style.width.%]="percent()"></div>
       }

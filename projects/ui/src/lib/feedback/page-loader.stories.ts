@@ -4,7 +4,6 @@ import { PageLoaderComponent } from './page-loader.component';
 const meta: Meta<PageLoaderComponent> = {
   title: 'Feedback/PageLoader',
   component: PageLoaderComponent,
-  tags: ['autodocs'],
   args: { label: 'Cargando…', fullScreen: false },
   render: (args) => ({
     props: args,

@@ -4,7 +4,6 @@ import { SwitchComponent } from './switch.component';
 const meta: Meta<SwitchComponent> = {
   title: 'Input/Switch',
   component: SwitchComponent,
-  tags: ['autodocs'],
   args: {
     label: 'Notificaciones',
     description: 'Recibir un correo cuando alguien responda.',

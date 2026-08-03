@@ -42,5 +42,10 @@ jobs:
       - name: Build Storybook
         run: pnpm build-storybook
 
+      - name: Chromatic (visual regression)
+        run: pnpm chromatic
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
       - name: Run tests
         run: pnpm test

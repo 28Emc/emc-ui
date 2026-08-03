@@ -4,7 +4,6 @@ import { CheckboxComponent } from './checkbox.component';
 const meta: Meta<CheckboxComponent> = {
   title: 'Input/Checkbox',
   component: CheckboxComponent,
-  tags: ['autodocs'],
   args: {
     label: 'Acepto los términos y condiciones',
     description: 'Lee la política de privacidad antes de continuar.',

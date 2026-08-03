@@ -4,7 +4,6 @@ import { SpinnerComponent } from './spinner.component';
 const meta: Meta<SpinnerComponent> = {
   title: 'Feedback/Spinner',
   component: SpinnerComponent,
-  tags: ['autodocs'],
   args: { size: 24 },
   render: (args) => ({
     props: args,

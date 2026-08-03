@@ -6,7 +6,6 @@ import { TabComponent } from './tab.component';
 const meta: Meta<TabsComponent> = {
   title: 'Navigation/Tabs',
   component: TabsComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [TabComponent],

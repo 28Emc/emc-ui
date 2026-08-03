@@ -7,7 +7,6 @@ import { ButtonComponent } from '../button/button.component';
 const meta: Meta<ModalComponent> = {
   title: 'Overlays/Modal',
   component: ModalComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [UiModalFooterDirective, ButtonComponent],

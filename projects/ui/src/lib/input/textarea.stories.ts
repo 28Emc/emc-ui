@@ -6,7 +6,6 @@ import { FieldComponent } from './field.component';
 const meta: Meta<TextareaComponent> = {
   title: 'Input/Textarea',
   component: TextareaComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [FieldComponent],

@@ -7,7 +7,6 @@ import { ButtonComponent } from '../button/button.component';
 const meta: Meta<DrawerComponent> = {
   title: 'Overlays/Drawer',
   component: DrawerComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [UiDrawerFooterDirective, ButtonComponent],

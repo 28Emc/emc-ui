@@ -88,7 +88,10 @@ describe('ProgressComponent', () => {
     host.indeterminate.set(true);
     fixture.detectChanges();
     expect(el.getAttribute('aria-valuenow')).toBeNull();
-    expect(el.querySelector('.indeterminate-bar')).toBeTruthy();
+    const bar = el.querySelector('.indeterminate-bar') as HTMLElement | null;
+    expect(bar).toBeTruthy();
+    expect(bar?.classList.contains('animate-indeterminate')).toBe(true);
+    expect(bar?.classList.contains('h-full')).toBe(true);
     expect(el.querySelector('[style*="width"]')).toBeNull();
   });
 

@@ -48,3 +48,7 @@ export * from './lib/accordion/accordion.component';
 export * from './lib/accordion/accordion-item.component';
 export * from './lib/stepper/stepper.component';
 export * from './lib/table/table.component';
+export * from './lib/rating/rating.component';
+export * from './lib/pagination/pagination.component';
+export * from './lib/combobox/combobox.component';
+export * from './lib/datepicker/datepicker.component';

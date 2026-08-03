@@ -6,7 +6,6 @@ import { InputComponent } from './input.component';
 const meta: Meta<LabelComponent> = {
   title: 'Input/Label',
   component: LabelComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [InputComponent],

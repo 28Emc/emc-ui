@@ -4,7 +4,6 @@ import { AvatarComponent } from './avatar.component';
 const meta: Meta<AvatarComponent> = {
   title: 'Data Display/Avatar',
   component: AvatarComponent,
-  tags: ['autodocs'],
   args: {
     name: 'María Fernanda López',
     size: 'md',

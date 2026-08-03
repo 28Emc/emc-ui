@@ -29,7 +29,6 @@ const DATA: DemoRow[] = Array.from({ length: 12 }, (_, i) => ({
 const meta: Meta<TableComponent<DemoRow>> = {
   title: 'Data Display/Table',
   component: TableComponent<DemoRow>,
-  tags: ['autodocs'],
   args: {
     columns: COLUMNS,
     data: DATA,

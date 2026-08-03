@@ -8,7 +8,6 @@ import { BadgeComponent } from '../feedback/badge.component';
 const meta: Meta<CardComponent> = {
   title: 'Data Display/Card',
   component: CardComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [CardHeaderComponent, CardBodyComponent, BadgeComponent],

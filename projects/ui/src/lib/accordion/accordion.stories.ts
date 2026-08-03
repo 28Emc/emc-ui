@@ -6,7 +6,6 @@ import { AccordionItemComponent } from './accordion-item.component';
 const meta: Meta<AccordionComponent> = {
   title: 'Navigation/Accordion',
   component: AccordionComponent,
-  tags: ['autodocs'],
   decorators: [
     moduleMetadata({
       imports: [AccordionItemComponent],

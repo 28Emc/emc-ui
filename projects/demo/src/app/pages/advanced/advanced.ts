@@ -1,6 +1,5 @@
 import { Component, signal, inject } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {} from '@lucide/angular';
 import {
   ButtonComponent,
   CheckboxComponent,
@@ -19,6 +18,7 @@ import {
   CardComponent,
   CardHeaderComponent,
   CardBodyComponent,
+  PaginationComponent,
 } from 'emc-ui';
 
 @Component({
@@ -40,6 +40,7 @@ import {
     AccordionItemComponent,
     StepperComponent,
     TableComponent,
+    PaginationComponent,
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
@@ -47,9 +48,9 @@ import {
   template: `
     <h1 class="mb-8 text-xl font-semibold text-fg">Advanced Components</h1>
 
-    <section class="section">
-      <h2>Checkbox & RadioGroup</h2>
-      <div class="card-grid">
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Checkbox & RadioGroup</h2>
+      <div class="grid gap-6 md:grid-cols-2">
         <ui-card>
           <ui-card-header title="Checkbox" subtitle="ControlValueAccessor" />
           <ui-card-body class="space-y-3">
@@ -79,9 +80,9 @@ import {
       </div>
     </section>
 
-    <section class="section">
-      <h2>Progress</h2>
-      <div class="card-grid">
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Progress</h2>
+      <div class="grid gap-6 md:grid-cols-2">
         <ui-card>
           <ui-card-header title="Determinado" subtitle="Valores 0-100" />
           <ui-card-body class="space-y-4">
@@ -115,9 +116,11 @@ import {
       </div>
     </section>
 
-    <section class="section">
-      <h2>Tooltip</h2>
-      <div class="row" style="padding: 40px 0;">
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Tooltip</h2>
+      <div
+        class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-surface p-10"
+      >
         <ui-button variant="secondary" uiTooltip="Tooltip arriba" placement="top"
           >Hover arriba</ui-button
         >
@@ -133,10 +136,10 @@ import {
       </div>
     </section>
 
-    <section class="section">
-      <h2>Toast (servicio)</h2>
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Toast (servicio)</h2>
       <ui-toast-host />
-      <div class="row">
+      <div class="flex flex-wrap items-center gap-3">
         <ui-button (click)="toast.info('Info', 'Operación completada')">Info</ui-button>
         <ui-button (click)="toast.success('Éxito', 'Datos guardados')">Success</ui-button>
         <ui-button (click)="toast.warning('Advertencia', 'Revisa los datos')">Warning</ui-button>
@@ -144,8 +147,8 @@ import {
       </div>
     </section>
 
-    <section class="section">
-      <h2>Tabs</h2>
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Tabs</h2>
       <ui-tabs [defaultIndex]="0" [(activeIndex)]="activeTab">
         <ui-tab label="Cuenta" disabled="false">
           <p class="p-4 text-muted">Contenido de la pestaña Cuenta</p>
@@ -162,8 +165,8 @@ import {
       </ui-tabs>
     </section>
 
-    <section class="section">
-      <h2>Accordion</h2>
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Accordion</h2>
       <ui-accordion [multiple]="false">
         <ui-accordion-item title="¿Qué es emc-ui?" description="Pregunta frecuente">
           <p class="text-sm text-muted">
@@ -179,8 +182,8 @@ import {
       </ui-accordion>
     </section>
 
-    <section class="section">
-      <h2>Stepper</h2>
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Stepper</h2>
       <ui-stepper
         [steps]="3"
         [labels]="['Paso 1', 'Paso 2', 'Paso 3']"
@@ -194,8 +197,8 @@ import {
       </div>
     </section>
 
-    <section class="section">
-      <h2>Table (ordenable + paginable)</h2>
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Table (ordenable + paginable)</h2>
       <ui-table
         [columns]="tableColumns"
         [data]="tableData"
@@ -204,6 +207,17 @@ import {
         [trackBy]="trackById"
         (rowClick)="onRowClick($event)"
       />
+    </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Pagination</h2>
+      <ui-card>
+        <ui-card-header title="Paginación" subtitle="120 ítems, 10 por página" />
+        <ui-card-body class="flex flex-wrap items-center justify-between gap-3">
+          <ui-pagination [(page)]="paginationPage" [total]="120" [pageSize]="10" />
+          <span class="text-sm text-muted">Página {{ paginationPage() }}</span>
+        </ui-card-body>
+      </ui-card>
     </section>
   `,
 })
@@ -214,6 +228,7 @@ export class AdvancedPage {
   protected readonly progressVal = signal(65);
   protected readonly activeTab = signal(0);
   protected readonly stepperIndex = signal(0);
+  protected readonly paginationPage = signal(1);
   protected readonly toast = inject(ToastService);
 
   protected readonly tableColumns = [
