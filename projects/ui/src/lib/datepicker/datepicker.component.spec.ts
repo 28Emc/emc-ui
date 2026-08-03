@@ -74,6 +74,85 @@ describe('DatePickerComponent', () => {
     expect((comp() as any).isOpen()).toBe(false);
   });
 
+  it('keeps the calendar open when clicking the trigger again', () => {
+    input().dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+    expect((comp() as any).isOpen()).toBe(true);
+  });
+
+  it('commits a typed date in dd/MM/yyyy on blur', () => {
+    input().value = '15/08/2026';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBe('2026-08-15');
+    expect(input().value).toBe('15/08/2026');
+  });
+
+  it('commits a typed ISO date on blur', () => {
+    input().value = '2026-08-15';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBe('2026-08-15');
+  });
+
+  it('reverts an invalid typed date on blur', () => {
+    input().value = '99/99/9999';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBeNull();
+    expect(input().value).toBe('');
+  });
+
+  it('rejects a typed date outside min/max', () => {
+    host.min.set('2026-08-10');
+    host.max.set('2026-08-20');
+    fixture.detectChanges();
+    input().value = '05/08/2026';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBeNull();
+  });
+
+  it('commits typed dd/MM/yyyy and updates calendar view', () => {
+    input().value = '10/02/1991';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBe('1991-02-10');
+    const compInstance = comp();
+    expect((compInstance as any).view().month).toBe(1); // Feb (0-indexed)
+    expect((compInstance as any).view().year).toBe(1991);
+  });
+
+  it('clears on invalid typed date', () => {
+    input().value = '10/01/100';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBeNull();
+    expect(input().value).toBe('');
+  });
+
+  it('clears on empty input blur', () => {
+    input().value = '';
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBeNull();
+    expect(input().value).toBe('');
+  });
+
   it('does not emit when the selected day is out of range', () => {
     host.min.set('2026-08-10');
     host.max.set('2026-08-20');

@@ -58,6 +58,50 @@ describe('ComboboxComponent', () => {
     expect(listboxOptions().length).toBe(4);
   });
 
+  it('keeps the listbox open when clicking the trigger again', () => {
+    input().dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+    expect((comp() as any).isOpen()).toBe(true);
+    expect(listboxOptions().length).toBe(4);
+  });
+
+  it('clears value on empty input blur', () => {
+    host.value.set('angular');
+    fixture.detectChanges();
+    input().value = '';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBeNull();
+    expect(input().value).toBe('');
+  });
+
+  it('clears value on partial match blur', () => {
+    host.value.set('angular');
+    fixture.detectChanges();
+    input().value = 'Ang';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBeNull();
+  });
+
+  it('keeps value on exact match blur', () => {
+    host.value.set('angular');
+    fixture.detectChanges();
+    input().value = 'Angular';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBe('angular');
+    expect(input().value).toBe('Angular');
+  });
+
   it('filters options while typing', () => {
     input().dispatchEvent(new Event('focus'));
     fixture.detectChanges();

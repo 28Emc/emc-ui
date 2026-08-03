@@ -114,6 +114,7 @@ export class ComboboxComponent implements ControlValueAccessor {
 
   private readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
   private readonly panelTemplate = viewChild.required<TemplateRef<unknown>>('panel');
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly overlay = inject(Overlay);
   private readonly viewContainerRef = inject(ViewContainerRef);
 
@@ -235,13 +236,18 @@ export class ComboboxComponent implements ControlValueAccessor {
 
   protected onBlur(): void {
     this.editing.set(false);
+    const text = this.query().trim();
+    if (!text) {
+      this.clearValue();
+      return;
+    }
     const exact = this.normalizedOptions().find(
-      (option) => option.label.toLowerCase() === this.query().trim().toLowerCase(),
+      (option) => option.label.toLowerCase() === text.toLowerCase(),
     );
     if (exact) {
       this.setValue(exact);
     } else {
-      this.query.set(this.selectedOption()?.label ?? '');
+      this.clearValue();
     }
   }
 
@@ -256,6 +262,14 @@ export class ComboboxComponent implements ControlValueAccessor {
     this.query.set(option.label);
     this.editing.set(false);
     this._onChange(option.value);
+    this.onTouched();
+  }
+
+  private clearValue(): void {
+    this.value.set(null);
+    this.query.set('');
+    this.editing.set(false);
+    this._onChange(null);
     this.onTouched();
   }
 
@@ -306,7 +320,11 @@ export class ComboboxComponent implements ControlValueAccessor {
         ]),
       scrollStrategy: this.overlay.scrollStrategies.close(),
     });
-    this.overlayRef.outsidePointerEvents().subscribe(() => this.close());
+    this.overlayRef.outsidePointerEvents().subscribe((event) => {
+      if (!this.elementRef.nativeElement.contains(event.target as Node)) {
+        this.close();
+      }
+    });
     this.overlayRef
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))

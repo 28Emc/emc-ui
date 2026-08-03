@@ -60,6 +60,37 @@ function isSameDay(a: Date, b: Date): boolean {
   );
 }
 
+function formatDisplay(value: string | null): string {
+  if (!value) {
+    return '';
+  }
+  const [y, m, d] = value.split('-').map(Number);
+  return `${pad(d)}/${pad(m)}/${y}`;
+}
+
+function parseText(text: string): string | null {
+  const trimmed = text.trim();
+  const dmy = /^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/.exec(trimmed);
+  if (dmy) {
+    const [, d, m, y] = dmy.map(Number);
+    const date = new Date(y, m - 1, d);
+    if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) {
+      return null;
+    }
+    return toIso(date);
+  }
+  const iso = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(trimmed);
+  if (iso) {
+    const [, y, m, d] = iso.map(Number);
+    const date = new Date(y, m - 1, d);
+    if (date.getFullYear() !== y || date.getMonth() !== m - 1 || date.getDate() !== d) {
+      return null;
+    }
+    return toIso(date);
+  }
+  return null;
+}
+
 @Component({
   selector: 'ui-datepicker',
   standalone: true,
@@ -78,15 +109,16 @@ function isSameDay(a: Date, b: Date): boolean {
         <input
           #triggerEl
           type="text"
-          readonly
           [placeholder]="placeholder()"
           [value]="displayText()"
           [disabled]="disabled() || formDisabled()"
           [attr.aria-label]="'Seleccionar fecha'"
           [attr.aria-expanded]="isOpen()"
+          (input)="onInput($event)"
           (focus)="open()"
           (keydown)="onTriggerKeydown($event)"
-          class="w-full min-w-0 flex-1 cursor-pointer bg-transparent text-sm text-fg outline-none placeholder:text-muted"
+          (blur)="onBlur()"
+          class="w-full min-w-0 flex-1 bg-transparent text-sm text-fg outline-none placeholder:text-muted"
         />
       </div>
     </div>
@@ -158,6 +190,8 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   protected readonly isOpen = signal(false);
   protected readonly formDisabled = signal(false);
+  protected readonly editing = signal(false);
+  protected readonly query = signal('');
   protected readonly view = signal<{ year: number; month: number }>({
     year: new Date().getFullYear(),
     month: new Date().getMonth(),
@@ -168,6 +202,7 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   private readonly triggerEl = viewChild.required<ElementRef<HTMLInputElement>>('triggerEl');
   private readonly panelTemplate = viewChild.required<TemplateRef<unknown>>('panel');
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly overlay = inject(Overlay);
   private readonly viewContainerRef = inject(ViewContainerRef);
 
@@ -177,12 +212,10 @@ export class DatePickerComponent implements ControlValueAccessor {
   protected onTouched: () => void = () => {};
 
   protected readonly displayText = computed(() => {
-    const value = this.value();
-    if (!value) {
-      return '';
+    if (this.editing()) {
+      return this.query();
     }
-    const [y, m, d] = value.split('-').map(Number);
-    return `${pad(d)}/${pad(m)}/${y}`;
+    return formatDisplay(this.value());
   });
 
   protected readonly monthLabel = computed(() => {
@@ -315,10 +348,67 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       this.open();
-    } else if (event.key === 'Enter' || event.key === ' ') {
+    } else if (event.key === 'Enter') {
       event.preventDefault();
-      this.open();
+      if (this.editing()) {
+        this.commitQuery();
+      } else {
+        this.open();
+      }
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      this.close();
     }
+  }
+
+  protected onInput(event: Event): void {
+    const text = (event.target as HTMLInputElement).value;
+    this.query.set(text);
+    this.editing.set(true);
+  }
+
+  protected onBlur(): void {
+    this.editing.set(false);
+    this.commitQuery();
+  }
+
+  private commitQuery(): void {
+    const text = this.query().trim();
+    if (!text) {
+      this.setValue(null);
+      return;
+    }
+    const iso = parseText(text);
+    if (!iso) {
+      this.query.set(formatDisplay(this.value()));
+      return;
+    }
+    if (this.isOutsideRange(iso)) {
+      this.query.set(formatDisplay(this.value()));
+      return;
+    }
+    this.setValue(iso);
+    const date = parseIso(iso);
+    this.view.set({ year: date.getFullYear(), month: date.getMonth() });
+  }
+
+  private setValue(iso: string | null): void {
+    if (iso !== this.value()) {
+      this.value.set(iso);
+      this._onChange(iso);
+      this.onTouched();
+    }
+  }
+
+  private isOutsideRange(iso: string): boolean {
+    const date = parseIso(iso);
+    if (this.min() && date < parseIso(this.min()!)) {
+      return true;
+    }
+    if (this.max() && date > parseIso(this.max()!)) {
+      return true;
+    }
+    return false;
   }
 
   protected open(): void {
@@ -346,7 +436,11 @@ export class DatePickerComponent implements ControlValueAccessor {
         ]),
       scrollStrategy: this.overlay.scrollStrategies.close(),
     });
-    this.overlayRef.outsidePointerEvents().subscribe(() => this.close());
+    this.overlayRef.outsidePointerEvents().subscribe((event) => {
+      if (!this.elementRef.nativeElement.contains(event.target as Node)) {
+        this.close();
+      }
+    });
     this.overlayRef
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
