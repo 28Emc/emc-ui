@@ -123,6 +123,16 @@ describe('DatePickerComponent', () => {
     expect(host.value()).toBeNull();
   });
 
+  it('accepts dd/MM/yyyy format (es-PE locale)', () => {
+    input().value = '10/02/1991';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBe('1991-02-10');
+    expect(input().value).toBe('10/02/1991');
+  });
+
   it('commits typed dd/MM/yyyy and updates calendar view', () => {
     input().value = '10/02/1991';
     input().dispatchEvent(new Event('input'));
@@ -170,4 +180,21 @@ describe('DatePickerComponent', () => {
     fixture.detectChanges();
     expect(input().value).toBe('');
   });
+
+  it('auto-masks typed digits into dd/MM/yyyy format', () => {
+    const el = input();
+    el.value = '10022026';
+    el.dispatchEvent(new InputEvent('input', { inputType: 'insertText' }));
+    fixture.detectChanges();
+    expect(el.value).toBe('10/02/2026');
+  });
+
+  it('does not force re-inserting slash on backspace deletion', () => {
+    const el = input();
+    el.value = '10/';
+    el.dispatchEvent(new InputEvent('input', { inputType: 'deleteContentBackward' }));
+    fixture.detectChanges();
+    expect(el.value).toBe('10');
+  });
 });
+

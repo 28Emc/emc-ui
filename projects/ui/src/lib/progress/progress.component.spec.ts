@@ -1,4 +1,4 @@
-﻿import { Component, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ProgressComponent, ProgressSize } from './progress.component';
 
@@ -91,7 +91,7 @@ describe('ProgressComponent', () => {
     const bar = el.querySelector('.indeterminate-bar') as HTMLElement | null;
     expect(bar).toBeTruthy();
     expect(bar?.classList.contains('animate-indeterminate')).toBe(true);
-    expect(bar?.classList.contains('h-full')).toBe(true);
+    expect(bar?.classList.contains('absolute')).toBe(true);
     expect(el.querySelector('[style*="width"]')).toBeNull();
   });
 

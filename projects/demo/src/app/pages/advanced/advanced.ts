@@ -109,7 +109,6 @@ import {
         <ui-card>
           <ui-card-header title="Indeterminado" subtitle="Carga indefinida" />
           <ui-card-body class="space-y-4">
-            <ui-progress [indeterminate]="true" label="Cargando datos…" />
             <ui-progress [indeterminate]="true" size="lg" />
           </ui-card-body>
         </ui-card>

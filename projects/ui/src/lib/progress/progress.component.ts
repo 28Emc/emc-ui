@@ -22,15 +22,12 @@ const SIZE_CLASSES: Record<ProgressSize, string> = {
       [class]="trackClasses()"
     >
       @if (indeterminate()) {
-        <div
-          class="indeterminate-bar h-full w-2/5 rounded-full animate-indeterminate"
-          [style.background]="gradient()"
-        ></div>
+        <div class="indeterminate-bar absolute top-0 h-full rounded-full animate-indeterminate" [style.background]="brandColor()"></div>
       } @else {
         <div
           [class]="fillClasses()"
           [style.width.%]="percent()"
-          [style.background]="gradient()"
+          [style.background]="brandColor()"
         ></div>
       }
     </div>
@@ -53,12 +50,10 @@ export class ProgressComponent {
     this.indeterminate() ? null : Math.max(0, Math.min(this.max(), this.value())),
   );
 
-  protected readonly gradient = computed(
-    () => 'linear-gradient(to right, #32b49f 0%, #0c8b7c 100%)',
-  );
+  protected readonly brandColor = computed(() => 'var(--color-brand-500)');
 
   protected readonly trackClasses = computed(() =>
-    cn('w-full overflow-hidden rounded-full bg-surface-2', SIZE_CLASSES[this.size()]),
+    cn('relative w-full overflow-hidden rounded-full bg-surface-2', SIZE_CLASSES[this.size()]),
   );
 
   protected readonly fillClasses = computed(() =>
