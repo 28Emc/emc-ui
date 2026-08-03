@@ -34,7 +34,9 @@ import {
     <p class="mb-2 text-sm font-medium text-muted">variant × size (sm / md / lg)</p>
     <div class="space-y-3">
       @for (variant of variants; track variant) {
-        <div class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-surface p-4">
+        <div
+          class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-surface p-4"
+        >
           <span class="w-24 shrink-0 text-sm font-medium text-muted">{{ variant }}</span>
           <ui-button [variant]="variant" size="sm">Small</ui-button>
           <ui-button [variant]="variant" size="md">Medium</ui-button>
@@ -46,9 +48,13 @@ import {
     <p class="mb-2 mt-6 text-sm font-medium text-muted">Icon sizes</p>
     <div class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-surface p-4">
       <span class="w-24 shrink-0 text-sm font-medium text-muted">icon-sm</span>
-      <ui-button variant="secondary" size="icon-sm"><svg lucidePlus [size]="14" [strokeWidth]="2" /></ui-button>
+      <ui-button variant="secondary" size="icon-sm"
+        ><svg lucidePlus [size]="14" [strokeWidth]="2"
+      /></ui-button>
       <span class="w-24 shrink-0 text-sm font-medium text-muted">icon</span>
-      <ui-button variant="secondary" size="icon"><svg lucidePlus [size]="16" [strokeWidth]="2" /></ui-button>
+      <ui-button variant="secondary" size="icon"
+        ><svg lucidePlus [size]="16" [strokeWidth]="2"
+      /></ui-button>
     </div>
 
     <p class="mb-2 mt-6 text-sm font-medium text-muted">Estados (loading / disabled / type)</p>
@@ -65,7 +71,12 @@ import {
         <ui-input placeholder="Escribe algo…" />
       </ui-field>
       <ui-field label="Email" [required]="true" error="Email inválido">
-        <ui-input type="email" placeholder="you@example.com" value="no-un-correo" [invalid]="true" />
+        <ui-input
+          type="email"
+          placeholder="you@example.com"
+          value="no-un-correo"
+          [invalid]="true"
+        />
       </ui-field>
       <ui-field label="Contraseña">
         <ui-input type="password" placeholder="••••••••" />

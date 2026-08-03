@@ -5,11 +5,7 @@ import { cn } from '../utils/cn';
   selector: 'ui-menu-item',
   standalone: true,
   template: `
-    <button
-      type="button"
-      role="menuitem"
-      [class]="classes()"
-    >
+    <button type="button" role="menuitem" [class]="classes()">
       <ng-content />
     </button>
   `,

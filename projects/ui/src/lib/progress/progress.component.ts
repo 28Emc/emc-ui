@@ -47,10 +47,7 @@ export class ProgressComponent {
   );
 
   protected readonly trackClasses = computed(() =>
-    cn(
-      'w-full overflow-hidden rounded-full bg-surface-2',
-      SIZE_CLASSES[this.size()],
-    ),
+    cn('w-full overflow-hidden rounded-full bg-surface-2', SIZE_CLASSES[this.size()]),
   );
 
   protected readonly fillClasses = computed(() =>

@@ -9,7 +9,6 @@ import {
   inject,
   input,
   model,
-  booleanAttribute,
   viewChild,
 } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -53,12 +52,7 @@ let modalUid = 0;
               <p class="text-sm text-muted">{{ subtitle() }}</p>
             }
           </div>
-          <ui-button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Cerrar"
-            (click)="requestClose()"
-          >
+          <ui-button variant="ghost" size="icon-sm" aria-label="Cerrar" (click)="requestClose()">
             <svg lucideX [size]="16" [strokeWidth]="2" />
           </ui-button>
         </header>
@@ -115,27 +109,18 @@ export class ModalComponent {
     }
     this.previouslyFocused = document.activeElement as HTMLElement | null;
     this.overlayRef = this.overlay.create({
-      positionStrategy: this.overlay
-        .position()
-        .global()
-        .centerHorizontally()
-        .centerVertically(),
+      positionStrategy: this.overlay.position().global().centerHorizontally().centerVertically(),
       hasBackdrop: true,
       backdropClass: ['bg-black/50', 'backdrop-blur-sm'],
       scrollStrategy: this.overlay.scrollStrategies.block(),
     });
-    this.overlayRef
-      .backdropClick()
-      .subscribe(() => this.requestClose());
+    this.overlayRef.backdropClick().subscribe(() => this.requestClose());
     this.overlayRef
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
       .subscribe(() => this.requestClose());
-    this.overlayRef.attach(
-      new TemplatePortal(this.panelTemplate(), this.viewContainerRef),
-    );
-    const dialog =
-      this.overlayRef.overlayElement.querySelector<HTMLElement>('[role="dialog"]');
+    this.overlayRef.attach(new TemplatePortal(this.panelTemplate(), this.viewContainerRef));
+    const dialog = this.overlayRef.overlayElement.querySelector<HTMLElement>('[role="dialog"]');
     dialog?.focus();
   }
 

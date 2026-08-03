@@ -40,6 +40,34 @@ pnpm serve        # ng serve demo en http://localhost:4200
 > recargar la demo. Ojo: si `ng build ui` falla se borra `dist/ui` y la demo deja de
 > compilar.
 
+## Storybook
+
+Documentación visual de los componentes (CSF, framework `@storybook/angular-vite`):
+
+```bash
+pnpm build:styles      # genera projects/ui/styles.css (lo importa .storybook/preview.ts)
+pnpm storybook         # dev server en http://localhost:6006
+pnpm build-storybook   # build estático → storybook-static/
+```
+
+Las stories viven junto a cada componente (`*.stories.ts`) y compilan los
+componentes **desde `projects/ui/src`** (no desde `dist/ui`). Las API tables las
+genera Compodoc a partir de `.storybook/compodoc.tsconfig.json`.
+
+## Tests
+
+Unit tests con vitest (runner `@angular/build:unit-test`) sobre `projects/ui`:
+
+```bash
+pnpm test            # ejecuta los tests una vez
+pnpm test:watch      # modo watch
+```
+
+Los specs viven junto a cada componente (`*.component.spec.ts`). En tests,
+los hosts que mutan inputs deben usar `signal()` para propagar cambios con
+`fixture.detectChanges()` (entorno zoneless); los servicios con timers usan
+`vi.useFakeTimers()`.
+
 ## Compilar la librería
 
 ```bash
@@ -54,6 +82,31 @@ pnpm build:ui       # ng build ui + parchea "exports" en dist/ui/package.json
 - `styles.css` — estilos compilados y autocontenidos (sin necesidad de Tailwind en el consumidor)
 - `src/lib/styles/theme.css` — fuente de tokens, para integración a nivel de Tailwind
 - `package.json` con `exports` para `./styles.css`
+
+## Calidad de código
+
+```bash
+pnpm lint           # ESLint (angular-eslint, flat config)
+pnpm lint:fix       # ESLint con autofix
+pnpm format         # Prettier --write .
+pnpm format:check   # Prettier --check .
+```
+
+## CI y Release
+
+GitHub Actions:
+
+- `.github/workflows/ci.yml` — en cada push a `main` y en PRs: `pnpm install` →
+  `lint` → `format:check` → `build:ui` → `build:demo` → `test`.
+- `.github/workflows/release.yml` — al pushear un tag `v*`: valida `lint` + `test`,
+  compila la librería y publica `dist/ui` en npm. Requiere el secret `NPM_TOKEN`.
+
+Flujo de release:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
 
 ## Publicar
 

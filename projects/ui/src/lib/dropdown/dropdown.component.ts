@@ -36,7 +36,7 @@ import { cn } from '../utils/cn';
     </ui-button>
 
     <ng-template #panel>
-      <div [class]="panelClasses()" role="menu" (keydown)="onMenuKeydown($event)">
+      <div [class]="panelClasses()" role="menu" tabindex="-1" (keydown)="onMenuKeydown($event)">
         <ng-content />
       </div>
     </ng-template>
@@ -48,10 +48,7 @@ export class DropdownComponent {
 
   protected readonly isOpen = signal(false);
   protected readonly chevronClasses = computed(() =>
-    cn(
-      'transition-transform duration-150',
-      this.isOpen() ? 'rotate-180' : '',
-    ),
+    cn('transition-transform duration-150', this.isOpen() ? 'rotate-180' : ''),
   );
   protected readonly panelClasses = computed(() =>
     cn(
@@ -109,9 +106,7 @@ export class DropdownComponent {
 
   private menuItems(): HTMLElement[] {
     return Array.from(
-      this.overlayRef?.overlayElement.querySelectorAll<HTMLElement>(
-        '[role="menuitem"]',
-      ) ?? [],
+      this.overlayRef?.overlayElement.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [],
     );
   }
 
@@ -135,17 +130,13 @@ export class DropdownComponent {
         ]),
       scrollStrategy: this.overlay.scrollStrategies.close(),
     });
-    this.overlayRef
-      .outsidePointerEvents()
-      .subscribe(() => this.close());
+    this.overlayRef.outsidePointerEvents().subscribe(() => this.close());
     this.overlayRef
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
       .subscribe(() => this.close());
     this.overlayRef.overlayElement.addEventListener('click', this.onPanelClick);
-    this.overlayRef.attach(
-      new TemplatePortal(this.panelTemplate(), this.viewContainerRef),
-    );
+    this.overlayRef.attach(new TemplatePortal(this.panelTemplate(), this.viewContainerRef));
     this.isOpen.set(true);
     const firstItem =
       this.overlayRef.overlayElement.querySelector<HTMLElement>('[role="menuitem"]');

@@ -4,9 +4,7 @@ import { cn } from '../utils/cn';
 @Component({
   selector: 'ui-tooltip-content',
   standalone: true,
-  template: `
-    <span [class]="classes()">{{ content() }}</span>
-  `,
+  template: ` <span [class]="classes()">{{ content() }}</span> `,
 })
 export class TooltipContentComponent {
   readonly content = signal('');

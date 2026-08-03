@@ -14,9 +14,7 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "emc-ui": [
-        "./dist/ui"
-      ]
+      "emc-ui": ["./dist/ui"]
     }
   },
   "angularCompilerOptions": {

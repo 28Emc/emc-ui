@@ -4,6 +4,7 @@ import {
   ElementRef,
   inject,
   input,
+  OnDestroy,
   ViewContainerRef,
 } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -12,11 +13,49 @@ import { TooltipContentComponent } from './tooltip-content.component';
 
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-const PLACEMENTS: Record<TooltipPlacement, { originX: 'center' | 'start' | 'end'; originY: 'top' | 'bottom' | 'center'; overlayX: 'center' | 'start' | 'end'; overlayY: 'top' | 'bottom' | 'center'; offsetX: number; offsetY: number }> = {
-  top: { originX: 'center', originY: 'top', overlayX: 'center', overlayY: 'bottom', offsetX: 0, offsetY: -8 },
-  bottom: { originX: 'center', originY: 'bottom', overlayX: 'center', overlayY: 'top', offsetX: 0, offsetY: 8 },
-  left: { originX: 'start', originY: 'center', overlayX: 'end', overlayY: 'center', offsetX: -8, offsetY: 0 },
-  right: { originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center', offsetX: 8, offsetY: 0 },
+const PLACEMENTS: Record<
+  TooltipPlacement,
+  {
+    originX: 'center' | 'start' | 'end';
+    originY: 'top' | 'bottom' | 'center';
+    overlayX: 'center' | 'start' | 'end';
+    overlayY: 'top' | 'bottom' | 'center';
+    offsetX: number;
+    offsetY: number;
+  }
+> = {
+  top: {
+    originX: 'center',
+    originY: 'top',
+    overlayX: 'center',
+    overlayY: 'bottom',
+    offsetX: 0,
+    offsetY: -8,
+  },
+  bottom: {
+    originX: 'center',
+    originY: 'bottom',
+    overlayX: 'center',
+    overlayY: 'top',
+    offsetX: 0,
+    offsetY: 8,
+  },
+  left: {
+    originX: 'start',
+    originY: 'center',
+    overlayX: 'end',
+    overlayY: 'center',
+    offsetX: -8,
+    offsetY: 0,
+  },
+  right: {
+    originX: 'end',
+    originY: 'center',
+    overlayX: 'start',
+    overlayY: 'center',
+    offsetX: 8,
+    offsetY: 0,
+  },
 };
 
 @Directive({
@@ -29,7 +68,7 @@ const PLACEMENTS: Record<TooltipPlacement, { originX: 'center' | 'start' | 'end'
     '(focusout)': 'hide()',
   },
 })
-export class TooltipDirective {
+export class TooltipDirective implements OnDestroy {
   readonly uiTooltip = input<string>();
   readonly placement = input<TooltipPlacement>('top');
 
@@ -61,10 +100,7 @@ export class TooltipDirective {
       positionStrategy: this.overlay
         .position()
         .flexibleConnectedTo(this.elementRef)
-        .withPositions([
-          { ...p },
-          { ...PLACEMENTS[this.flipPlacement(this.placement())] },
-        ]),
+        .withPositions([{ ...p }, { ...PLACEMENTS[this.flipPlacement(this.placement())] }]),
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
     });
 

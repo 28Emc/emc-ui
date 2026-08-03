@@ -1,4 +1,12 @@
-import { Component, computed, forwardRef, inject, signal, input, booleanAttribute } from '@angular/core';
+import {
+  Component,
+  computed,
+  forwardRef,
+  inject,
+  signal,
+  input,
+  booleanAttribute,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { cn } from '../utils/cn';
 import { FIELD_CLASSES, FIELD_INVALID_CLASSES } from './field-base';

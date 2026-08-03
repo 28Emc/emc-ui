@@ -34,7 +34,7 @@ export class ConfirmModalComponent {
   readonly size = input<ModalSize>('sm');
 
   readonly confirm = output<void>();
-  readonly cancel = output<void>();
+  readonly cancelled = output<void>();
 
   protected onConfirm(): void {
     this.confirm.emit();
@@ -42,7 +42,7 @@ export class ConfirmModalComponent {
   }
 
   protected onCancel(): void {
-    this.cancel.emit();
+    this.cancelled.emit();
     this.open.set(false);
   }
 }

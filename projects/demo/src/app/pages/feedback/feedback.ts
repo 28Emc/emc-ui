@@ -37,7 +37,9 @@ import {
     </div>
 
     <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Badge</h2>
-    <p class="mb-2 text-sm font-medium text-muted">variant: default / brand / green / amber / gray</p>
+    <p class="mb-2 text-sm font-medium text-muted">
+      variant: default / brand / green / amber / gray
+    </p>
     <div class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-surface p-4">
       <ui-badge variant="default">default</ui-badge>
       <ui-badge variant="brand">brand</ui-badge>

@@ -6,20 +6,11 @@ import { cn } from '../utils/cn';
   selector: 'ui-spinner',
   standalone: true,
   imports: [LucideLoader2],
-  template: `
-    <svg
-      lucideLoader2
-      [class]="classes()"
-      [size]="size()"
-      [strokeWidth]="2"
-    />
-  `,
+  template: ` <svg lucideLoader2 [class]="classes()" [size]="size()" [strokeWidth]="2" /> `,
 })
 export class SpinnerComponent {
   readonly size = input<number>(16);
   readonly class = input('');
 
-  protected readonly classes = computed(() =>
-    cn('animate-spin text-brand-500', this.class()),
-  );
+  protected readonly classes = computed(() => cn('animate-spin text-brand-500', this.class()));
 }

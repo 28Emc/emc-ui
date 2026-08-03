@@ -47,9 +47,7 @@ import {
       <ui-card>
         <ui-card-body>
           <p class="text-sm font-medium text-fg">Sin hover</p>
-          <p class="mt-1 text-sm text-muted">
-            Tarjeta base con shadow-soft, sin interacción.
-          </p>
+          <p class="mt-1 text-sm text-muted">Tarjeta base con shadow-soft, sin interacción.</p>
         </ui-card-body>
       </ui-card>
     </div>
@@ -57,10 +55,34 @@ import {
     <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">StatCard</h2>
     <p class="mb-2 text-sm font-medium text-muted">accent: brand / green / amber / pink</p>
     <div class="grid gap-6 md:grid-cols-4">
-      <ui-stat-card [icon]="LucideDollarSign" label="Ingresos" value="$12,480" sublabel="vs $9,300 el mes pasado" accent="brand" />
-      <ui-stat-card [icon]="LucideTrendingUp" label="Conversión" value="3.2%" sublabel="+0.4% este mes" accent="green" />
-      <ui-stat-card [icon]="LucideUsers" label="Usuarios activos" value="1,284" sublabel="+86 esta semana" accent="amber" />
-      <ui-stat-card [icon]="LucideBadgeCheck" label="Formularios completados" value="892" sublabel="98% de precisión" accent="pink" />
+      <ui-stat-card
+        [icon]="LucideDollarSign"
+        label="Ingresos"
+        value="$12,480"
+        sublabel="vs $9,300 el mes pasado"
+        accent="brand"
+      />
+      <ui-stat-card
+        [icon]="LucideTrendingUp"
+        label="Conversión"
+        value="3.2%"
+        sublabel="+0.4% este mes"
+        accent="green"
+      />
+      <ui-stat-card
+        [icon]="LucideUsers"
+        label="Usuarios activos"
+        value="1,284"
+        sublabel="+86 esta semana"
+        accent="amber"
+      />
+      <ui-stat-card
+        [icon]="LucideBadgeCheck"
+        label="Formularios completados"
+        value="892"
+        sublabel="98% de precisión"
+        accent="pink"
+      />
     </div>
   `,
 })

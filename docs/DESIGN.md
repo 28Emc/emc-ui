@@ -26,17 +26,17 @@
 
 ### 2.1 Color — escala de marca (teal)
 
-| Token | Hex | Uso típico |
-|---|---|---|
-| `brand-50` | `#e8f7f4` | fondos sutiles (hover, badges) |
-| `brand-100` | `#c7ece5` | fondos sutiles dark-adjacent |
-| `brand-200` | `#95dccd` | bordes en variante `outline` |
-| `brand-300` | `#5cc8b4` | bordes en variante `outline` |
-| `brand-400` | `#32b49f` | focus ring, gradiente (extremo claro) |
-| `brand-500` | `#15a18b` | ring de foco, selección de texto |
-| `brand-600` | `#0c8b7c` | texto de acento, gradiente (extremo oscuro) |
-| `brand-700` | `#0b7064` | texto sobre fondos claros |
-| `brand-800` / `brand-900` | `#0c5a51` / `#0c4a43` | fondos oscuros en dark mode |
+| Token                     | Hex                   | Uso típico                                  |
+| ------------------------- | --------------------- | ------------------------------------------- |
+| `brand-50`                | `#e8f7f4`             | fondos sutiles (hover, badges)              |
+| `brand-100`               | `#c7ece5`             | fondos sutiles dark-adjacent                |
+| `brand-200`               | `#95dccd`             | bordes en variante `outline`                |
+| `brand-300`               | `#5cc8b4`             | bordes en variante `outline`                |
+| `brand-400`               | `#32b49f`             | focus ring, gradiente (extremo claro)       |
+| `brand-500`               | `#15a18b`             | ring de foco, selección de texto            |
+| `brand-600`               | `#0c8b7c`             | texto de acento, gradiente (extremo oscuro) |
+| `brand-700`               | `#0b7064`             | texto sobre fondos claros                   |
+| `brand-800` / `brand-900` | `#0c5a51` / `#0c4a43` | fondos oscuros en dark mode                 |
 
 **Gradiente de marca** (para CTAs primarios): `linear-gradient(145deg, #32b49f 0%, #0c8b7c 100%)`
 
@@ -45,14 +45,14 @@
 
 ### 2.2 Color — semántico (light / dark)
 
-| Token | Light | Dark |
-|---|---|---|
-| `--app-bg` | `#ffffff` | `#0a0c12` |
-| `--surface` | `#ffffff` | `#12151d` |
+| Token         | Light     | Dark      |
+| ------------- | --------- | --------- |
+| `--app-bg`    | `#ffffff` | `#0a0c12` |
+| `--surface`   | `#ffffff` | `#12151d` |
 | `--surface-2` | `#f8fafc` | `#171b25` |
-| `--border` | `#e8ebf0` | `#232936` |
-| `--fg` | `#0f172a` | `#e9edf4` |
-| `--fg-muted` | `#64748b` | `#8a93a6` |
+| `--border`    | `#e8ebf0` | `#232936` |
+| `--fg`        | `#0f172a` | `#e9edf4` |
+| `--fg-muted`  | `#64748b` | `#8a93a6` |
 
 El dark mode se activa con una clase `.dark` en `<html>` — no con `prefers-color-scheme`,
 así que es 100% controlable por el usuario (toggle manual).
@@ -77,21 +77,21 @@ así que es 100% controlable por el usuario (toggle manual).
 
 ### 2.5 Sombras
 
-| Token | Valor | Uso |
-|---|---|---|
-| `shadow-soft` | `0 1px 2px rgba(16,24,40,.04), 0 4px 16px rgba(16,24,40,.01)` | estado default de cards/botones primarios |
-| `shadow-card` | `0 1px 3px rgba(16,24,40,.05), 0 12px 32px -12px rgba(16,24,40,.12)` | hover de cards |
-| `shadow-pop` | `0 12px 40px -8px rgba(16,24,40,.22)` | modales, drawers, dropdowns (elementos flotantes) |
+| Token         | Valor                                                                | Uso                                               |
+| ------------- | -------------------------------------------------------------------- | ------------------------------------------------- |
+| `shadow-soft` | `0 1px 2px rgba(16,24,40,.04), 0 4px 16px rgba(16,24,40,.01)`        | estado default de cards/botones primarios         |
+| `shadow-card` | `0 1px 3px rgba(16,24,40,.05), 0 12px 32px -12px rgba(16,24,40,.12)` | hover de cards                                    |
+| `shadow-pop`  | `0 12px 40px -8px rgba(16,24,40,.22)`                                | modales, drawers, dropdowns (elementos flotantes) |
 
 ### 2.6 Movimiento
 
-| Animación | Timing | Uso |
-|---|---|---|
-| `fade-in` | 0.25s ease-out | overlays/backdrops |
-| `slide-up` | 0.3s cubic-bezier(.16,1,.3,1) | entrada de contenido |
-| `scale-in` | 0.18s ease-out | modales, dropdowns |
-| `pop` | 0.4s cubic-bezier(.34,1.56,.64,1) | confirmaciones (overshoot bounce) |
-| `slide-in-right` | 0.3s cubic-bezier(.16,1,.3,1) | drawers laterales |
+| Animación        | Timing                            | Uso                               |
+| ---------------- | --------------------------------- | --------------------------------- |
+| `fade-in`        | 0.25s ease-out                    | overlays/backdrops                |
+| `slide-up`       | 0.3s cubic-bezier(.16,1,.3,1)     | entrada de contenido              |
+| `scale-in`       | 0.18s ease-out                    | modales, dropdowns                |
+| `pop`            | 0.4s cubic-bezier(.34,1.56,.64,1) | confirmaciones (overshoot bounce) |
+| `slide-in-right` | 0.3s cubic-bezier(.16,1,.3,1)     | drawers laterales                 |
 
 Micro-interacciones adicionales en casi todos los elementos clicables:
 `active:scale-[.98]`, `hover:brightness-[1.06]` (botón primario), `hover:-translate-y-0.5` (cards).
@@ -109,6 +109,7 @@ Cada componente sigue el mismo patrón: **variantes de estilo + tamaños**, resu
 un mapa de clases (no condicionales dispersos).
 
 ### Button
+
 - **Variantes:** `primary` (gradiente + sombra), `secondary` (borde + superficie),
   `ghost` (transparente), `danger` (rojo sólido), `outline` (borde de marca), `subtle`
   (fondo de marca tenue)
@@ -116,6 +117,7 @@ un mapa de clases (no condicionales dispersos).
 - **Estados:** loading (spinner inline), disabled (`opacity-50`), focus-visible (ring de marca)
 
 ### Input / Textarea / Select / Field
+
 - Estilo base compartido entre los tres (`baseField`): fondo `surface-2/60`, borde por
   defecto, foco con `ring-4` de marca al 12% de opacidad
 - Estado `invalid`: borde y ring rojos
@@ -123,28 +125,34 @@ un mapa de clases (no condicionales dispersos).
   componente monolítico
 
 ### Card / StatCard
+
 - `Card` base + `hover` opcional (elevación + traslado)
 - `StatCard`: icono con fondo de color por "accent" (`brand`/`green`/`amber`/`pink`),
   valor grande, sublabel — patrón repetido en dashboards
 
 ### Modal / ConfirmModal / Drawer
+
 - Overlay con blur + fade-in, contenido con scale-in (modal) o slide-in-right (drawer)
 - Header con título + botón de cierre, body scrollable, footer opcional con acciones
 - `ConfirmModal` es un preset de `Modal` para diálogos de confirmación (con variante `danger`)
 
 ### Feedback (Spinner, PageLoader, Skeleton, Badge, EmptyState)
+
 - `Skeleton`: pulso animado, `bg-surface-2`
 - `Badge`: 5 variantes semánticas (`default`, `brand`, `green`, `amber`, `gray`), forma pill
 - `EmptyState`: icono en contenedor redondeado + título + descripción + acción opcional
 
 ### Switch
+
 - Toggle binario custom (no `<input type=checkbox>` nativo), thumb blanco deslizante,
   color de marca cuando está activo
 
 ### Avatar
+
 - Círculo con iniciales, color de fondo dinámico por usuario, 3 tamaños
 
 ### Dropdown / MenuItem / MenuDivider
+
 - Menú flotante controlado por click-outside, alineación `left`/`right`,
   `MenuItem` con variante `danger` para acciones destructivas
 
@@ -163,20 +171,21 @@ un mapa de clases (no condicionales dispersos).
 ## 5. Extrapolación a Angular
 
 **El sistema de diseño en sí no cambia nada** — es CSS (Tailwind v4, config vía `@theme`
-en `index.css`, sin `tailwind.config.js`). Lo único que cambia es cómo se *consume* desde
+en `index.css`, sin `tailwind.config.js`). Lo único que cambia es cómo se _consume_ desde
 componentes. Guía de migración:
 
-| Pieza React | Equivalente Angular |
-|---|---|
-| `index.css` con `@theme` + custom properties | **Se copia literal.** Tailwind v4 es agnóstico de framework — se integra vía `@tailwindcss/postcss` en `angular.json` o el builder de Vite/esbuild de Angular. Cero cambios de tokens. |
-| `cn()` (clsx + tailwind-merge) | Mismo paquete npm, se importa igual en un `.ts` — es JS puro, no JSX. |
-| Mapa de variantes (`VARIANTS[variant]`, `SIZES[size]`) | `@Input() variant: 'primary' \| 'secondary' \| ...` + un getter que resuelve la clase, aplicado con `[class]` o `[ngClass]` en el template. |
-| `forwardRef` en `Input`/`Textarea`/`Select` | `ControlValueAccessor` — permite que el componente se use con `formControlName` igual que un input nativo. |
-| `createPortal` (Modal, Drawer) | **Angular CDK Overlay** (`cdk-portal` / `OverlayModule`) — mismo concepto de "renderizar fuera del árbol". |
-| Toggle de dark mode (`.dark` en `<html>`) | Idéntico — un servicio Angular que hace `document.documentElement.classList.toggle('dark')`. |
-| `useEffect` para Escape/scroll-lock en Modal/Drawer | `ngOnInit`/`ngOnDestroy` + `HostListener('document:keydown.escape')`. |
+| Pieza React                                            | Equivalente Angular                                                                                                                                                                    |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `index.css` con `@theme` + custom properties           | **Se copia literal.** Tailwind v4 es agnóstico de framework — se integra vía `@tailwindcss/postcss` en `angular.json` o el builder de Vite/esbuild de Angular. Cero cambios de tokens. |
+| `cn()` (clsx + tailwind-merge)                         | Mismo paquete npm, se importa igual en un `.ts` — es JS puro, no JSX.                                                                                                                  |
+| Mapa de variantes (`VARIANTS[variant]`, `SIZES[size]`) | `@Input() variant: 'primary' \| 'secondary' \| ...` + un getter que resuelve la clase, aplicado con `[class]` o `[ngClass]` en el template.                                            |
+| `forwardRef` en `Input`/`Textarea`/`Select`            | `ControlValueAccessor` — permite que el componente se use con `formControlName` igual que un input nativo.                                                                             |
+| `createPortal` (Modal, Drawer)                         | **Angular CDK Overlay** (`cdk-portal` / `OverlayModule`) — mismo concepto de "renderizar fuera del árbol".                                                                             |
+| Toggle de dark mode (`.dark` en `<html>`)              | Idéntico — un servicio Angular que hace `document.documentElement.classList.toggle('dark')`.                                                                                           |
+| `useEffect` para Escape/scroll-lock en Modal/Drawer    | `ngOnInit`/`ngOnDestroy` + `HostListener('document:keydown.escape')`.                                                                                                                  |
 
 **Recomendación de estructura en Angular:**
+
 ```
 src/app/ui/
   button/button.component.ts       (variant, size, loading como @Input)

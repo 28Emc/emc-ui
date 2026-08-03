@@ -48,10 +48,7 @@ export class AccordionItemComponent {
   );
 
   protected readonly itemClasses = computed(() =>
-    cn(
-      'rounded-xl border border-default bg-surface',
-      this.disabled() ? 'opacity-50' : '',
-    ),
+    cn('rounded-xl border border-default bg-surface', this.disabled() ? 'opacity-50' : ''),
   );
 
   protected toggle(): void {

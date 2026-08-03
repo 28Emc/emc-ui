@@ -31,3 +31,8 @@ Thumbs.db
 
 # Library compiled stylesheet
 projects/ui/styles.css
+
+# Storybook
+storybook-static/
+documentation.json
+.documentation/

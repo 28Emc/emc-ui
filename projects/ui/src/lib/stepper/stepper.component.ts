@@ -47,8 +47,8 @@ export class StepperComponent {
       index < this.activeIndex()
         ? 'bg-brand-500 text-white'
         : index === this.activeIndex()
-        ? 'bg-brand-500 text-white ring-4 ring-brand-500/20'
-        : 'bg-surface-2 text-muted',
+          ? 'bg-brand-500 text-white ring-4 ring-brand-500/20'
+          : 'bg-surface-2 text-muted',
     );
 
   protected readonly lineClasses = (index: number) =>

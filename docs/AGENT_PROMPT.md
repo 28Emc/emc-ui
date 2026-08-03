@@ -56,11 +56,11 @@ design-system/
 ## Design tokens — copy this into `projects/ui/src/lib/styles/theme.css` verbatim
 
 ```css
-@import "tailwindcss";
+@import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --color-brand-50: #e8f7f4;
   --color-brand-100: #c7ece5;
@@ -92,11 +92,55 @@ design-system/
   --animate-slide-in-right: slide-in-right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
-@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slide-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes scale-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
-@keyframes pop { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
 @utility bg-brand-gradient {
   background-image: linear-gradient(145deg, #32b49f 0%, #0c8b7c 100%);
@@ -126,8 +170,12 @@ design-system/
 }
 
 @layer base {
-  * { border-color: var(--border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     margin: 0;
     background-color: var(--app-bg);
@@ -136,20 +184,46 @@ design-system/
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  ::selection { background: var(--color-brand-500); color: white; }
+  ::selection {
+    background: var(--color-brand-500);
+    color: white;
+  }
 }
 
 @layer utilities {
-  .bg-app { background-color: var(--app-bg); }
-  .bg-surface { background-color: var(--surface); }
-  .bg-surface-2 { background-color: var(--surface-2); }
-  .text-fg { color: var(--fg); }
-  .text-muted { color: var(--fg-muted); }
-  .border-default { border-color: var(--border); }
-  .glass { background: color-mix(in srgb, var(--surface) 72%, transparent); backdrop-filter: blur(14px) saturate(160%); }
-  .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
-  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .bg-app {
+    background-color: var(--app-bg);
+  }
+  .bg-surface {
+    background-color: var(--surface);
+  }
+  .bg-surface-2 {
+    background-color: var(--surface-2);
+  }
+  .text-fg {
+    color: var(--fg);
+  }
+  .text-muted {
+    color: var(--fg-muted);
+  }
+  .border-default {
+    border-color: var(--border);
+  }
+  .glass {
+    background: color-mix(in srgb, var(--surface) 72%, transparent);
+    backdrop-filter: blur(14px) saturate(160%);
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }
 ```
 
@@ -160,6 +234,7 @@ names as `@Input()`s), so consumers migrating from the React version recognize t
 immediately.
 
 ### `Button`
+
 - `@Input() variant: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline' | 'subtle' = 'primary'`
 - `@Input() size: 'sm' | 'md' | 'lg' | 'icon' | 'icon-sm' = 'md'`
 - `@Input() loading = false` → shows a spinning `Loader2` icon, disables the button
@@ -168,38 +243,46 @@ immediately.
 - Focus-visible ring in brand-500 at 50% opacity, `active:scale-[.98]`
 
 ### `Input` / `Textarea` / `Select` / `Label` / `Field` / `FieldError`
+
 - Shared base field styling: `surface-2/60` background, brand-colored focus ring (`ring-4` at 12% opacity), red border/ring when `invalid`
 - All three (`Input`, `Textarea`, `Select`) implement `ControlValueAccessor` so they work with `formControlName`
 - `Field` is a composition wrapper: `label` + projected control + `hint`/`error` text
 - `Select` needs a custom chevron background (SVG data-URI, matches source) since native selects need appearance reset
 
 ### `Card` / `CardHeader` / `CardBody` / `StatCard`
+
 - `Card`: `@Input() hover = false` → adds elevation + `-translate-y-0.5` on hover
 - `StatCard`: `@Input() icon`, `label`, `value`, `sublabel`, `accent: 'brand' | 'green' | 'amber' | 'pink' = 'brand'`
 
 ### `Modal` / `ConfirmModal`
+
 - Use CDK Overlay. `@Input() open`, `open` change closes on outside click, `Escape` key, and body scroll lock while open
 - `@Input() size: 'sm' | 'md' | 'lg' | 'xl' = 'md'` maps to max-width
 - `ConfirmModal` wraps `Modal` with Cancel/Confirm footer buttons, `@Input() danger` swaps confirm button to `danger` variant
 
 ### `Drawer`
+
 - Right-side slide-in panel, same overlay/escape/scroll-lock behavior as Modal
 - `@Input() width` (max-width class), header with title/subtitle + close button, scrollable body, optional footer
 
 ### `Dropdown` / `MenuItem` / `MenuDivider`
+
 - Click-to-open floating panel, closes on outside click and on item click
 - `@Input() align: 'left' | 'right' = 'right'`
 - `MenuItem`: `@Input() danger` for destructive actions (red hover state)
 
 ### `Switch`
+
 - Custom toggle (not native checkbox), implements `ControlValueAccessor`
 - `@Input() label`, `description`
 
 ### `Avatar`
+
 - `@Input() name`, `color` (background hex), `size: 'sm' | 'md' | 'lg' = 'md'`
 - Renders initials computed from `name`
 
 ### Feedback group: `Spinner`, `PageLoader`, `Skeleton`, `Badge`, `EmptyState`
+
 - `Spinner`: spinning brand-colored icon
 - `PageLoader`: centered spinner + label, used for full-page loading states
 - `Skeleton`: pulsing placeholder block

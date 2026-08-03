@@ -10,6 +10,8 @@ let fieldUid = 0;
   imports: [FieldErrorComponent],
   providers: [{ provide: FIELD_CONTEXT, useExisting: FieldComponent }],
   template: `
+    <!-- El control se proyecta vía ng-content y queda dentro del label -->
+    <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
     <label class="flex flex-col gap-1.5">
       <span class="text-sm font-medium text-fg">
         {{ label() }}
@@ -33,10 +35,6 @@ export class FieldComponent implements FieldContext {
   readonly required = input(false, { transform: booleanAttribute });
 
   private readonly uid = ++fieldUid;
-  readonly errorId = computed(() =>
-    this.error() ? `ui-field-error-${this.uid}` : null,
-  );
-  readonly hintId = computed(() =>
-    this.hint() ? `ui-field-hint-${this.uid}` : null,
-  );
+  readonly errorId = computed(() => (this.error() ? `ui-field-error-${this.uid}` : null));
+  readonly hintId = computed(() => (this.hint() ? `ui-field-hint-${this.uid}` : null));
 }

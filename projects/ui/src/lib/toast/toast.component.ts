@@ -1,6 +1,11 @@
 import { Component, input, output, computed } from '@angular/core';
-import { NgComponentOutlet, CommonModule } from '@angular/common';
-import { LucideCheckCircle2, LucideCircleAlert, LucideTriangleAlert, LucideInfo } from '@lucide/angular';
+import { CommonModule } from '@angular/common';
+import {
+  LucideCheckCircle2,
+  LucideCircleAlert,
+  LucideTriangleAlert,
+  LucideInfo,
+} from '@lucide/angular';
 import { cn } from '../utils/cn';
 import { Toast, ToastVariant } from './toast.service';
 
@@ -31,11 +36,7 @@ const VARIANT_CLASSES: Record<ToastVariant, string> = {
       <svg lucideCircleAlert [size]="1" />
       <svg lucideTriangleAlert [size]="1" />
     </div>
-    <div
-      role="status"
-      [class]="classes()"
-      [attr.data-variant]="toast().variant"
-    >
+    <div role="status" [class]="classes()" [attr.data-variant]="toast().variant">
       <span [class]="iconClasses()">
         <ng-container
           [ngComponentOutlet]="iconComponent()"
@@ -55,7 +56,12 @@ const VARIANT_CLASSES: Record<ToastVariant, string> = {
         [attr.aria-label]="'Cerrar ' + toast().title"
       >
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
     </div>

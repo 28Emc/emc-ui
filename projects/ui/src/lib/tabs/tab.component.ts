@@ -1,6 +1,5 @@
 import { Component, computed, input, viewChild, booleanAttribute } from '@angular/core';
 import { TemplateRef } from '@angular/core';
-import { cn } from '../utils/cn';
 
 @Component({
   selector: 'ui-tab',

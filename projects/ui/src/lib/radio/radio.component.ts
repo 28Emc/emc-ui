@@ -46,9 +46,7 @@ export class RadioComponent {
     cn(
       'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-150',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50',
-      this.checked()
-        ? 'border-brand-500 bg-brand-500'
-        : 'border-default bg-surface',
+      this.checked() ? 'border-brand-500 bg-brand-500' : 'border-default bg-surface',
     ),
   );
 

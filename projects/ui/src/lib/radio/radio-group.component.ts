@@ -1,4 +1,4 @@
-import { Component, computed, forwardRef, inject, signal, input, booleanAttribute } from '@angular/core';
+import { Component, computed, forwardRef, signal, input, booleanAttribute } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { cn } from '../utils/cn';
 import { RADIO_GROUP_CONTEXT } from './radio-group.token';
@@ -64,7 +64,7 @@ export class RadioGroupComponent implements ControlValueAccessor {
   };
 
   protected readonly classes = computed(() =>
-    cn('space-y-1', (this.disabled() || this.formDisabled()) ? 'opacity-50' : ''),
+    cn('space-y-1', this.disabled() || this.formDisabled() ? 'opacity-50' : ''),
   );
 
   private _onChange: (value: string) => void = () => {};

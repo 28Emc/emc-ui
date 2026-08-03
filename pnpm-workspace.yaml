@@ -1,12 +1,12 @@
 packages:
-  - "projects/*"
+  - 'projects/*'
 
 peerDependencyRules:
   allowedVersions:
-    "listr2": "10.x"
+    'listr2': '10.x'
 
 allowBuilds:
   esbuild: true
-  "@parcel/watcher": true
+  '@parcel/watcher': true
   lmdb: true
   msgpackr-extract: true

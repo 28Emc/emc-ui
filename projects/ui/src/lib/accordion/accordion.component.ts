@@ -1,5 +1,4 @@
-import { Component, computed, contentChildren, model, input, effect, booleanAttribute } from '@angular/core';
-import { cn } from '../utils/cn';
+import { Component, contentChildren, input, effect, booleanAttribute } from '@angular/core';
 import { AccordionItemComponent } from './accordion-item.component';
 
 @Component({
@@ -18,12 +17,13 @@ export class AccordionComponent {
   constructor() {
     effect(() => {
       if (this.multiple()) return;
+      let lastOpen: AccordionItemComponent | null = null;
       for (const item of this.items()) {
-        if (item.open()) {
-          for (const other of this.items()) {
-            if (other !== item) other.open.set(false);
-          }
-          break;
+        if (item.open()) lastOpen = item;
+      }
+      if (lastOpen) {
+        for (const item of this.items()) {
+          if (item !== lastOpen) item.open.set(false);
         }
       }
     });

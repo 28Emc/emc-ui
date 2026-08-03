@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { } from '@lucide/angular';
+import {} from '@lucide/angular';
 import {
   ButtonComponent,
   CheckboxComponent,
@@ -42,7 +42,7 @@ import {
     TableComponent,
     CardComponent,
     CardHeaderComponent,
-    CardBodyComponent
+    CardBodyComponent,
   ],
   template: `
     <h1 class="mb-8 text-xl font-semibold text-fg">Advanced Components</h1>
@@ -54,7 +54,11 @@ import {
           <ui-card-header title="Checkbox" subtitle="ControlValueAccessor" />
           <ui-card-body class="space-y-3">
             <ui-checkbox label="Acepto los términos" [(ngModel)]="check1" />
-            <ui-checkbox label="Suscribirme al newsletter" description="Opcional" [(ngModel)]="check2" />
+            <ui-checkbox
+              label="Suscribirme al newsletter"
+              description="Opcional"
+              [(ngModel)]="check2"
+            />
             <ui-checkbox label="Deshabilitado" [disabled]="true" />
           </ui-card-body>
         </ui-card>
@@ -64,7 +68,11 @@ import {
             <ui-radio-group [(ngModel)]="radioValue" label="Plan">
               <ui-radio value="free" label="Gratis" description="1 proyecto, 1 GB" />
               <ui-radio value="pro" label="Pro" description="Proyectos ilimitados, 50 GB" />
-              <ui-radio value="enterprise" label="Enterprise" description="Personalizado, soporte 24/7" />
+              <ui-radio
+                value="enterprise"
+                label="Enterprise"
+                description="Personalizado, soporte 24/7"
+              />
             </ui-radio-group>
           </ui-card-body>
         </ui-card>
@@ -78,15 +86,21 @@ import {
           <ui-card-header title="Determinado" subtitle="Valores 0-100" />
           <ui-card-body class="space-y-4">
             <div>
-              <div class="flex justify-between text-sm mb-1"><span>Progreso</span><span>{{ progressVal() }}%</span></div>
+              <div class="flex justify-between text-sm mb-1">
+                <span>Progreso</span><span>{{ progressVal() }}%</span>
+              </div>
               <ui-progress [value]="progressVal" />
             </div>
             <div>
-              <div class="flex justify-between text-sm mb-1"><span>Completado</span><span>100%</span></div>
+              <div class="flex justify-between text-sm mb-1">
+                <span>Completado</span><span>100%</span>
+              </div>
               <ui-progress [value]="100" size="lg" />
             </div>
             <div>
-              <div class="flex justify-between text-sm mb-1"><span>Pequeño</span><span>30%</span></div>
+              <div class="flex justify-between text-sm mb-1">
+                <span>Pequeño</span><span>30%</span>
+              </div>
               <ui-progress [value]="30" size="sm" />
             </div>
           </ui-card-body>
@@ -104,10 +118,18 @@ import {
     <section class="section">
       <h2>Tooltip</h2>
       <div class="row" style="padding: 40px 0;">
-        <ui-button variant="secondary" uiTooltip="Tooltip arriba" placement="top">Hover arriba</ui-button>
-        <ui-button variant="secondary" uiTooltip="Tooltip abajo" placement="bottom">Hover abajo</ui-button>
-        <ui-button variant="secondary" uiTooltip="Tooltip izquierda" placement="left">Hover izq.</ui-button>
-        <ui-button variant="secondary" uiTooltip="Tooltip derecha" placement="right">Hover der.</ui-button>
+        <ui-button variant="secondary" uiTooltip="Tooltip arriba" placement="top"
+          >Hover arriba</ui-button
+        >
+        <ui-button variant="secondary" uiTooltip="Tooltip abajo" placement="bottom"
+          >Hover abajo</ui-button
+        >
+        <ui-button variant="secondary" uiTooltip="Tooltip izquierda" placement="left"
+          >Hover izq.</ui-button
+        >
+        <ui-button variant="secondary" uiTooltip="Tooltip derecha" placement="right"
+          >Hover der.</ui-button
+        >
       </div>
     </section>
 
@@ -144,7 +166,9 @@ import {
       <h2>Accordion</h2>
       <ui-accordion [multiple]="false">
         <ui-accordion-item title="¿Qué es emc-ui?" description="Pregunta frecuente">
-          <p class="text-sm text-muted">emc-ui es un design system Angular basado en Tailwind CSS v4 y CDK.</p>
+          <p class="text-sm text-muted">
+            emc-ui es un design system Angular basado en Tailwind CSS v4 y CDK.
+          </p>
         </ui-accordion-item>
         <ui-accordion-item title="¿Cómo instalar?">
           <pre class="bg-surface-2 p-4 rounded-lg text-xs overflow-x-auto">pnpm add emc-ui</pre>
@@ -157,9 +181,15 @@ import {
 
     <section class="section">
       <h2>Stepper</h2>
-      <ui-stepper [steps]="3" [labels]="['Paso 1', 'Paso 2', 'Paso 3']" [(activeIndex)]="stepperIndex" />
+      <ui-stepper
+        [steps]="3"
+        [labels]="['Paso 1', 'Paso 2', 'Paso 3']"
+        [(activeIndex)]="stepperIndex"
+      />
       <div class="mt-4 flex gap-2">
-        <ui-button variant="secondary" (click)="prevStep()" [disabled]="stepperIndex() === 0">Anterior</ui-button>
+        <ui-button variant="secondary" (click)="prevStep()" [disabled]="stepperIndex() === 0"
+          >Anterior</ui-button
+        >
         <ui-button (click)="nextStep()" [disabled]="stepperIndex() === 2">Siguiente</ui-button>
       </div>
     </section>

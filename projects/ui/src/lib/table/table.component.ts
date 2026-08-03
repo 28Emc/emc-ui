@@ -1,5 +1,10 @@
 import { Component, computed, input, model, output } from '@angular/core';
-import { LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
+import {
+  LucideArrowUp,
+  LucideArrowDown,
+  LucideChevronLeft,
+  LucideChevronRight,
+} from '@lucide/angular';
 import { ButtonComponent } from '../button/button.component';
 import { cn } from '../utils/cn';
 
@@ -19,13 +24,7 @@ export interface TableSort {
 @Component({
   selector: 'ui-table',
   standalone: true,
-  imports: [
-    LucideArrowUp,
-    LucideArrowDown,
-    LucideChevronLeft,
-    LucideChevronRight,
-    ButtonComponent,
-  ],
+  imports: [LucideArrowUp, LucideArrowDown, LucideChevronLeft, LucideChevronRight, ButtonComponent],
   template: `
     <div class="overflow-x-auto rounded-xl border border-default">
       <table class="w-full text-sm">
@@ -44,8 +43,18 @@ export interface TableSort {
                   <span>{{ col.label }}</span>
                   @if (col.sortable) {
                     <div class="flex flex-col gap-0">
-                      <svg lucideArrowUp [size]="12" [strokeWidth]="2" [class]="sortIconClass('asc')" />
-                      <svg lucideArrowDown [size]="12" [strokeWidth]="2" [class]="sortIconClass('desc')" />
+                      <svg
+                        lucideArrowUp
+                        [size]="12"
+                        [strokeWidth]="2"
+                        [class]="sortIconClass('asc')"
+                      />
+                      <svg
+                        lucideArrowDown
+                        [size]="12"
+                        [strokeWidth]="2"
+                        [class]="sortIconClass('desc')"
+                      />
                     </div>
                   }
                 </div>
@@ -62,7 +71,7 @@ export interface TableSort {
             </tr>
           } @else {
             @for (row of pagedData(); track $index) {
-              <tr [class]="trClasses(row)" (click)="rowClick.emit(row)">
+              <tr [class]="trClasses()" (click)="rowClick.emit(row)">
                 @for (col of columns(); track col.key) {
                   <td [class]="tdClasses(col)">
                     @if (col.render) {
@@ -82,7 +91,10 @@ export interface TableSort {
     @if (showPagination()) {
       <div class="flex items-center justify-between gap-4 mt-4 px-1">
         <div class="text-sm text-muted">
-          Mostrando {{ (page() - 1) * pageSize() + 1 }}–{{ Math.min(page() * pageSize(), total()) }} de {{ total() }}
+          Mostrando {{ (page() - 1) * pageSize() + 1 }}–{{
+            Math.min(page() * pageSize(), total())
+          }}
+          de {{ total() }}
         </div>
         <div class="flex items-center gap-2">
           <ui-button
@@ -151,7 +163,9 @@ export class TableComponent<T = any> {
   });
 
   protected readonly total = computed(() => this.sortedData().length);
-  protected readonly totalPages = computed(() => Math.max(1, Math.ceil(this.total() / this.pageSize())));
+  protected readonly totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.total() / this.pageSize())),
+  );
   protected readonly pages = computed(() => {
     const tp = this.totalPages();
     const cur = this.page();
@@ -188,7 +202,10 @@ export class TableComponent<T = any> {
 
   protected sortIconClass(dir: 'asc' | 'desc'): string {
     const { column, direction } = this.sortState();
-    return cn('text-muted transition-colors', column === this.sortState().column && direction === dir ? 'text-brand-600' : '');
+    return cn(
+      'text-muted transition-colors',
+      column === this.sortState().column && direction === dir ? 'text-brand-600' : '',
+    );
   }
 
   protected sortAria(): string {
@@ -219,7 +236,7 @@ export class TableComponent<T = any> {
     return cn('px-4 py-3', col.align && `text-${col.align}`);
   }
 
-  protected trClasses(row: T): string {
+  protected trClasses(): string {
     return cn('transition-colors', this.striped() && 'even:bg-surface-2');
   }
 

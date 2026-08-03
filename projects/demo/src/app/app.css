@@ -8,7 +8,9 @@
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--fg);
-  transition: color 150ms ease, background-color 150ms ease;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
 }
 
 .nav-link:hover {

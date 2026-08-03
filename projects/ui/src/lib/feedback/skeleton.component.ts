@@ -4,9 +4,7 @@ import { cn } from '../utils/cn';
 @Component({
   selector: 'ui-skeleton',
   standalone: true,
-  template: `
-    <div [class]="classes()" aria-hidden="true"></div>
-  `,
+  template: ` <div [class]="classes()" aria-hidden="true"></div> `,
 })
 export class SkeletonComponent {
   readonly class = input('');

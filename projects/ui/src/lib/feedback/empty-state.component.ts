@@ -9,7 +9,9 @@ import { EmptyStateActionDirective } from './empty-state-action.directive';
   template: `
     <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
       @if (icon()) {
-        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-2 text-muted">
+        <div
+          class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-2 text-muted"
+        >
           <ng-container
             [ngComponentOutlet]="icon()"
             [ngComponentOutletInputs]="{ size: 24, strokeWidth: 2 }"

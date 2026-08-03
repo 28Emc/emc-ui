@@ -1,4 +1,4 @@
-import { Component, computed, contentChildren, model, input, signal, effect } from '@angular/core';
+import { Component, contentChildren, model, input, effect } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { cn } from '../utils/cn';
 import { TabComponent } from './tab.component';
@@ -8,7 +8,11 @@ import { TabComponent } from './tab.component';
   standalone: true,
   imports: [NgTemplateOutlet],
   template: `
-    <div role="tablist" class="flex gap-1 border-b border-default" aria-label="{{ label() || null }}">
+    <div
+      role="tablist"
+      class="flex gap-1 border-b border-default"
+      aria-label="{{ label() || null }}"
+    >
       @for (tab of tabs(); track $index) {
         <button
           type="button"
