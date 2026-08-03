@@ -10,7 +10,7 @@ la librería (`projects/ui`) y una app de demo (`projects/demo`).
 projects/
   ui/     Librería publicable (emc-ui) — componentes standalone + theme.css
   demo/   App Angular que muestra cada componente por categoría (Inputs, Overlays,
-          Feedback, Layout) con dark-mode toggle en el shell
+          Feedback, Layout, **Advanced**) con dark-mode toggle en el shell
 scripts/export-styles.mjs   Añade los subpaths CSS al mapa "exports" de dist/ui
 docs/    AGENT_PROMPT.md (spec/plan) y DESIGN.md (referencia de estilo)
 ```

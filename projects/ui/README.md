@@ -113,6 +113,15 @@ tipografía (`--font-sans`).
 | Drawer | `ui-drawer` | panel lateral, usa CDK Overlay |
 | Dropdown / MenuItem | `ui-dropdown`, `ui-menu-item` | usa CDK Overlay |
 | Switch | `ui-switch` | ControlValueAccessor |
+| Checkbox | `ui-checkbox` | ControlValueAccessor |
+| RadioGroup / Radio | `ui-radio-group`, `ui-radio` | ControlValueAccessor (RadioGroup maneja el valor) |
+| Progress | `ui-progress` | determinate + indeterminate |
+| Tooltip | `[uiTooltip]` | directiva, usa CDK Overlay |
+| Toast | `ToastService` + `ui-toast-host` | servicio injectable con pila de notificaciones |
+| Tabs / Tab | `ui-tabs`, `ui-tab` | navegación por pestañas |
+| Accordion / AccordionItem | `ui-accordion`, `ui-accordion-item` | secciones colapsables |
+| Stepper | `ui-stepper` | pasos horizontales con estado |
+| Table | `ui-table` | ordenable + paginable, columnas configurables |
 | Avatar | `ui-avatar` | — |
 | Spinner / PageLoader / Skeleton / Badge / EmptyState | `ui-spinner`, etc. | grupo de feedback |
 

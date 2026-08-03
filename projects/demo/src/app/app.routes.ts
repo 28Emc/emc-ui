@@ -27,6 +27,11 @@ export const routes: Routes = [
       import('./pages/layout/layout').then((m) => m.LayoutPage),
   },
   {
+    path: 'advanced',
+    loadComponent: () =>
+      import('./pages/advanced/advanced').then((m) => m.AdvancedPage),
+  },
+  {
     path: '**',
     redirectTo: 'inputs',
   },
