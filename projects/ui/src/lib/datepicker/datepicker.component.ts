@@ -221,55 +221,55 @@ function parseText(text: string, pattern: DateFormatPattern = 'dd/MM/yyyy'): str
     <ng-template #panel>
       <div class="w-72 rounded-xl border border-default bg-surface p-4 shadow-pop animate-scale-in">
         <div class="mb-3 flex items-center justify-between">
-          <button
-            type="button"
-            [attr.aria-label]="'Mes anterior'"
-            (click)="shiftMonth(-1)"
-            class="rounded-md p-1 text-muted transition-colors duration-150 hover:bg-surface-2 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50"
-          >
-            <svg lucideChevronLeft [size]="16" [strokeWidth]="2" />
+          <button type="button" (click)="shiftView(-1)" class="p-1 text-muted hover:text-fg cursor-pointer" [disabled]="disableOverlayButtons()">
+            <svg lucideChevronLeft [size]="16" />
           </button>
-          <span class="text-sm font-semibold text-fg">{{ monthLabel() }}</span>
-          <button
-            type="button"
-            [attr.aria-label]="'Mes siguiente'"
-            (click)="shiftMonth(1)"
-            class="rounded-md p-1 text-muted transition-colors duration-150 hover:bg-surface-2 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50"
-          >
-            <svg lucideChevronRight [size]="16" [strokeWidth]="2" />
+          <button type="button" (click)="toggleMode()" class="text-sm font-semibold text-fg cursor-pointer" [disabled]="disableOverlayButtons()">
+            {{ modeLabel() }}
+          </button>
+          <button type="button" (click)="shiftView(1)" class="p-1 text-muted hover:text-fg cursor-pointer" [disabled]="disableOverlayButtons()">
+            <svg lucideChevronRight [size]="16" />
           </button>
         </div>
 
-        <div class="grid grid-cols-7 gap-1 text-center text-xs font-medium text-muted">
-          @for (label of weekdayLabels; track $index) {
-            <span class="py-1">{{ label }}</span>
-          }
-        </div>
-
-        <div class="mt-1 grid grid-cols-7 gap-1">
-          @for (cell of cells(); track cellKey($index)) {
-            <button
-              type="button"
-              [disabled]="isDisabled(cell)"
-              [class]="dayClasses(cell)"
-              (click)="selectDay(cell)"
-            >
-              {{ cell.getDate() }}
-            </button>
-          }
-        </div>
+        @if (mode() === 'day') {
+          <div class="grid grid-cols-7 gap-1 text-center text-xs font-medium text-muted">
+            @for (label of weekdayLabels; track $index) { <span class="py-1">{{ label }}</span> }
+          </div>
+          <div class="mt-1 grid grid-cols-7 gap-1">
+            @for (cell of cells(); track cellKey($index)) {
+              <button type="button" [disabled]="isDisabled(cell)" [class]="dayClasses(cell)" (click)="selectDay(cell)">
+                {{ cell.getDate() }}
+              </button>
+            }
+          </div>
+        } @else if (mode() === 'month') {
+          <div class="grid grid-cols-3 gap-2">
+            @for (m of monthNames; track $index) {
+              <button type="button" class="rounded-lg p-2 text-sm hover:bg-surface-2" (click)="selectMonth($index)">
+                {{ m.substring(0, 3) }}
+              </button>
+            }
+          </div>
+        } @else {
+          <div class="grid grid-cols-3 gap-2">
+            @for (y of years(); track y) {
+              <button type="button" class="rounded-lg p-2 text-sm hover:bg-surface-2" (click)="selectYear(y)">
+                {{ y }}
+              </button>
+            }
+          </div>
+        }
 
         <div class="mt-3 flex items-center justify-between border-t border-default pt-3">
-          <span class="text-xs text-muted">
-            {{ displayText() || 'Sin fecha' }}
-          </span>
-          <button
-            type="button"
-            (click)="selectToday()"
-            class="text-xs font-medium text-brand-600 transition-colors duration-150 hover:text-brand-700 dark:text-brand-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 rounded-md px-2 py-1"
-          >
-            Hoy
-          </button>
+            <span class="text-xs text-muted">{{ displayText() || 'Sin fecha' }}</span>
+            <button
+              type="button"
+              (click)="selectToday()"
+              class="text-xs font-medium text-brand-600 transition-colors duration-150 hover:text-brand-700 dark:text-brand-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 rounded-md px-2 py-1"
+            >
+              Hoy
+            </button>
         </div>
       </div>
     </ng-template>
@@ -278,6 +278,7 @@ function parseText(text: string, pattern: DateFormatPattern = 'dd/MM/yyyy'): str
 export class DatePickerComponent implements ControlValueAccessor {
   readonly value = model<string | null>(null);
   readonly placeholder = input('');
+  readonly disableOverlayButtons = input(false, { transform: booleanAttribute });
   readonly format = input<string>();
   readonly min = input<string>();
   readonly max = input<string>();
@@ -292,9 +293,19 @@ export class DatePickerComponent implements ControlValueAccessor {
     year: new Date().getFullYear(),
     month: new Date().getMonth(),
   });
-
+  protected readonly mode = signal<'day' | 'month' | 'year'>('day');
+  protected readonly yearPageStart = signal(Math.floor(this.view().year / 12) * 12);
+  protected readonly years = computed(() => {
+    const start = this.yearPageStart();
+    return Array.from({ length: 12 }, (_, i) => start + i);
+  });
+  protected readonly monthNames = MONTH_LABELS;
   protected readonly weekdayLabels = WEEKDAY_LABELS;
-  protected readonly MONTH_LABELS = MONTH_LABELS;
+
+  // Effective min/max with far‑past/far‑future defaults when inputs are not provided
+  protected readonly effectiveMin = computed(() => this.min() ?? '1900-01-01');
+  protected readonly effectiveMax = computed(() => this.max() ?? '9999-12-31');
+
 
   private readonly localeId = inject(LOCALE_ID, { optional: true }) ?? 'es-PE';
   private readonly triggerEl = viewChild.required<ElementRef<HTMLInputElement>>('triggerEl');
@@ -304,9 +315,9 @@ export class DatePickerComponent implements ControlValueAccessor {
   private readonly viewContainerRef = inject(ViewContainerRef);
 
   private overlayRef: OverlayRef | null = null;
-  private _onChange: (value: string | null) => void = () => {};
+  private _onChange: (value: string | null) => void = () => { };
 
-  protected onTouched: () => void = () => {};
+  protected onTouched: () => void = () => { };
 
   protected readonly datePattern = computed<DateFormatPattern>(() =>
     getDateFormatPattern(this.localeId, this.format()),
@@ -380,21 +391,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   }
 
   protected isDisabled(cell: Date): boolean {
-    if (!this.isCurrentMonth(cell)) {
-      return true;
-    }
-    if (this.min()) {
-      const minDate = parseIso(this.min()!);
-      if (cell < minDate) {
-        return true;
-      }
-    }
-    if (this.max()) {
-      const maxDate = parseIso(this.max()!);
-      if (cell > maxDate) {
-        return true;
-      }
-    }
+    // All days are always enabled – overlay navigation never disables them
     return false;
   }
 
@@ -422,6 +419,55 @@ export class DatePickerComponent implements ControlValueAccessor {
       const next = new Date(year, month + delta, 1);
       return { year: next.getFullYear(), month: next.getMonth() };
     });
+  }
+
+  protected shiftYear(delta: number): void {
+    this.view.update(({ year, month }) => {
+      const next = new Date(year + delta, month, 1);
+      return { year: next.getFullYear(), month: next.getMonth() };
+    });
+  }
+
+  protected shiftYearPage(delta: number): void {
+    this.yearPageStart.update(v => v + delta * 12);
+  }
+
+  protected toggleMode(): void {
+    if (this.mode() === 'day') {
+      this.mode.set('year');
+    } else {
+      this.mode.set('day');
+    }
+  }
+
+  protected modeLabel(): string {
+    if (this.mode() === 'day') {
+      return this.monthLabel();
+    }
+    if (this.mode() === 'month') {
+      return `${this.view().year}`;
+    }
+    return 'Años';
+  }
+
+  protected shiftView(delta: number): void {
+    if (this.mode() === 'day') {
+      this.shiftMonth(delta);
+    } else if (this.mode() === 'month') {
+      this.shiftYear(delta);
+    } else {
+      this.shiftYearPage(delta);
+    }
+  }
+
+  protected selectYear(year: number): void {
+    this.view.update(v => ({ year, month: v.month }));
+    this.mode.set('month');
+  }
+
+  protected selectMonth(month: number): void {
+    this.view.update(v => ({ year: v.year, month }));
+    this.mode.set('day');
   }
 
   protected selectDay(cell: Date): void {
@@ -458,11 +504,11 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.open();
     } else if (event.key === 'Enter') {
       event.preventDefault();
+      // Only commit if the user is actively editing (typing).
       if (this.editing()) {
         this.commitQuery();
-      } else {
-        this.open();
       }
+      this.close();
     } else if (event.key === 'Escape') {
       event.preventDefault();
       this.close();
@@ -516,51 +562,55 @@ export class DatePickerComponent implements ControlValueAccessor {
         this.setValue(iso);
         const date = parseIso(iso);
         this.view.set({ year: date.getFullYear(), month: date.getMonth() });
+        // Keep the formatted value visibly in the input instead of clearing it
+        inputEl.value = formatDisplay(iso, pattern);
         this.editing.set(false);
+        // Do not clear query – it is no longer needed for display
         this.query.set('');
       }
     }
   }
 
   protected onBlur(): void {
-  // Delay commit to allow click events on overlay cells to fire before closing.
-  // Only commit if the user was actively editing (i.e., typing) to avoid overwriting a date selection.
-  setTimeout(() => {
-    if (this.editing()) {
-      this.editing.set(false);
-      this.commitQuery();
-    } else {
-      this.editing.set(false);
-    }
-  });
-}
+    // Delay commit to allow click events on overlay cells to fire before closing.
+    // Only commit if the user was actively editing (typing) to avoid overwriting a date selection.
+    setTimeout(() => {
+      if (this.editing()) {
+        this.editing.set(false);
+        this.commitQuery();
+        // Do NOT close the overlay here; keep it open for further interaction.
+      } else {
+        this.editing.set(false);
+      }
+    });
+  }
 
   private commitQuery(): void {
     const text = this.query().trim();
     if (!text) {
       this.setValue(null);
       this.query.set('');
-      this.close();
+      // Keep overlay open when clearing via typing
       return;
     }
     const iso = parseText(text, this.datePattern());
     if (!iso) {
-      // Invalid or incomplete date – clear the field
+      // Invalid or incomplete date – clear the field but keep overlay open
       this.setValue(null);
       this.query.set('');
-      this.close();
       return;
     }
     if (this.isOutsideRange(iso)) {
       this.setValue(null);
       this.query.set('');
-      this.close();
       return;
     }
     this.setValue(iso);
     const date = parseIso(iso);
     this.view.set({ year: date.getFullYear(), month: date.getMonth() });
-    this.close();
+    this.editing.set(false);
+    this.query.set('');
+    // Do not close overlay after successful entry
   }
 
   private setValue(iso: string | null): void {
@@ -573,10 +623,12 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   private isOutsideRange(iso: string): boolean {
     const date = parseIso(iso);
-    if (this.min() && date < parseIso(this.min()!)) {
+    const minDate = parseIso(this.effectiveMin());
+    if (date < minDate) {
       return true;
     }
-    if (this.max() && date > parseIso(this.max()!)) {
+    const maxDate = parseIso(this.effectiveMax());
+    if (date > maxDate) {
       return true;
     }
     return false;
@@ -590,6 +642,9 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (value) {
       const date = parseIso(value);
       this.view.set({ year: date.getFullYear(), month: date.getMonth() });
+    } else {
+      const today = new Date();
+      this.view.set({ year: today.getFullYear(), month: today.getMonth() });
     }
     this.overlayRef = this.overlay.create({
       width: 320,
@@ -607,14 +662,14 @@ export class DatePickerComponent implements ControlValueAccessor {
         ]),
       scrollStrategy: this.overlay.scrollStrategies.close(),
     });
-      this.overlayRef.outsidePointerEvents().subscribe((event) => {
-        const clickTarget = event.target as Node;
-        const insideOverlay = this.overlayRef?.overlayElement?.contains(clickTarget);
-        const insideTrigger = this.triggerEl?.()?.nativeElement?.contains(clickTarget);
-        if (!insideOverlay && !insideTrigger && !this.elementRef.nativeElement.contains(clickTarget)) {
-          this.close();
-        }
-      });
+    this.overlayRef.outsidePointerEvents().subscribe((event) => {
+      const clickTarget = event.target as Node;
+      const insideOverlay = this.overlayRef?.overlayElement?.contains(clickTarget);
+      const insideTrigger = this.triggerEl?.()?.nativeElement?.contains(clickTarget);
+      if (!insideOverlay && !insideTrigger && !this.elementRef.nativeElement.contains(clickTarget)) {
+        this.close();
+      }
+    });
     this.overlayRef
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
