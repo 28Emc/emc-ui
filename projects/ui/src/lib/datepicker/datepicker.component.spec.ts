@@ -197,4 +197,3 @@ describe('DatePickerComponent', () => {
     expect(el.value).toBe('10');
   });
 });
-

@@ -22,7 +22,10 @@ const SIZE_CLASSES: Record<ProgressSize, string> = {
       [class]="trackClasses()"
     >
       @if (indeterminate()) {
-        <div class="indeterminate-bar absolute top-0 h-full rounded-full animate-indeterminate" [style.background]="brandColor()"></div>
+        <div
+          class="indeterminate-bar absolute top-0 h-full rounded-full animate-indeterminate"
+          [style.background]="brandColor()"
+        ></div>
       } @else {
         <div
           [class]="fillClasses()"

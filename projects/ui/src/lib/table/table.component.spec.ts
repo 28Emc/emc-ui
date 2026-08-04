@@ -1,12 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { ButtonComponent } from '../button/button.component';
 import { TableComponent, TableColumn, TableSort } from './table.component';
 
 @Component({
   selector: 'table-host',
   standalone: true,
-  imports: [TableComponent, ButtonComponent],
+  imports: [TableComponent],
   template: `
     <ui-table
       [columns]="columns()"

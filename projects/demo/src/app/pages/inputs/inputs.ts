@@ -14,12 +14,15 @@ import {
   ButtonVariant,
   ComboboxComponent,
   DatePickerComponent,
+  DateRangePickerComponent,
   FieldComponent,
   InputComponent,
+  MultiSelectComponent,
   RatingComponent,
   SelectComponent,
   SwitchComponent,
   TextareaComponent,
+  TimePickerComponent,
 } from 'emc-ui';
 
 @Component({
@@ -32,12 +35,15 @@ import {
     ButtonComponent,
     ComboboxComponent,
     DatePickerComponent,
+    DateRangePickerComponent,
     FieldComponent,
     InputComponent,
+    MultiSelectComponent,
     RatingComponent,
     SelectComponent,
     SwitchComponent,
     TextareaComponent,
+    TimePickerComponent,
     LucidePlus,
   ],
   template: `
@@ -171,6 +177,49 @@ import {
       <p class="text-sm text-muted">Valor ISO: {{ dateVal || '—' }}</p>
     </div>
 
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">TimePicker</h2>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <ui-field label="Hora de inicio" hint="Se guarda en formato HH:mm (24h)">
+        <ui-timepicker
+          placeholder="Elige una hora"
+          [min]="minTime"
+          [max]="maxTime"
+          [(ngModel)]="timeVal"
+        />
+      </ui-field>
+      <ui-field label="Formato 12h" hint="Con toggle AM/PM">
+        <ui-timepicker placeholder="hh:mm" format="h:mm a" [(ngModel)]="time12Val" />
+      </ui-field>
+      <p class="text-sm text-muted">Valor: {{ timeVal || '—' }} · 12h: {{ time12Val || '—' }}</p>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">DateRangePicker</h2>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <ui-field label="Rango de fechas" hint="Se guarda como [inicio, fin] ISO">
+        <ui-daterangepicker
+          placeholder="Elige un rango"
+          [min]="minDateRange"
+          [max]="maxDateRange"
+          [(ngModel)]="dateRangeVal"
+        />
+      </ui-field>
+      <p class="text-sm text-muted">
+        Inicio: {{ dateRangeVal?.[0] || '—' }} · Fin: {{ dateRangeVal?.[1] || '—' }}
+      </p>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">MultiSelect</h2>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <ui-field label="Frameworks" hint="Selección múltiple con búsqueda y chips">
+        <ui-multiselect
+          placeholder="Elige frameworks…"
+          [options]="frameworks"
+          [(ngModel)]="multiVal"
+        />
+      </ui-field>
+      <p class="text-sm text-muted">Valor: {{ (multiVal?.length ? multiVal.join(', ') : '—') }}</p>
+    </div>
+
     <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Reactive Forms (ControlValueAccessor)</h2>
     <form class="max-w-xl space-y-5" [formGroup]="form" (ngSubmit)="submit()">
       <ui-field label="Email" [required]="true" [error]="emailError">
@@ -234,9 +283,25 @@ export class InputsPage {
     { label: 'Astro', value: 'astro' },
   ];
   protected readonly frameworkVal: string | null = null;
+  protected readonly frameworks = [
+    { label: 'Angular', value: 'angular' },
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+    { label: 'Svelte', value: 'svelte' },
+    { label: 'SolidJS', value: 'solid' },
+    { label: 'Astro', value: 'astro' },
+  ];
+  protected readonly multiVal: string[] | null = null;
   protected readonly dateVal: string | null = null;
   protected readonly minDate = '2026-01-01';
   protected readonly maxDate = '2026-12-31';
+  protected readonly timeVal: string | null = null;
+  protected readonly time12Val: string | null = null;
+  protected readonly minTime = '08:00';
+  protected readonly maxTime = '18:00';
+  protected readonly dateRangeVal: [string, string] | null = null;
+  protected readonly minDateRange = '1900-01-01';
+  protected readonly maxDateRange = '9999-12-31';
 
   protected readonly form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
