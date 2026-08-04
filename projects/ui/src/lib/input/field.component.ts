@@ -1,4 +1,12 @@
-import { Component, computed, input, booleanAttribute } from '@angular/core';
+import {
+  Component,
+  computed,
+  ElementRef,
+  HostListener,
+  input,
+  inject,
+  booleanAttribute,
+} from '@angular/core';
 import { FieldErrorComponent } from './field-error.component';
 import { FieldContext, FIELD_CONTEXT } from './field-context.token';
 
@@ -37,4 +45,32 @@ export class FieldComponent implements FieldContext {
   private readonly uid = ++fieldUid;
   readonly errorId = computed(() => (this.error() ? `ui-field-error-${this.uid}` : null));
   readonly hintId = computed(() => (this.hint() ? `ui-field-hint-${this.uid}` : null));
+
+  private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
+
+  /**
+   * Un <label> sin `for` reenvía el click al primer elemento labelable de su interior.
+   * Si ese elemento es un botón (chips ✕, chevrons), cualquier click en el campo lo
+   * activaría por accidente. Lo prevenimos solo en ese caso y enfocamos el control
+   * proyectado para conservar el comportamiento accesible del label.
+   */
+  @HostListener('click', ['$event'])
+  protected onLabelClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement | null;
+    if (target?.closest('button')) {
+      return;
+    }
+    const firstLabelable = this.elementRef.nativeElement.querySelector(
+      'input, select, textarea, button, output, progress, meter',
+    );
+    if (firstLabelable?.tagName !== 'BUTTON') {
+      return;
+    }
+    event.preventDefault();
+    this.elementRef.nativeElement
+      .querySelector<HTMLElement>(
+        'input, select, textarea, [contenteditable="true"], [role="combobox"]',
+      )
+      ?.focus();
+  }
 }

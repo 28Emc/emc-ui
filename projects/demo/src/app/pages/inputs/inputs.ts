@@ -21,6 +21,7 @@ import {
   RatingComponent,
   SelectComponent,
   SwitchComponent,
+  TagInputComponent,
   TextareaComponent,
   TimePickerComponent,
 } from 'emc-ui';
@@ -42,6 +43,7 @@ import {
     RatingComponent,
     SelectComponent,
     SwitchComponent,
+    TagInputComponent,
     TextareaComponent,
     TimePickerComponent,
     LucidePlus,
@@ -217,7 +219,15 @@ import {
           [(ngModel)]="multiVal"
         />
       </ui-field>
-      <p class="text-sm text-muted">Valor: {{ (multiVal?.length ? multiVal.join(', ') : '—') }}</p>
+      <p class="text-sm text-muted">Valor: {{ multiVal?.length ? multiVal.join(', ') : '—' }}</p>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">TagInput</h2>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <ui-field label="Etiquetas" hint="Enter o coma para agregar, ✕ para quitar">
+        <ui-taginput placeholder="Escribe y presiona Enter…" [(ngModel)]="tagVal" [maxTags]="8" />
+      </ui-field>
+      <p class="text-sm text-muted">Valor: {{ tagVal?.length ? tagVal.join(', ') : '—' }}</p>
     </div>
 
     <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Reactive Forms (ControlValueAccessor)</h2>
@@ -292,6 +302,7 @@ export class InputsPage {
     { label: 'Astro', value: 'astro' },
   ];
   protected readonly multiVal: string[] | null = null;
+  protected readonly tagVal: string[] | null = null;
   protected readonly dateVal: string | null = null;
   protected readonly minDate = '2026-01-01';
   protected readonly maxDate = '2026-12-31';

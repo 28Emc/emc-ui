@@ -52,6 +52,7 @@ export * from './lib/rating/rating.component';
 export * from './lib/pagination/pagination.component';
 export * from './lib/combobox/combobox.component';
 export * from './lib/multiselect/multiselect.component';
+export * from './lib/taginput/taginput.component';
 export * from './lib/datepicker/datepicker.component';
 export * from './lib/timepicker/timepicker.component';
 export * from './lib/daterangepicker/daterangepicker.component';
