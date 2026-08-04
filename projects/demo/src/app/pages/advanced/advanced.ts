@@ -19,6 +19,8 @@ import {
   CardHeaderComponent,
   CardBodyComponent,
   PaginationComponent,
+  BreadcrumbComponent,
+  type UiBreadcrumbItem,
 } from 'emc-ui';
 
 @Component({
@@ -44,6 +46,7 @@ import {
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
+    BreadcrumbComponent,
   ],
   template: `
     <h1 class="mb-8 text-xl font-semibold text-fg">Advanced Components</h1>
@@ -218,6 +221,23 @@ import {
         </ui-card-body>
       </ui-card>
     </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Breadcrumb</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        rutas con enlaces · colapso responsivo (maxItems)
+      </p>
+      <ui-card>
+        <ui-card-header
+          title="Breadcrumb"
+          subtitle="Primero y último visibles, el resto en el menú ⋯"
+        />
+        <ui-card-body class="space-y-6">
+          <ui-breadcrumb [items]="breadcrumbItems" [maxItems]="3" />
+          <ui-breadcrumb [items]="breadcrumbItems" />
+        </ui-card-body>
+      </ui-card>
+    </section>
   `,
 })
 export class AdvancedPage {
@@ -229,6 +249,16 @@ export class AdvancedPage {
   protected readonly stepperIndex = signal(0);
   protected readonly paginationPage = signal(1);
   protected readonly toast = inject(ToastService);
+
+  protected readonly breadcrumbItems: UiBreadcrumbItem[] = [
+    { label: 'Inicio', routerLink: ['/'] },
+    { label: 'Inputs', routerLink: ['/inputs'] },
+    { label: 'Overlays', routerLink: ['/overlays'] },
+    { label: 'Feedback', routerLink: ['/feedback'] },
+    { label: 'Layout', routerLink: ['/layout'] },
+    { label: 'Advanced', routerLink: ['/advanced'] },
+    { label: 'Página actual' },
+  ];
 
   protected readonly tableColumns = [
     { key: 'name', label: 'Nombre', sortable: true },

@@ -56,3 +56,5 @@ export * from './lib/taginput/taginput.component';
 export * from './lib/datepicker/datepicker.component';
 export * from './lib/timepicker/timepicker.component';
 export * from './lib/daterangepicker/daterangepicker.component';
+export * from './lib/breadcrumb/breadcrumb-item';
+export * from './lib/breadcrumb/breadcrumb.component';
