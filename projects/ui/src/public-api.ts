@@ -58,3 +58,5 @@ export * from './lib/timepicker/timepicker.component';
 export * from './lib/daterangepicker/daterangepicker.component';
 export * from './lib/breadcrumb/breadcrumb-item';
 export * from './lib/breadcrumb/breadcrumb.component';
+export * from './lib/sidebar/sidebar-item';
+export * from './lib/sidebar/sidebar.component';

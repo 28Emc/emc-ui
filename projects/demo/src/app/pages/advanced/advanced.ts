@@ -20,8 +20,18 @@ import {
   CardBodyComponent,
   PaginationComponent,
   BreadcrumbComponent,
+  SidebarComponent,
   type UiBreadcrumbItem,
+  type UiSidebarItem,
 } from 'emc-ui';
+import {
+  LucideBarChart3,
+  LucideBell,
+  LucideHome,
+  LucideLayoutDashboard,
+  LucideSettings,
+  LucideUsers,
+} from '@lucide/angular';
 
 @Component({
   selector: 'app-advanced-page',
@@ -47,6 +57,7 @@ import {
     CardHeaderComponent,
     CardBodyComponent,
     BreadcrumbComponent,
+    SidebarComponent,
   ],
   template: `
     <h1 class="mb-8 text-xl font-semibold text-fg">Advanced Components</h1>
@@ -238,6 +249,38 @@ import {
         </ui-card-body>
       </ui-card>
     </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Sidebar</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        navegación lateral · sub-menús · modo mini con flyout · persistencia del estado
+      </p>
+      <ui-card>
+        <ui-card-header
+          title="Sidebar"
+          subtitle="Colapsa con el botón inferior; el estado se guarda en localStorage"
+        />
+        <ui-card-body>
+          <div class="flex h-[26rem] overflow-hidden rounded-xl border border-default bg-surface-2">
+            <ui-sidebar
+              [items]="sidebarItems"
+              [collapsed]="sidebarCollapsed()"
+              (collapsedChange)="onSidebarCollapsedChange($event)"
+              [activeKey]="sidebarActiveKey()"
+              (activeKeyChange)="onSidebarActiveKeyChange($event)"
+              [openKeys]="sidebarOpenKeys()"
+              (openKeysChange)="onSidebarOpenKeysChange($event)"
+            />
+            <div class="flex-1 bg-app p-6">
+              <p class="text-sm text-muted">
+                Contenido principal. Colapsa el sidebar para ver el modo mini con flyout en los
+                grupos.
+              </p>
+            </div>
+          </div>
+        </ui-card-body>
+      </ui-card>
+    </section>
   `,
 })
 export class AdvancedPage {
@@ -259,6 +302,75 @@ export class AdvancedPage {
     { label: 'Advanced', routerLink: ['/advanced'] },
     { label: 'Página actual' },
   ];
+
+  protected readonly sidebarCollapsed = signal(
+    localStorage.getItem('emc-ui-sidebar-collapsed') === 'true',
+  );
+  protected readonly sidebarActiveKey = signal<string | null>(
+    localStorage.getItem('emc-ui-sidebar-active'),
+  );
+  protected readonly sidebarOpenKeys = signal<string[]>(
+    JSON.parse(localStorage.getItem('emc-ui-sidebar-open') ?? '[]'),
+  );
+
+  protected readonly sidebarItems: UiSidebarItem[] = [
+    { key: 'dashboard', label: 'Dashboard', icon: LucideLayoutDashboard, routerLink: ['/'] },
+    {
+      key: 'proyectos',
+      label: 'Proyectos',
+      icon: LucideHome,
+      badge: 5,
+      children: [
+        { key: 'todos', label: 'Todos', routerLink: ['/inputs'] },
+        {
+          key: 'activos',
+          label: 'Activos',
+          children: [
+            { key: 'campañas', label: 'Campañas', routerLink: ['/overlays'] },
+            { key: 'sitios', label: 'Sitios', routerLink: ['/feedback'] },
+          ],
+        },
+        { key: 'archivados', label: 'Archivados', routerLink: ['/layout'] },
+      ],
+    },
+    {
+      key: 'equipo',
+      label: 'Equipo',
+      icon: LucideUsers,
+      children: [
+        { key: 'miembros', label: 'Miembros', routerLink: ['/layout'] },
+        { key: 'roles', label: 'Roles', routerLink: ['/advanced'] },
+      ],
+    },
+    { key: 'reportes', label: 'Reportes', icon: LucideBarChart3, routerLink: ['/feedback'] },
+    {
+      key: 'notificaciones',
+      label: 'Notificaciones',
+      icon: LucideBell,
+      badge: 12,
+      routerLink: ['/overlays'],
+    },
+    { key: 'ajustes', label: 'Ajustes', icon: LucideSettings, routerLink: ['/advanced'] },
+  ];
+
+  protected onSidebarCollapsedChange(value: boolean): void {
+    this.sidebarCollapsed.set(value);
+    localStorage.setItem('emc-ui-sidebar-collapsed', String(value));
+  }
+
+  protected onSidebarActiveKeyChange(value: string | null): void {
+    this.sidebarActiveKey.set(value);
+    if (value === null) {
+      localStorage.removeItem('emc-ui-sidebar-active');
+    } else {
+      localStorage.setItem('emc-ui-sidebar-active', value);
+    }
+  }
+
+  protected onSidebarOpenKeysChange(value: string[]): void {
+    this.sidebarOpenKeys.set(value);
+    localStorage.setItem('emc-ui-sidebar-open', JSON.stringify(value));
+  }
 
   protected readonly tableColumns = [
     { key: 'name', label: 'Nombre', sortable: true },
