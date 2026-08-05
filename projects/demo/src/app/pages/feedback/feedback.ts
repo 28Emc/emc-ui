@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LucidePlus, LucideInbox } from '@lucide/angular';
 import {
   AvatarComponent,
+  AvatarGroupComponent,
   BadgeComponent,
   ButtonComponent,
   EmptyStateActionDirective,
@@ -16,6 +17,7 @@ import {
   standalone: true,
   imports: [
     AvatarComponent,
+    AvatarGroupComponent,
     BadgeComponent,
     ButtonComponent,
     EmptyStateActionDirective,
@@ -57,6 +59,15 @@ import {
       <ui-avatar name="Carlos Ruiz" color="#7e6cc0" size="lg" />
     </div>
 
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">AvatarGroup</h2>
+    <p class="mb-2 text-sm font-medium text-muted">
+      superpuestos · tooltip con nombres · contador +N
+    </p>
+    <div class="flex flex-wrap items-center gap-10 rounded-xl border border-default bg-surface p-4">
+      <ui-avatar-group [avatars]="team" [max]="5" size="md" />
+      <ui-avatar-group [avatars]="team" [max]="3" size="sm" />
+    </div>
+
     <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Skeleton</h2>
     <p class="mb-2 text-sm font-medium text-muted">pulso animado con bg-surface-2</p>
     <div class="space-y-3 rounded-xl border border-default bg-surface p-6">
@@ -95,4 +106,13 @@ import {
 })
 export class FeedbackPage {
   protected readonly LucideInbox = LucideInbox;
+  protected readonly team = [
+    { name: 'Ana López', color: '#15a18b' },
+    { name: 'Juan Pérez', color: '#6f86c9' },
+    { name: 'María García', color: '#c2706a' },
+    { name: 'Carlos Ruiz', color: '#7e6cc0' },
+    { name: 'Lucía Gómez' },
+    { name: 'Pedro Sánchez', color: '#bfa23a' },
+    { name: 'Sofía Herrera' },
+  ];
 }
