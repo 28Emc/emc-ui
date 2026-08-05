@@ -118,6 +118,7 @@ export class BreadcrumbComponent {
   private readonly viewContainerRef = inject(ViewContainerRef);
 
   private overlayRef: OverlayRef | null = null;
+  private closing = false;
   private resizeObserver: ResizeObserver | null = null;
 
   constructor() {
@@ -242,6 +243,7 @@ export class BreadcrumbComponent {
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
       .subscribe(() => this.closeOverflow());
+    this.overlayRef.detachments().subscribe(() => this.onOverlayDetached());
     this.overlayRef.overlayElement.addEventListener('click', this.onPanelClick);
     this.overlayRef.attach(new TemplatePortal(this.panelTemplate(), this.viewContainerRef));
     this.overflowOpen.set(true);
@@ -249,13 +251,31 @@ export class BreadcrumbComponent {
   }
 
   private closeOverflow(): void {
-    if (this.overlayRef) {
-      this.overlayRef.overlayElement.removeEventListener('click', this.onPanelClick);
-      this.overlayRef.detach();
-      this.overlayRef.dispose();
-      this.overlayRef = null;
+    if (this.closing) return;
+    this.closing = true;
+    const wasOpen = this.overflowOpen();
+    const ref = this.overlayRef;
+    this.overlayRef = null;
+    if (ref) {
+      ref.overlayElement.removeEventListener('click', this.onPanelClick);
+      ref.detach();
+      ref.dispose();
     }
     this.overflowOpen.set(false);
-    this.overflowTrigger()?.nativeElement.focus();
+    this.closing = false;
+    if (wasOpen) {
+      this.overflowTrigger()?.nativeElement.focus();
+    }
+  }
+
+  private onOverlayDetached(): void {
+    if (this.overflowOpen()) {
+      this.overflowOpen.set(false);
+      if (this.overlayRef) {
+        this.overlayRef.overlayElement.removeEventListener('click', this.onPanelClick);
+        this.overlayRef.dispose();
+        this.overlayRef = null;
+      }
+    }
   }
 }

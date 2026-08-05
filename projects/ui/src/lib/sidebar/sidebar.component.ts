@@ -234,6 +234,7 @@ export class SidebarComponent {
   private overlayRef: OverlayRef | null = null;
   private flyoutAnchor: HTMLElement | null = null;
   private flyoutPanelEl: HTMLElement | null = null;
+  private closing = false;
 
   protected readonly rootClasses = computed(() =>
     cn(
@@ -462,6 +463,7 @@ export class SidebarComponent {
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
       .subscribe(() => this.closeFlyout());
+    this.overlayRef.detachments().subscribe(() => this.onOverlayDetached());
 
     this.overlayRef.attach(new TemplatePortal(this.flyoutTemplate(), this.viewContainerRef));
     this.flyoutPanelEl =
@@ -473,19 +475,38 @@ export class SidebarComponent {
   }
 
   protected closeFlyout(restoreFocus = true): void {
+    if (this.closing) return;
+    this.closing = true;
     const anchor = this.flyoutAnchor;
+    const wasOpen = this.flyoutKey() !== null;
     this.flyoutKey.set(null);
     this.flyoutHeader.set('');
     this.flyoutRootItems.set([]);
     this.flyoutPanelEl = null;
-    if (this.overlayRef) {
-      this.overlayRef.detach();
-      this.overlayRef.dispose();
-      this.overlayRef = null;
+    const ref = this.overlayRef;
+    this.overlayRef = null;
+    if (ref) {
+      ref.detach();
+      ref.dispose();
     }
     this.flyoutAnchor = null;
-    if (restoreFocus) {
+    this.closing = false;
+    if (restoreFocus && wasOpen) {
       anchor?.focus();
+    }
+  }
+
+  private onOverlayDetached(): void {
+    if (this.flyoutKey() !== null) {
+      this.flyoutKey.set(null);
+      this.flyoutHeader.set('');
+      this.flyoutRootItems.set([]);
+      this.flyoutPanelEl = null;
+      this.flyoutAnchor = null;
+      if (this.overlayRef) {
+        this.overlayRef.dispose();
+        this.overlayRef = null;
+      }
     }
   }
 

@@ -119,6 +119,7 @@ export class ComboboxComponent implements ControlValueAccessor {
   private readonly viewContainerRef = inject(ViewContainerRef);
 
   private overlayRef: OverlayRef | null = null;
+  private closing = false;
   private _onChange: (value: string | null) => void = () => {};
 
   protected onTouched: () => void = () => {};
@@ -329,19 +330,36 @@ export class ComboboxComponent implements ControlValueAccessor {
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
       .subscribe(() => this.close());
+    this.overlayRef.detachments().subscribe(() => this.onOverlayDetached());
     this.overlayRef.attach(new TemplatePortal(this.panelTemplate(), this.viewContainerRef));
     this.overlayRef.overlayElement.addEventListener('click', this.onPanelClick);
     this.isOpen.set(true);
   }
 
   protected close(): void {
-    if (this.overlayRef) {
-      this.overlayRef.overlayElement.removeEventListener('click', this.onPanelClick);
-      this.overlayRef.detach();
-      this.overlayRef.dispose();
-      this.overlayRef = null;
+    if (this.closing) return;
+    this.closing = true;
+    const ref = this.overlayRef;
+    this.overlayRef = null;
+    if (ref) {
+      ref.overlayElement.removeEventListener('click', this.onPanelClick);
+      ref.detach();
+      ref.dispose();
     }
     this.isOpen.set(false);
     this.activeIndex.set(-1);
+    this.closing = false;
+  }
+
+  private onOverlayDetached(): void {
+    if (this.isOpen()) {
+      this.isOpen.set(false);
+      this.activeIndex.set(-1);
+      if (this.overlayRef) {
+        this.overlayRef.overlayElement.removeEventListener('click', this.onPanelClick);
+        this.overlayRef.dispose();
+        this.overlayRef = null;
+      }
+    }
   }
 }

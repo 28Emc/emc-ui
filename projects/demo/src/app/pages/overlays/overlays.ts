@@ -9,6 +9,7 @@ import {
   MenuItemComponent,
   ModalComponent,
   ModalSize,
+  PopoverComponent,
   UiDrawerFooterDirective,
   UiModalFooterDirective,
 } from 'emc-ui';
@@ -24,6 +25,7 @@ import {
     MenuDividerComponent,
     MenuItemComponent,
     ModalComponent,
+    PopoverComponent,
     UiDrawerFooterDirective,
     UiModalFooterDirective,
     LucideEdit,
@@ -87,6 +89,34 @@ import {
       @if (menuAction) {
         <span class="text-sm text-muted">Acción: {{ menuAction }}</span>
       }
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Popover</h2>
+    <p class="mb-2 text-sm font-medium text-muted">placement: top / bottom / left / right</p>
+    <div class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-surface p-4">
+      <ui-popover label="Más información" placement="bottom">
+        <div class="max-w-xs space-y-2">
+          <p class="text-sm font-semibold text-fg">¿Qué es un popover?</p>
+          <p class="text-sm text-muted">
+            Un panel contextual que se posiciona junto a su trigger y cierra con clic fuera o
+            Escape.
+          </p>
+        </div>
+      </ui-popover>
+      <ui-popover label="Izquierda" placement="left" align="start">
+        <div class="max-w-xs space-y-2">
+          <p class="text-sm font-semibold text-fg">Alineado al inicio</p>
+          <p class="text-sm text-muted">placement left + align start.</p>
+        </div>
+      </ui-popover>
+      <ui-popover label="Arriba" placement="top">
+        <div class="max-w-xs space-y-2">
+          <p class="text-sm font-semibold text-fg">Invertido al no caber</p>
+          <p class="text-sm text-muted">
+            Si no hay espacio, el panel voltea a la posición opuesta automáticamente.
+          </p>
+        </div>
+      </ui-popover>
     </div>
 
     <ui-modal

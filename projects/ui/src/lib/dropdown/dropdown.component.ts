@@ -62,6 +62,7 @@ export class DropdownComponent {
   private readonly viewContainerRef = inject(ViewContainerRef);
 
   private overlayRef: OverlayRef | null = null;
+  private closing = false;
   private readonly onPanelClick = (): void => this.close();
 
   constructor() {
@@ -129,12 +130,17 @@ export class DropdownComponent {
           },
         ]),
       scrollStrategy: this.overlay.scrollStrategies.close(),
+      usePopover: false,
     });
-    this.overlayRef.outsidePointerEvents().subscribe(() => this.close());
+    this.overlayRef
+      .outsidePointerEvents()
+      .pipe(filter((event) => !this.isTrigger(event.target)))
+      .subscribe(() => this.close());
     this.overlayRef
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
       .subscribe(() => this.close());
+    this.overlayRef.detachments().subscribe(() => this.onOverlayDetached());
     this.overlayRef.overlayElement.addEventListener('click', this.onPanelClick);
     this.overlayRef.attach(new TemplatePortal(this.panelTemplate(), this.viewContainerRef));
     this.isOpen.set(true);
@@ -144,13 +150,36 @@ export class DropdownComponent {
   }
 
   private close(): void {
-    if (this.overlayRef) {
-      this.overlayRef.overlayElement.removeEventListener('click', this.onPanelClick);
-      this.overlayRef.detach();
-      this.overlayRef.dispose();
-      this.overlayRef = null;
+    if (this.closing) return;
+    this.closing = true;
+    const wasOpen = this.isOpen();
+    const ref = this.overlayRef;
+    this.overlayRef = null;
+    if (ref) {
+      ref.overlayElement.removeEventListener('click', this.onPanelClick);
+      ref.detach();
+      ref.dispose();
     }
     this.isOpen.set(false);
-    this.triggerEl().nativeElement.querySelector('button')?.focus();
+    this.closing = false;
+    if (wasOpen) {
+      this.triggerEl().nativeElement.querySelector('button')?.focus();
+    }
+  }
+
+  private onOverlayDetached(): void {
+    if (this.isOpen()) {
+      this.isOpen.set(false);
+      if (this.overlayRef) {
+        this.overlayRef.overlayElement.removeEventListener('click', this.onPanelClick);
+        this.overlayRef.dispose();
+        this.overlayRef = null;
+      }
+    }
+  }
+
+  private isTrigger(target: EventTarget | null): boolean {
+    const trigger = this.triggerEl();
+    return !!target && trigger.nativeElement.contains(target as Node);
   }
 }

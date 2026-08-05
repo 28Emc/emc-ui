@@ -202,6 +202,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   private readonly viewContainerRef = inject(ViewContainerRef);
 
   private overlayRef: OverlayRef | null = null;
+  private closing = false;
   private _onChange: (value: string | null) => void = () => {};
 
   protected onTouched: () => void = () => {};
@@ -552,16 +553,31 @@ export class DatePickerComponent implements ControlValueAccessor {
       .keydownEvents()
       .pipe(filter((event) => event.key === 'Escape'))
       .subscribe(() => this.close());
+    this.overlayRef.detachments().subscribe(() => this.onOverlayDetached());
     this.overlayRef.attach(new TemplatePortal(this.panelTemplate(), this.viewContainerRef));
     this.isOpen.set(true);
   }
 
   protected close(): void {
-    if (this.overlayRef) {
-      this.overlayRef.detach();
-      this.overlayRef.dispose();
-      this.overlayRef = null;
+    if (this.closing) return;
+    this.closing = true;
+    const ref = this.overlayRef;
+    this.overlayRef = null;
+    if (ref) {
+      ref.detach();
+      ref.dispose();
     }
     this.isOpen.set(false);
+    this.closing = false;
+  }
+
+  private onOverlayDetached(): void {
+    if (this.isOpen()) {
+      this.isOpen.set(false);
+      if (this.overlayRef) {
+        this.overlayRef.dispose();
+        this.overlayRef = null;
+      }
+    }
   }
 }

@@ -60,3 +60,4 @@ export * from './lib/breadcrumb/breadcrumb-item';
 export * from './lib/breadcrumb/breadcrumb.component';
 export * from './lib/sidebar/sidebar-item';
 export * from './lib/sidebar/sidebar.component';
+export * from './lib/popover/popover.component';
