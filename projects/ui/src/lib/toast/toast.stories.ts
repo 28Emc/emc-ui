@@ -38,12 +38,46 @@ import { ButtonComponent } from '../button/button.component';
       >
         Error
       </ui-button>
+      <ui-button
+        variant="secondary"
+        (click)="
+          toastService.toast({
+            title: 'Documento borrado',
+            description: 'Se moverá a la papelera',
+            variant: 'warning',
+            action: {
+              label: 'Deshacer',
+              onClick: () => toastService.success('Restaurado', 'El documento se recuperó.'),
+            },
+          })
+        "
+      >
+        Con acción
+      </ui-button>
+      <ui-button variant="secondary" (click)="burst()">Ráfaga (máx 3)</ui-button>
+      <ui-button variant="ghost" (click)="cyclePosition()">Posición</ui-button>
     </div>
     <ui-toast-host />
   `,
 })
 class ToastGalleryComponent {
   readonly toastService = inject(ToastService);
+
+  private readonly positions = ['bottom-right', 'bottom-left', 'top-right', 'top-left'] as const;
+  private index = 0;
+
+  burst(): void {
+    this.toastService.maxToasts.set(3);
+    for (let i = 1; i <= 4; i++) {
+      this.toastService.info(`Toast ${i}`, `Mensaje número ${i}`);
+    }
+  }
+
+  cyclePosition(): void {
+    this.index = (this.index + 1) % this.positions.length;
+    this.toastService.position.set(this.positions[this.index]);
+    this.toastService.info('Posición', `Moviendo la pila a ${this.positions[this.index]}`);
+  }
 }
 
 const meta: Meta<ToastComponent> = {

@@ -157,6 +157,9 @@ import {
         <ui-button (click)="toast.success('Éxito', 'Datos guardados')">Success</ui-button>
         <ui-button (click)="toast.warning('Advertencia', 'Revisa los datos')">Warning</ui-button>
         <ui-button (click)="toast.error('Error', 'No se pudo guardar')">Error</ui-button>
+        <ui-button variant="secondary" (click)="toastWithAction()">Con acción</ui-button>
+        <ui-button variant="secondary" (click)="toastBurst()">Ráfaga (máx 3)</ui-button>
+        <ui-button variant="ghost" (click)="toastCyclePosition()">Posición</ui-button>
       </div>
     </section>
 
@@ -400,6 +403,33 @@ export class AdvancedPage {
 
   protected onRowClick(row: any): void {
     this.toast.info('Fila clickeada', row.name);
+  }
+
+  protected toastWithAction(): void {
+    this.toast.toast({
+      title: 'Documento borrado',
+      description: 'Se moverá a la papelera',
+      variant: 'warning',
+      action: {
+        label: 'Deshacer',
+        onClick: () => this.toast.success('Restaurado', 'El documento se recuperó.'),
+      },
+    });
+  }
+
+  protected toastBurst(): void {
+    this.toast.maxToasts.set(3);
+    for (let i = 1; i <= 4; i++) {
+      this.toast.info(`Toast ${i}`, `Mensaje número ${i}`);
+    }
+  }
+
+  protected toastCyclePosition(): void {
+    const positions = ['bottom-right', 'bottom-left', 'top-right', 'top-left'] as const;
+    const current = positions.indexOf(this.toast.position());
+    const next = positions[(current + 1) % positions.length];
+    this.toast.position.set(next);
+    this.toast.info('Posición', `Moviendo la pila a ${next}`);
   }
 
   protected trackById = (row: any) => row.id;

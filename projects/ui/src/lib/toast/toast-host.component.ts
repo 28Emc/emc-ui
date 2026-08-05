@@ -10,7 +10,12 @@ import { cn } from '../utils/cn';
   template: `
     <div [class]="hostClasses()">
       @for (t of toastService.toasts(); track t.id) {
-        <ui-toast [toast]="t" (dismiss)="toastService.dismiss($event)" />
+        <ui-toast
+          [toast]="t"
+          (dismiss)="toastService.dismiss($event)"
+          (pauseToast)="toastService.pause($event)"
+          (resumeToast)="toastService.resume($event)"
+        />
       }
     </div>
   `,
@@ -20,8 +25,11 @@ export class ToastHostComponent {
 
   protected readonly hostClasses = computed(() =>
     cn(
-      'fixed right-4 bottom-4 z-[100] flex w-[22rem] flex-col-reverse gap-2 pointer-events-none',
-      'animate-slide-in-right',
+      'fixed z-[100] flex w-[22rem] flex-col gap-2 pointer-events-none',
+      this.toastService.position() === 'top-left' && 'left-4 top-4',
+      this.toastService.position() === 'top-right' && 'right-4 top-4',
+      this.toastService.position() === 'bottom-left' && 'left-4 bottom-4 flex-col-reverse',
+      this.toastService.position() === 'bottom-right' && 'right-4 bottom-4 flex-col-reverse',
     ),
   );
 }

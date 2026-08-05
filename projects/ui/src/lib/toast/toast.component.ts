@@ -36,7 +36,13 @@ const VARIANT_CLASSES: Record<ToastVariant, string> = {
       <svg lucideCircleAlert [size]="1" />
       <svg lucideTriangleAlert [size]="1" />
     </div>
-    <div role="status" [class]="classes()" [attr.data-variant]="toast().variant">
+    <div
+      role="status"
+      [class]="classes()"
+      [attr.data-variant]="toast().variant"
+      (mouseenter)="pauseToast.emit(toast().id)"
+      (mouseleave)="resumeToast.emit(toast().id)"
+    >
       <span [class]="iconClasses()">
         <ng-container
           [ngComponentOutlet]="iconComponent()"
@@ -47,6 +53,11 @@ const VARIANT_CLASSES: Record<ToastVariant, string> = {
         <p class="text-sm font-semibold text-fg">{{ toast().title }}</p>
         @if (toast().description) {
           <p class="text-sm text-muted">{{ toast().description }}</p>
+        }
+        @if (toast().action) {
+          <button type="button" [class]="actionClasses()" (click)="onAction()">
+            {{ toast().action?.label }}
+          </button>
         }
       </div>
       <button
@@ -70,6 +81,8 @@ const VARIANT_CLASSES: Record<ToastVariant, string> = {
 export class ToastComponent {
   readonly toast = input.required<Toast>();
   readonly dismiss = output<string>();
+  readonly pauseToast = output<string>();
+  readonly resumeToast = output<string>();
 
   protected readonly iconComponent = computed(() => ICON_MAP[this.toast().variant]);
   protected readonly iconClasses = computed(() =>
@@ -82,11 +95,25 @@ export class ToastComponent {
     ),
   );
 
+  protected readonly actionClasses = computed(() =>
+    cn(
+      'mt-2 inline-flex items-center rounded-lg bg-brand-500/10 px-2 py-1 text-xs font-semibold text-brand-600',
+      'transition-colors duration-150 hover:bg-brand-500/20 dark:text-brand-400',
+    ),
+  );
+
   protected readonly classes = computed(() =>
     cn(
       'flex items-start gap-3 rounded-xl p-3.5 shadow-pop animate-slide-in-right',
-      'bg-surface border',
+      'pointer-events-auto bg-surface border',
       VARIANT_CLASSES[this.toast().variant],
     ),
   );
+
+  protected onAction(): void {
+    const action = this.toast().action;
+    if (!action) return;
+    action.onClick(this.toast().id);
+    this.dismiss.emit(this.toast().id);
+  }
 }

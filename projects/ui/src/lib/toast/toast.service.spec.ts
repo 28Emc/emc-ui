@@ -68,4 +68,42 @@ describe('ToastService', () => {
     vi.advanceTimersByTime(10000);
     expect(service.toasts().length).toBe(1);
   });
+
+  it('stores a custom action and calls it with the toast id', () => {
+    const spy = vi.fn();
+    const id = service.toast({ title: 'A', action: { label: 'Deshacer', onClick: spy } });
+    const t = service.toasts()[0];
+    expect(t.action?.label).toBe('Deshacer');
+    t.action?.onClick(id);
+    expect(spy).toHaveBeenCalledWith(id);
+  });
+
+  it('dismisses the oldest toast when maxToasts is reached', () => {
+    service.maxToasts.set(2);
+    service.success('A');
+    service.success('B');
+    service.success('C');
+    expect(service.toasts().map((t) => t.title)).toEqual(['B', 'C']);
+  });
+
+  it('does not apply a limit when maxToasts is 0 or negative', () => {
+    service.maxToasts.set(0);
+    service.success('A');
+    service.success('B');
+    expect(service.toasts().length).toBe(2);
+  });
+
+  it('pauses and resumes the auto-dismiss timer', () => {
+    vi.useFakeTimers();
+    const id = service.toast({ title: 'A', duration: 1000 });
+    vi.advanceTimersByTime(400);
+    service.pause(id);
+    vi.advanceTimersByTime(10000);
+    expect(service.toasts().length).toBe(1);
+    service.resume(id);
+    vi.advanceTimersByTime(599);
+    expect(service.toasts().length).toBe(1);
+    vi.advanceTimersByTime(2);
+    expect(service.toasts().length).toBe(0);
+  });
 });
