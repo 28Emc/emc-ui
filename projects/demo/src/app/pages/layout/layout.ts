@@ -5,6 +5,7 @@ import {
   CardBodyComponent,
   CardComponent,
   CardHeaderComponent,
+  ExpandableCardComponent,
   StatCardComponent,
 } from 'emc-ui';
 
@@ -16,6 +17,7 @@ import {
     CardBodyComponent,
     CardComponent,
     CardHeaderComponent,
+    ExpandableCardComponent,
     StatCardComponent,
   ],
   template: `
@@ -50,6 +52,32 @@ import {
           <p class="mt-1 text-sm text-muted">Tarjeta base con shadow-soft, sin interacción.</p>
         </ui-card-body>
       </ui-card>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">ExpandableCard</h2>
+    <p class="mb-2 text-sm font-medium text-muted">
+      colapsable · click / Enter · estado controlable
+    </p>
+    <div class="grid gap-6 md:grid-cols-2">
+      <ui-expandable-card
+        title="Detalles del pedido"
+        subtitle="Haz clic para expandir"
+        [(open)]="orderOpen"
+      >
+        <p class="text-sm text-muted">
+          Contenido expandible: número de pedido, estado, total y notas del cliente.
+        </p>
+      </ui-expandable-card>
+
+      <ui-expandable-card
+        title="Configuración avanzada"
+        subtitle="Esta tarjeta inicia expandida"
+        [open]="true"
+      >
+        <p class="text-sm text-muted">
+          Configuración de notificaciones, zona horaria y preferencias de seguridad.
+        </p>
+      </ui-expandable-card>
     </div>
 
     <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">StatCard</h2>
@@ -91,4 +119,5 @@ export class LayoutPage {
   protected readonly LucideTrendingUp = LucideTrendingUp;
   protected readonly LucideUsers = LucideUsers;
   protected readonly LucideBadgeCheck = LucideBadgeCheck;
+  protected orderOpen = false;
 }

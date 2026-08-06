@@ -16,6 +16,7 @@ import {
   DatePickerComponent,
   DateRangePickerComponent,
   FieldComponent,
+  FormSectionComponent,
   InputComponent,
   MultiSelectComponent,
   RatingComponent,
@@ -38,6 +39,7 @@ import {
     DatePickerComponent,
     DateRangePickerComponent,
     FieldComponent,
+    FormSectionComponent,
     InputComponent,
     MultiSelectComponent,
     RatingComponent,
@@ -228,6 +230,39 @@ import {
         <ui-taginput placeholder="Escribe y presiona Enter…" [(ngModel)]="tagVal" [maxTags]="8" />
       </ui-field>
       <p class="text-sm text-muted">Valor: {{ tagVal?.length ? tagVal.join(', ') : '—' }}</p>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">FormSection</h2>
+    <p class="mb-2 text-sm font-medium text-muted">
+      agrupa campos · estado de error · espaciado consistente
+    </p>
+    <div class="grid gap-6 lg:grid-cols-2">
+      <ui-form-section title="Datos personales" description="Tu información de contacto">
+        <div class="space-y-4">
+          <ui-field label="Nombre completo">
+            <ui-input placeholder="Ana López" />
+          </ui-field>
+          <ui-field label="Email">
+            <ui-input type="email" placeholder="you@example.com" />
+          </ui-field>
+        </div>
+      </ui-form-section>
+
+      <ui-form-section
+        title="Dirección"
+        description="Datos de facturación"
+        [invalid]="true"
+        error="El código postal es obligatorio."
+      >
+        <div class="space-y-4">
+          <ui-field label="Calle">
+            <ui-input placeholder="Av. Siempreviva 742" />
+          </ui-field>
+          <ui-field label="Código postal">
+            <ui-input placeholder="1000" [invalid]="true" />
+          </ui-field>
+        </div>
+      </ui-form-section>
     </div>
 
     <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">Reactive Forms (ControlValueAccessor)</h2>

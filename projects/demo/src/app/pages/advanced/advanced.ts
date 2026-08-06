@@ -7,6 +7,7 @@ import {
   RadioComponent,
   ProgressComponent,
   TooltipDirective,
+  ScreenReaderOnlyComponent,
   ToastService,
   ToastHostComponent,
   TabsComponent,
@@ -30,6 +31,7 @@ import {
   LucideHome,
   LucideLayoutDashboard,
   LucideSettings,
+  LucideTrash2,
   LucideUsers,
 } from '@lucide/angular';
 
@@ -45,6 +47,7 @@ import {
     RadioComponent,
     ProgressComponent,
     TooltipDirective,
+    ScreenReaderOnlyComponent,
     ToastHostComponent,
     TabsComponent,
     TabComponent,
@@ -58,6 +61,7 @@ import {
     CardBodyComponent,
     BreadcrumbComponent,
     SidebarComponent,
+    LucideTrash2,
   ],
   template: `
     <h1 class="mb-8 text-xl font-semibold text-fg">Advanced Components</h1>
@@ -146,6 +150,36 @@ import {
         <ui-button variant="secondary" uiTooltip="Tooltip derecha" placement="right"
           >Hover der.</ui-button
         >
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">ScreenReaderOnly</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        oculta visualmente · mantiene el contenido accesible para lectores de pantalla
+      </p>
+      <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+        <div class="flex flex-wrap items-center gap-3">
+          <ui-button variant="danger">
+            <svg lucideTrash2 [size]="16" [strokeWidth]="2" />
+            <ui-screen-reader-only>Eliminar usuario</ui-screen-reader-only>
+          </ui-button>
+          <span class="text-sm text-muted">Botón de solo icono con etiqueta invisible</span>
+        </div>
+        <p class="text-sm text-muted">
+          Este párrafo es visible e incluye
+          <ui-screen-reader-only
+            >un mensaje de ayuda solo para lectores de pantalla</ui-screen-reader-only
+          >
+          dentro del mismo flujo de texto.
+        </p>
+        <ui-screen-reader-only>
+          <h3 class="text-sm font-semibold text-fg">Atajos de teclado</h3>
+        </ui-screen-reader-only>
+        <p class="text-sm text-muted">
+          El encabezado superior está oculto visualmente; los lectores de pantalla lo anuncian como
+          "Atajos de teclado".
+        </p>
       </div>
     </section>
 
