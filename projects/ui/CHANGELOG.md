@@ -1,5 +1,11 @@
 # @emc-dev/ui
 
+## 1.0.2
+
+### Patch Changes
+
+- a5aac25: Patch release for automated release workflow
+
 ## 1.0.1
 
 ### Patch Changes
