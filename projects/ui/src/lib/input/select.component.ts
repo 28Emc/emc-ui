@@ -31,6 +31,8 @@ const SELECT_CHEVRON =
       [style.background]="chevron"
       [value]="value()"
       [id]="id() || null"
+      [attr.name]="name() || null"
+      [attr.autocomplete]="autocomplete() || null"
       [disabled]="disabled() || formDisabled()"
       [attr.aria-invalid]="invalid() || null"
       [attr.aria-required]="ariaRequired() || null"
@@ -48,6 +50,8 @@ const SELECT_CHEVRON =
 export class SelectComponent implements ControlValueAccessor {
   readonly placeholder = input('');
   readonly id = input<string>();
+  readonly name = input<string>();
+  readonly autocomplete = input<string>();
   readonly invalid = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
 

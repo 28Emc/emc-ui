@@ -91,7 +91,7 @@ export class RatingComponent implements ControlValueAccessor {
 
   protected iconClasses(index: number): string {
     return cn(
-      'transition-all duration-150',
+      'transition-[color,transform] duration-150',
       this.isFilled(index) ? 'text-amber-400' : 'text-muted',
       !this.interactiveDisabled() && 'cursor-pointer hover:scale-110',
     );

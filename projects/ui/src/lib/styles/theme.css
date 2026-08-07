@@ -147,6 +147,7 @@
 }
 
 :root {
+  color-scheme: light;
   --app-bg: #ffffff;
   --surface: #ffffff;
   --surface-2: #f8fafc;
@@ -156,6 +157,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --app-bg: #0a0c12;
   --surface: #12151d;
   --surface-2: #171b25;
@@ -171,6 +173,21 @@
 
   html {
     scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   body {

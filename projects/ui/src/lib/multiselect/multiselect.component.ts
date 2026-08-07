@@ -78,6 +78,7 @@ let uidCounter = 0;
             #inputEl
             type="text"
             role="combobox"
+            autocomplete="off"
             [attr.id]="id() || null"
             [attr.aria-expanded]="isOpen()"
             [attr.aria-controls]="listboxId"
@@ -90,7 +91,7 @@ let uidCounter = 0;
             (focus)="open()"
             (keydown)="onKeydown($event)"
             (blur)="onBlur()"
-            class="min-w-24 flex-1 bg-transparent text-sm text-fg outline-none placeholder:text-muted"
+            class="min-w-24 flex-1 bg-transparent text-sm text-fg focus-visible:outline-none placeholder:text-muted"
           />
         </div>
         <button
@@ -349,7 +350,7 @@ export class MultiSelectComponent implements ControlValueAccessor {
 
   protected listboxClasses(): string {
     return cn(
-      'w-full overflow-auto rounded-xl border border-default bg-surface p-1.5 shadow-pop animate-scale-in',
+      'w-full overflow-auto overscroll-contain rounded-xl border border-default bg-surface p-1.5 shadow-pop animate-scale-in',
     );
   }
 

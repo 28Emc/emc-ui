@@ -43,7 +43,7 @@ export class StepperComponent {
   protected readonly stepClasses = (index: number) =>
     cn(
       'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
-      'transition-all duration-200',
+      'transition-[background-color,color,box-shadow] duration-200',
       index < this.activeIndex()
         ? 'bg-brand-500 text-white'
         : index === this.activeIndex()

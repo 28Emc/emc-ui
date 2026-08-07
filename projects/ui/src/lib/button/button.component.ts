@@ -57,7 +57,8 @@ export class ButtonComponent {
   protected readonly classes = computed(() =>
     cn(
       'inline-flex select-none items-center justify-center whitespace-nowrap rounded-xl font-medium',
-      'transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50',
+      'transition-[background-color,border-color,color,box-shadow,filter,transform] duration-150',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50',
       'active:scale-[.98] disabled:pointer-events-none disabled:opacity-50',
       VARIANT_CLASSES[this.variant()],
       SIZE_CLASSES[this.size()],

@@ -117,6 +117,8 @@ function parseTimeText(text: string): string | null {
         <input
           #triggerEl
           type="text"
+          inputmode="numeric"
+          autocomplete="off"
           [placeholder]="effectivePlaceholder()"
           [value]="displayText()"
           [disabled]="disabled() || formDisabled()"
@@ -126,7 +128,7 @@ function parseTimeText(text: string): string | null {
           (focus)="open()"
           (keydown)="onTriggerKeydown($event)"
           (blur)="onBlur()"
-          class="w-full min-w-0 flex-1 bg-transparent text-sm text-fg outline-none placeholder:text-muted"
+          class="w-full min-w-0 flex-1 bg-transparent text-sm text-fg focus-visible:outline-none placeholder:text-muted"
         />
         <button
           type="button"
@@ -170,7 +172,7 @@ function parseTimeText(text: string): string | null {
 
         <div class="flex gap-3">
           <div
-            class="max-h-48 flex-1 overflow-y-auto scrollbar-thin rounded-lg border border-default p-1"
+            class="max-h-48 flex-1 overflow-y-auto overscroll-contain scrollbar-thin rounded-lg border border-default p-1"
           >
             @for (h of hours(); track h) {
               <button
@@ -187,7 +189,7 @@ function parseTimeText(text: string): string | null {
             }
           </div>
           <div
-            class="max-h-48 flex-1 overflow-y-auto scrollbar-thin rounded-lg border border-default p-1"
+            class="max-h-48 flex-1 overflow-y-auto overscroll-contain scrollbar-thin rounded-lg border border-default p-1"
           >
             @for (m of minutes(); track m) {
               <button

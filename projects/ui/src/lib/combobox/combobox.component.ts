@@ -49,6 +49,7 @@ let uidCounter = 0;
           #inputEl
           type="text"
           role="combobox"
+          autocomplete="off"
           [attr.id]="id() || null"
           [attr.aria-expanded]="isOpen()"
           [attr.aria-controls]="listboxId"
@@ -61,7 +62,7 @@ let uidCounter = 0;
           (focus)="open()"
           (keydown)="onKeydown($event)"
           (blur)="onBlur()"
-          class="w-full min-w-0 flex-1 bg-transparent text-sm text-fg outline-none placeholder:text-muted"
+          class="w-full min-w-0 flex-1 bg-transparent text-sm text-fg focus-visible:outline-none placeholder:text-muted"
         />
         <button
           type="button"
@@ -284,7 +285,7 @@ export class ComboboxComponent implements ControlValueAccessor {
 
   protected listboxClasses(): string {
     return cn(
-      'max-h-64 w-full overflow-auto rounded-xl border border-default bg-surface p-1.5 shadow-pop animate-scale-in',
+      'max-h-64 w-full overflow-auto overscroll-contain rounded-xl border border-default bg-surface p-1.5 shadow-pop animate-scale-in',
     );
   }
 

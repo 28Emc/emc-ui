@@ -18,7 +18,7 @@ import { EmptyStateActionDirective } from './empty-state-action.directive';
           />
         </div>
       }
-      <h3 class="text-lg font-semibold text-fg">{{ title() }}</h3>
+      <h3 class="text-balance text-lg font-semibold text-fg">{{ title() }}</h3>
       @if (description()) {
         <p class="mt-1 max-w-sm text-sm text-muted">{{ description() }}</p>
       }

@@ -30,6 +30,8 @@ import { cursorAtRawCount, extractMaskDigits, formatMask, placeholderFromMask } 
       [value]="display()"
       [placeholder]="placeholder() || derivedPlaceholder()"
       [id]="id() || null"
+      [attr.name]="name() || null"
+      [attr.autocomplete]="autocomplete() || null"
       [disabled]="disabled() || formDisabled()"
       [attr.inputmode]="inputmode()"
       [attr.aria-invalid]="invalid() || null"
@@ -46,6 +48,8 @@ export class MaskedInputComponent implements ControlValueAccessor {
   readonly maskChar = input('#');
   readonly placeholder = input('');
   readonly id = input<string>();
+  readonly name = input<string>();
+  readonly autocomplete = input<string>();
   readonly invalid = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly emitMasked = input(false, { transform: booleanAttribute });

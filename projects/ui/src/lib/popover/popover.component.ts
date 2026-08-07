@@ -72,7 +72,7 @@ export class PopoverComponent {
   );
   protected readonly panelClasses = computed(() =>
     cn(
-      'max-w-[calc(100vw-2rem)] rounded-xl border border-default bg-surface p-4 shadow-pop',
+      'max-w-[calc(100vw-2rem)] rounded-xl border border-default bg-surface p-4 shadow-pop overscroll-contain',
       'animate-scale-in',
     ),
   );

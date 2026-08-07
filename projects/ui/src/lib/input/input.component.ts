@@ -31,6 +31,8 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
       [value]="value()"
       [placeholder]="placeholder() || null"
       [id]="id() || null"
+      [attr.name]="name() || null"
+      [attr.autocomplete]="autocomplete() || null"
       [disabled]="disabled() || formDisabled()"
       [attr.aria-invalid]="invalid() || null"
       [attr.aria-required]="ariaRequired() || null"
@@ -44,6 +46,8 @@ export class InputComponent implements ControlValueAccessor {
   readonly type = input<InputType>('text');
   readonly placeholder = input('');
   readonly id = input<string>();
+  readonly name = input<string>();
+  readonly autocomplete = input<string>();
   readonly invalid = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
 

@@ -38,7 +38,7 @@ let drawerUid = 0;
       >
         <header class="flex items-start justify-between gap-4 border-b border-default px-6 py-5">
           <div class="space-y-0.5">
-            <h2 [id]="titleId" class="text-lg font-semibold text-fg">{{ title() }}</h2>
+            <h2 [id]="titleId" class="text-balance text-lg font-semibold text-fg">{{ title() }}</h2>
             @if (subtitle()) {
               <p class="text-sm text-muted">{{ subtitle() }}</p>
             }
@@ -47,7 +47,7 @@ let drawerUid = 0;
             <svg lucideX [size]="16" [strokeWidth]="2" />
           </ui-button>
         </header>
-        <div class="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin">
+        <div class="flex-1 overflow-y-auto overscroll-contain px-6 py-4 scrollbar-thin">
           <ng-content />
         </div>
         @if (hasFooter()) {

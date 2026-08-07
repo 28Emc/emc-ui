@@ -9,7 +9,7 @@ import { cn } from '../utils/cn';
   template: `
     <section [attr.aria-labelledby]="titleId" [class]="classes()">
       <header class="border-b border-default px-5 py-4">
-        <h3 [id]="titleId" class="text-base font-semibold text-fg">{{ title() }}</h3>
+        <h3 [id]="titleId" class="text-balance text-base font-semibold text-fg">{{ title() }}</h3>
         @if (description()) {
           <p class="mt-1 text-sm text-muted">{{ description() }}</p>
         }

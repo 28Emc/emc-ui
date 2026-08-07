@@ -55,6 +55,8 @@ export type DatePickerValue = string | null;
         <input
           #triggerEl
           type="text"
+          inputmode="numeric"
+          autocomplete="off"
           [placeholder]="effectivePlaceholder()"
           [value]="displayText()"
           [disabled]="disabled() || formDisabled()"
@@ -64,7 +66,7 @@ export type DatePickerValue = string | null;
           (focus)="open()"
           (keydown)="onTriggerKeydown($event)"
           (blur)="onBlur()"
-          class="w-full min-w-0 flex-1 bg-transparent text-sm text-fg outline-none placeholder:text-muted"
+          class="w-full min-w-0 flex-1 bg-transparent text-sm text-fg focus-visible:outline-none placeholder:text-muted"
         />
       </div>
     </div>
