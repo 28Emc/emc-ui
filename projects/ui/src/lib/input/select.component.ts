@@ -29,6 +29,7 @@ const SELECT_CHEVRON =
     <select
       [class]="classes()"
       [style.background]="chevron"
+      [value]="value()"
       [id]="id() || null"
       [disabled]="disabled() || formDisabled()"
       [attr.aria-invalid]="invalid() || null"

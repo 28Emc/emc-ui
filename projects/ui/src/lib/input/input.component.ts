@@ -28,6 +28,7 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
     <input
       [class]="classes()"
       [type]="type()"
+      [value]="value()"
       [placeholder]="placeholder() || null"
       [id]="id() || null"
       [disabled]="disabled() || formDisabled()"

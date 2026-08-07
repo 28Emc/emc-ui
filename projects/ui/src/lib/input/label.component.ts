@@ -4,7 +4,7 @@ import { Component, input, booleanAttribute } from '@angular/core';
   selector: 'ui-label',
   standalone: true,
   template: `
-    <label [for]="htmlFor() || null" class="block text-sm font-medium text-fg">
+    <label [attr.for]="htmlFor() || null" class="block text-sm font-medium text-fg">
       <ng-content />
       @if (required()) {
         <span class="text-red-500">*</span>

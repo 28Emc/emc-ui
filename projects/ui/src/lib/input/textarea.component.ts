@@ -26,6 +26,7 @@ import { FIELD_CONTEXT } from './field-context.token';
     <textarea
       [class]="classes()"
       [rows]="rows()"
+      [value]="value()"
       [placeholder]="placeholder() || null"
       [id]="id() || null"
       [disabled]="disabled() || formDisabled()"
