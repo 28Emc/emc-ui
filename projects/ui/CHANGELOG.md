@@ -1,5 +1,13 @@
 # @emc-dev/ui
 
+## 1.0.1
+
+### Patch Changes
+
+- Initial release of @emc-dev/ui via automated workflow
+
+  Personal Angular UI component library with standalone components, Tailwind CSS v4, and CDK integration.
+
 ## 1.0.0
 
 ### Major Changes
