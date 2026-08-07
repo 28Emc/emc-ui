@@ -15,18 +15,7 @@
           <a routerLink="/layout" routerLinkActive="nav-link-active" class="nav-link">Layout</a>
           <a routerLink="/advanced" routerLinkActive="nav-link-active" class="nav-link">Advanced</a>
         </nav>
-        <button
-          type="button"
-          (click)="toggleDark()"
-          [attr.aria-label]="dark() ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'"
-          class="ml-2 inline-flex h-9 w-9 items-center justify-center rounded-xl text-muted transition-colors duration-150 hover:bg-surface-2 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50"
-        >
-          @if (dark()) {
-          <svg lucideSun [size]="18" [strokeWidth]="2" />
-          } @else {
-          <svg lucideMoon [size]="18" [strokeWidth]="2" />
-          }
-        </button>
+        <ui-theme-switcher class="ml-2" />
       </div>
     </div>
   </header>

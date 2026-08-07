@@ -3,6 +3,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   ButtonComponent,
   CheckboxComponent,
+  CopyToClipboardButtonComponent,
+  ThemeSwitcherComponent,
+  DragDropListComponent,
   RadioGroupComponent,
   RadioComponent,
   ProgressComponent,
@@ -43,6 +46,9 @@ import {
     FormsModule,
     ButtonComponent,
     CheckboxComponent,
+    CopyToClipboardButtonComponent,
+    ThemeSwitcherComponent,
+    DragDropListComponent,
     RadioGroupComponent,
     RadioComponent,
     ProgressComponent,
@@ -180,6 +186,86 @@ import {
           El encabezado superior está oculto visualmente; los lectores de pantalla lo anuncian como
           "Atajos de teclado".
         </p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">CopyToClipboardButton</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        copia al portapapeles · feedback visual · fallback execCommand
+      </p>
+      <div
+        class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-surface p-4"
+      >
+        <div class="flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-2">
+          <code class="text-sm text-fg">pnpm add emc-ui</code>
+          <ui-copy-button text="pnpm add emc-ui" />
+        </div>
+        <ui-copy-button
+          text="npm i emc-ui"
+          label="Copiar comando"
+          copiedLabel="¡Copiado!"
+          variant="secondary"
+          size="sm"
+        />
+        <ui-copy-button text="texto" size="md" />
+        <ui-copy-button text="no copia" [disabled]="true" />
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">ThemeSwitcher</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        alterna claro/oscuro · persiste en localStorage · sincronizado entre instancias
+      </p>
+      <div
+        class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-surface p-4"
+      >
+        <ui-theme-switcher />
+        <ui-theme-switcher variant="secondary" />
+        <ui-theme-switcher variant="outline" size="icon-sm" />
+        <ui-theme-switcher labelLight="Activar modo oscuro" labelDark="Activar modo claro" />
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">DragDropList</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        lista ordenable por arrastre · soporte de teclado (Espacio + ↑/↓) · modelo en tiempo real
+      </p>
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <h3 class="mb-3 text-sm font-semibold text-fg">Lista simple</h3>
+          <ui-drag-drop-list
+            [items]="dragItems()"
+            (itemsChange)="dragItems.set($event)"
+            handleLabel="Mover tarea"
+          />
+        </div>
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <h3 class="mb-3 text-sm font-semibold text-fg">Template personalizado</h3>
+          <ui-drag-drop-list
+            [items]="dragTodos()"
+            (itemsChange)="dragTodos.set($event)"
+            [itemTemplate]="row"
+            [trackBy]="trackTodoById"
+            handleLabel="Mover tarea"
+          >
+            <ng-template #row let-item>
+              <div class="flex flex-1 items-center gap-3">
+                <span
+                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-sm font-semibold text-brand-600"
+                >
+                  {{ todoInitials(item.title) }}
+                </span>
+                <div class="min-w-0">
+                  <p class="truncate text-sm font-medium text-fg">{{ item.title }}</p>
+                  <p class="truncate text-xs text-muted">{{ item.status }}</p>
+                </div>
+              </div>
+            </ng-template>
+          </ui-drag-drop-list>
+        </div>
       </div>
     </section>
 
@@ -329,6 +415,31 @@ export class AdvancedPage {
   protected readonly stepperIndex = signal(0);
   protected readonly paginationPage = signal(1);
   protected readonly toast = inject(ToastService);
+
+  protected readonly dragItems = signal([
+    'Comprar pan',
+    'Enviar email',
+    'Revisar PR',
+    'Llamar al cliente',
+  ]);
+
+  protected readonly dragTodos = signal([
+    { id: 1, title: 'Configurar CI', status: 'En progreso' },
+    { id: 2, title: 'Escribir documentación', status: 'Pendiente' },
+    { id: 3, title: 'Revisar diseño', status: 'Hecho' },
+    { id: 4, title: 'Publicar release', status: 'Bloqueado' },
+  ]);
+
+  protected trackTodoById = (item: any) => item.id;
+
+  protected todoInitials(title: string): string {
+    return title
+      .split(' ')
+      .map((w) => w[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+  }
 
   protected readonly breadcrumbItems: UiBreadcrumbItem[] = [
     { label: 'Inicio', routerLink: ['/'] },

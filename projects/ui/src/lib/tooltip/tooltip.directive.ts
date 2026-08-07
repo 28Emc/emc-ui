@@ -1,6 +1,7 @@
 import {
   ComponentRef,
   Directive,
+  effect,
   ElementRef,
   inject,
   input,
@@ -80,6 +81,13 @@ export class TooltipDirective implements OnDestroy {
   private tooltipRef: ComponentRef<TooltipContentComponent> | null = null;
   private showTimeout: ReturnType<typeof setTimeout> | null = null;
   private hideTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  constructor() {
+    effect(() => {
+      const content = this.uiTooltip();
+      if (this.tooltipRef) this.tooltipRef.instance.content.set(content ?? '');
+    });
+  }
 
   show(): void {
     if (!this.uiTooltip() || this.overlayRef) return;

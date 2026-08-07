@@ -33,6 +33,7 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
       [class]="classes()"
       [disabled]="disabled() || loading()"
       [attr.aria-busy]="loading() || null"
+      [attr.aria-label]="ariaLabel() || null"
       [attr.aria-expanded]="ariaExpanded() || null"
       [attr.aria-haspopup]="ariaHaspopup() || null"
     >
@@ -49,6 +50,7 @@ export class ButtonComponent {
   readonly size = input<ButtonSize>('md');
   readonly loading = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly ariaLabel = input<string>();
   readonly ariaExpanded = input<string>();
   readonly ariaHaspopup = input<string>();
 
