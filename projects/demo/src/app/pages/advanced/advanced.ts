@@ -9,6 +9,8 @@ import {
   ThemeSwitcherComponent,
   DragDropListComponent,
   SparklineComponent,
+  VirtualScrollListComponent,
+  InfiniteScrollTableComponent,
   RadioGroupComponent,
   RadioComponent,
   ProgressComponent,
@@ -30,6 +32,7 @@ import {
   SidebarComponent,
   type UiBreadcrumbItem,
   type UiSidebarItem,
+  type TableColumn,
 } from 'emc-ui';
 import {
   LucideBarChart3,
@@ -53,6 +56,8 @@ import {
     ThemeSwitcherComponent,
     DragDropListComponent,
     SparklineComponent,
+    VirtualScrollListComponent,
+    InfiniteScrollTableComponent,
     RadioGroupComponent,
     RadioComponent,
     ProgressComponent,
@@ -331,6 +336,42 @@ import {
     </section>
 
     <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">VirtualScrollList</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        lista virtual · renderiza solo los ítems visibles · ventana [start-end] · selección múltiple
+        con teclado
+      </p>
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <h3 class="mb-3 text-sm font-semibold text-fg">10.000 registros</h3>
+          <ui-virtual-scroll-list
+            [items]="bigList()"
+            [height]="320"
+            [itemHeight]="40"
+            ariaLabel="Registros virtuales"
+            (rangeChange)="vsRange.set($event)"
+            (endReached)="vsEnds = vsEnds + 1"
+          />
+          <p class="mt-2 text-xs text-muted">
+            Ventana [{{ vsRange().start }} – {{ vsRange().end }}] · fin alcanzado:
+            {{ vsEnds }} vez(es)
+          </p>
+        </div>
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <h3 class="mb-3 text-sm font-semibold text-fg">Selección múltiple</h3>
+          <ui-virtual-scroll-list
+            [items]="vsProjects()"
+            [height]="320"
+            [selectable]="true"
+            [(selection)]="vsSelection"
+            ariaLabel="Proyectos"
+          />
+          <p class="mt-2 text-xs text-muted">Seleccionados: {{ vsSelection().length }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
       <h2 class="mb-4 text-lg font-semibold text-fg">Toast (servicio)</h2>
       <ui-toast-host />
       <div class="flex flex-wrap items-center gap-3">
@@ -404,6 +445,29 @@ import {
         [trackBy]="trackById"
         (rowClick)="onRowClick($event)"
       />
+    </section>
+
+    <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">InfiniteScrollTable (carga bajo demanda)</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        scroll infinito · sticky header · sorting · fila de carga · 1000 registros en lotes de 30
+      </p>
+      <div class="rounded-xl border border-default bg-surface p-4">
+        <ui-infinite-scroll-table
+          [columns]="istColumns"
+          [data]="istRows()"
+          [loading]="istLoading()"
+          [hasMore]="istHasMore()"
+          [height]="380"
+          [striped]="true"
+          (loadMore)="istLoadMore()"
+          (rowClick)="onRowClick($event)"
+        />
+        <p class="mt-2 text-xs text-muted">
+          Cargadas: {{ istRows().length }} de {{ istTotal }} ·
+          {{ istHasMore() ? 'hay más…' : 'sin más datos' }}
+        </p>
+      </div>
     </section>
 
     <section class="mt-10">
@@ -497,6 +561,21 @@ export class AdvancedPage {
   protected readonly liveCpu = signal<number[]>(this.seedWalk(23, 45, 6, 5, 95));
   protected readonly liveLatency = signal<number[]>(this.seedWalk(39, 100, 18, 30, 220));
   protected readonly liveSales = signal<number[]>(this.seedWalk(19, 40, 9, 0, 100));
+
+  protected readonly bigList = signal(
+    Array.from({ length: 10000 }, (_, i) => ({ id: i, label: `Registro ${i + 1}` })),
+  );
+  protected readonly vsRange = signal({ start: 0, end: 0 });
+  protected vsEnds = 0;
+
+  protected readonly vsProjects = signal(
+    Array.from({ length: 60 }, (_, i) => ({
+      id: i,
+      name: `Proyecto ${i + 1}`,
+      status: ['Activo', 'Pausado', 'Archivado'][i % 3],
+    })),
+  );
+  protected readonly vsSelection = signal<{ id: number; name: string; status: string }[]>([]);
 
   constructor() {
     interval(900)
@@ -657,6 +736,48 @@ export class AdvancedPage {
 
   protected onRowClick(row: any): void {
     this.toast.info('Fila clickeada', row.name);
+  }
+
+  protected readonly istColumns: TableColumn[] = [
+    { key: 'name', label: 'Nombre', sortable: true },
+    { key: 'email', label: 'Email' },
+    { key: 'role', label: 'Rol' },
+    { key: 'amount', label: 'Monto', sortable: true, align: 'right' },
+  ];
+  protected readonly istTotal = 1000;
+  protected readonly istRows = signal(Array.from({ length: 30 }, (_, i) => this.makeIstRow(i)));
+  protected readonly istLoading = signal(false);
+  protected readonly istHasMore = signal(true);
+
+  protected makeIstRow(i: number): {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+    amount: number;
+  } {
+    const names = ['Ana Torres', 'Carlos Pérez', 'Lucía Gómez', 'Marco Ruiz', 'Sofía Díaz'];
+    const roles = ['Admin', 'Editor', 'Viewer'];
+    return {
+      id: i + 1,
+      name: names[i % names.length],
+      email: `usuario${i + 1}@empresa.com`,
+      role: roles[i % roles.length],
+      amount: Math.round(120 + ((i * 97) % 9800)),
+    };
+  }
+
+  protected istLoadMore(): void {
+    if (this.istLoading()) return;
+    this.istLoading.set(true);
+    setTimeout(() => {
+      this.istRows.update((rows) => [
+        ...rows,
+        ...Array.from({ length: 30 }, (_, i) => this.makeIstRow(rows.length + i)),
+      ]);
+      this.istLoading.set(false);
+      this.istHasMore.set(this.istRows().length < this.istTotal);
+    }, 450);
   }
 
   protected toastWithAction(): void {

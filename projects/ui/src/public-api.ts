@@ -21,6 +21,8 @@ export * from './lib/theme-switcher/theme.service';
 export * from './lib/theme-switcher/theme-switcher.component';
 export * from './lib/drag-drop-list/drag-drop-list.component';
 export * from './lib/sparkline/sparkline.component';
+export * from './lib/virtual-scroll-list/virtual-scroll-list.component';
+export * from './lib/infinite-scroll-table/infinite-scroll-table.component';
 export * from './lib/input/input.component';
 export * from './lib/input/textarea.component';
 export * from './lib/input/select.component';
