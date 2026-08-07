@@ -1,6 +1,6 @@
 {
   "name": "emc-ui",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Timely Forms AI design system, ported to Angular — standalone components (Button, Input, Card, Modal, Drawer, Dropdown, Switch, Avatar, Feedback).",
   "license": "MIT",
   "peerDependencies": {
