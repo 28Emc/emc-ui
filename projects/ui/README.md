@@ -1,14 +1,14 @@
-# @edmech/ui
+# @emc-dev/ui
 
 Design system Angular — componentes standalone, accesibles, themable, con Tailwind CSS v4 y CDK.
 
-[![npm version](https://img.shields.io/npm/v/@edmech/ui.svg)](https://www.npmjs.com/package/@edmech/ui)
+[![npm version](https://img.shields.io/npm/v/@emc-dev/ui.svg)](https://www.npmjs.com/package/@emc-dev/ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Instalación
 
 ```bash
-pnpm add @edmech/ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
+pnpm add @emc-dev/ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
 ```
 
 > **Peer dependencies** (requeridas, no se instalan automáticamente):
@@ -19,8 +19,8 @@ pnpm add @edmech/ui @angular/animations @angular/cdk @angular/common @angular/co
 ## Uso rápido
 
 ```ts
-import { ButtonComponent, InputComponent, FieldComponent } from '@edmech/ui';
-import '@edmech/ui/styles.css'; // CSS precompilado (recomendado)
+import { ButtonComponent, InputComponent, FieldComponent } from '@emc-dev/ui';
+import '@emc-dev/ui/styles.css'; // CSS precompilado (recomendado)
 ```
 
 ```html
@@ -36,7 +36,7 @@ import '@edmech/ui/styles.css'; // CSS precompilado (recomendado)
 ### Opción A: CSS precompilado (recomendado)
 
 ```ts
-import '@edmech/ui/styles.css';
+import '@emc-dev/ui/styles.css';
 ```
 
 Incluye todas las utilidades Tailwind, animaciones y tokens de diseño. Listo para usar sin configuración extra.
@@ -44,14 +44,14 @@ Incluye todas las utilidades Tailwind, animaciones y tokens de diseño. Listo pa
 ### Opción B: Tailwind source (para personalizar)
 
 ```ts
-import '@edmech/ui/src/lib/styles/theme.css';
+import '@emc-dev/ui/src/lib/styles/theme.css';
 ```
 
 Requiere Tailwind CSS v4 en tu proyecto. Permite extender/overridar tokens vía `@theme` o CSS variables.
 
 ```css
 /* Tu global.css */
-@import '@edmech/ui/src/lib/styles/theme.css';
+@import '@emc-dev/ui/src/lib/styles/theme.css';
 
 /* Override tokens */
 @theme {
@@ -115,14 +115,14 @@ Ver [Storybook](https://emc-ui.chromatic.com) para ejemplos interactivos y API c
 
 ```json
 // angular.json
-"styles": ["node_modules/@edmech/ui/styles.css"]
+"styles": ["node_modules/@emc-dev/ui/styles.css"]
 ```
 
 ### Vite / Tailwind CSS v4
 
 ```css
 /* global.css */
-@import '@edmech/ui/src/lib/styles/theme.css';
+@import '@emc-dev/ui/src/lib/styles/theme.css';
 ```
 
 ```js
@@ -136,7 +136,7 @@ export default defineConfig({ plugins: [tailwindcss()] });
 ```json
 {
   "scripts": {
-    "build:styles": "tailwindcss -i node_modules/@edmech/ui/src/lib/styles/theme.css -o src/styles.css",
+    "build:styles": "tailwindcss -i node_modules/@emc-dev/ui/src/lib/styles/theme.css -o src/styles.css",
     "storybook": "storybook dev -p 6006"
   }
 }

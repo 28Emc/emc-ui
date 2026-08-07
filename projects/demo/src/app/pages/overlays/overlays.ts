@@ -12,7 +12,7 @@ import {
   PopoverComponent,
   UiDrawerFooterDirective,
   UiModalFooterDirective,
-} from '@edmech/ui';
+} from '@emc-dev/ui';
 
 @Component({
   selector: 'app-overlays-page',

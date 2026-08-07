@@ -27,7 +27,7 @@ import {
   TagInputComponent,
   TextareaComponent,
   TimePickerComponent,
-} from '@edmech/ui';
+} from '@emc-dev/ui';
 
 @Component({
   selector: 'app-inputs-page',

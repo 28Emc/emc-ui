@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { ThemeSwitcherComponent } from '@edmech/ui';
+import { ThemeSwitcherComponent } from '@emc-dev/ui';
 
 @Component({
   selector: 'app-root',
