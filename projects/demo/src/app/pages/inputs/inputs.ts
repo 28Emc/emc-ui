@@ -18,7 +18,9 @@ import {
   FieldComponent,
   FormSectionComponent,
   InputComponent,
+  MaskedInputComponent,
   MultiSelectComponent,
+  PasswordStrengthMeterComponent,
   RatingComponent,
   SelectComponent,
   SwitchComponent,
@@ -41,7 +43,9 @@ import {
     FieldComponent,
     FormSectionComponent,
     InputComponent,
+    MaskedInputComponent,
     MultiSelectComponent,
+    PasswordStrengthMeterComponent,
     RatingComponent,
     SelectComponent,
     SwitchComponent,
@@ -127,6 +131,47 @@ import {
           <option value="pro">Pro</option>
           <option value="team">Team</option>
         </ui-select>
+      </ui-field>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">MaskedInput</h2>
+    <p class="mb-2 text-sm font-medium text-muted">
+      máscara configurable · placeholder dinámico · el modelo guarda solo dígitos (o el valor
+      enmascarado con emitMasked)
+    </p>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <ui-field label="Teléfono" hint="El modelo guarda solo los dígitos">
+        <ui-masked-input mask="(###) ###-####" [(ngModel)]="phoneVal" />
+      </ui-field>
+      <p class="text-sm text-muted">Valor: {{ phoneVal ?? '—' }}</p>
+      <ui-field label="Tarjeta de crédito">
+        <ui-masked-input mask="#### #### #### ####" [(ngModel)]="cardVal" />
+      </ui-field>
+      <p class="text-sm text-muted">Valor: {{ cardVal ?? '—' }}</p>
+      <ui-field label="SSN">
+        <ui-masked-input mask="###-##-####" [(ngModel)]="ssnVal" />
+      </ui-field>
+      <p class="text-sm text-muted">Valor: {{ ssnVal ?? '—' }}</p>
+      <ui-field label="Emitir enmascarado" hint="emitMasked: el modelo guarda el valor con formato">
+        <ui-masked-input mask="(###) ###-####" [emitMasked]="true" [(ngModel)]="maskedVal" />
+      </ui-field>
+      <p class="text-sm text-muted">Valor: {{ maskedVal ?? '—' }}</p>
+    </div>
+
+    <h2 class="mb-4 mt-10 text-lg font-semibold text-fg">PasswordStrengthMeter</h2>
+    <p class="mb-2 text-sm font-medium text-muted">
+      campo de contraseña · barra de fuerza · criterios visuales · toggle de visibilidad
+    </p>
+    <div class="max-w-xl space-y-4 rounded-xl border border-default bg-surface p-4">
+      <ui-field label="Contraseña" hint="Mínimo 8 caracteres con números y símbolos">
+        <ui-password-strength-meter [(ngModel)]="passwordVal" />
+      </ui-field>
+      <p class="text-sm text-muted">Valor: {{ passwordVal ?? '—' }}</p>
+      <ui-field label="Sin criterios" hint="showCriteria: false">
+        <ui-password-strength-meter [showCriteria]="false" [(ngModel)]="passwordNoCriteriaVal" />
+      </ui-field>
+      <ui-field label="Deshabilitado" hint="Valor inicial predefinido">
+        <ui-password-strength-meter [ngModel]="'Tr0b4dor!2026'" [disabled]="true" />
       </ui-field>
     </div>
 
@@ -318,6 +363,14 @@ export class InputsPage {
 
   protected readonly ratingVal = 3;
   protected readonly ratingReadonly = 5;
+
+  protected readonly phoneVal: string | null = null;
+  protected readonly cardVal: string | null = null;
+  protected readonly ssnVal: string | null = null;
+  protected readonly maskedVal: string | null = null;
+
+  protected readonly passwordVal: string | null = null;
+  protected readonly passwordNoCriteriaVal: string | null = null;
 
   protected readonly frameworkOptions = [
     { label: 'Angular', value: 'angular' },

@@ -20,9 +20,14 @@ export * from './lib/copy-to-clipboard-button/copy-to-clipboard-button.component
 export * from './lib/theme-switcher/theme.service';
 export * from './lib/theme-switcher/theme-switcher.component';
 export * from './lib/drag-drop-list/drag-drop-list.component';
+export * from './lib/sparkline/sparkline.component';
 export * from './lib/input/input.component';
 export * from './lib/input/textarea.component';
 export * from './lib/input/select.component';
+export * from './lib/input/mask-utils';
+export * from './lib/input/masked-input.component';
+export * from './lib/password-strength-meter/password-strength.utils';
+export * from './lib/password-strength-meter/password-strength-meter.component';
 export * from './lib/switch/switch.component';
 export * from './lib/card/card.component';
 export * from './lib/card/card-header.component';

@@ -1,4 +1,6 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, type WritableSignal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   ButtonComponent,
@@ -6,6 +8,7 @@ import {
   CopyToClipboardButtonComponent,
   ThemeSwitcherComponent,
   DragDropListComponent,
+  SparklineComponent,
   RadioGroupComponent,
   RadioComponent,
   ProgressComponent,
@@ -49,6 +52,7 @@ import {
     CopyToClipboardButtonComponent,
     ThemeSwitcherComponent,
     DragDropListComponent,
+    SparklineComponent,
     RadioGroupComponent,
     RadioComponent,
     ProgressComponent,
@@ -270,6 +274,63 @@ import {
     </section>
 
     <section class="mt-10">
+      <h2 class="mb-4 text-lg font-semibold text-fg">Sparkline</h2>
+      <p class="mb-2 text-sm font-medium text-muted">
+        mini-gráfico de tendencia · SVG puro · sin dependencias de charting · 3 estáticas + 3 en
+        tiempo real (mock: llega data nueva y se limpia la ventana antigua)
+      </p>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <p class="mb-1 text-xs text-muted">Visitas mensuales</p>
+          <ui-sparkline [data]="sparkUp()" label="Visitas mensuales" />
+        </div>
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <p class="mb-1 text-xs text-muted">Área + suave</p>
+          <ui-sparkline [data]="sparkUp()" [fill]="true" [smooth]="true" />
+        </div>
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <p class="mb-1 text-xs text-muted">Escala compartida (0-100)</p>
+          <ui-sparkline
+            [data]="sparkScale()"
+            [width]="200"
+            [smooth]="true"
+            [min]="0"
+            [max]="100"
+            color="var(--color-accent-blue)"
+          />
+        </div>
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <p class="mb-1 text-xs text-muted">CPU en vivo · ventana 24 · tick 900ms</p>
+          <ui-sparkline [data]="liveCpu()" [fill]="true" [smooth]="true" label="CPU en vivo" />
+        </div>
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <p class="mb-1 text-xs text-muted">Latencia en vivo · ventana 40 · tick 450ms</p>
+          <ui-sparkline
+            [data]="liveLatency()"
+            [width]="200"
+            [height]="50"
+            [smooth]="true"
+            color="var(--color-accent-coral)"
+            label="Latencia en vivo"
+          />
+        </div>
+        <div class="rounded-xl border border-default bg-surface p-4">
+          <p class="mb-1 text-xs text-muted">
+            Ventas en vivo · ventana 20 · escala 0-100 · tick 1200ms
+          </p>
+          <ui-sparkline
+            [data]="liveSales()"
+            [smooth]="true"
+            [min]="0"
+            [max]="100"
+            color="var(--color-accent-blue)"
+            label="Ventas en vivo"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
       <h2 class="mb-4 text-lg font-semibold text-fg">Toast (servicio)</h2>
       <ui-toast-host />
       <div class="flex flex-wrap items-center gap-3">
@@ -429,6 +490,54 @@ export class AdvancedPage {
     { id: 3, title: 'Revisar diseño', status: 'Hecho' },
     { id: 4, title: 'Publicar release', status: 'Bloqueado' },
   ]);
+
+  protected readonly sparkUp = signal([12, 18, 15, 22, 28, 25, 34, 31, 42]);
+  protected readonly sparkScale = signal([55, 70, 62, 80, 75]);
+
+  protected readonly liveCpu = signal<number[]>(this.seedWalk(23, 45, 6, 5, 95));
+  protected readonly liveLatency = signal<number[]>(this.seedWalk(39, 100, 18, 30, 220));
+  protected readonly liveSales = signal<number[]>(this.seedWalk(19, 40, 9, 0, 100));
+
+  constructor() {
+    interval(900)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.pushLiveSample(this.liveCpu, 24, 6, 5, 95));
+    interval(450)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.pushLiveSample(this.liveLatency, 40, 18, 30, 220));
+    interval(1200)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.pushLiveSample(this.liveSales, 20, 9, 0, 100));
+  }
+
+  private nextWalk(prev: number, step: number, min: number, max: number): number {
+    const v = prev + (Math.random() * 2 - 1) * step;
+    return Math.round(Math.max(min, Math.min(max, v)));
+  }
+
+  private seedWalk(count: number, start: number, step: number, min: number, max: number): number[] {
+    const arr: number[] = [];
+    let v = start;
+    for (let i = 0; i < count; i++) {
+      arr.push(Math.round(v));
+      v = this.nextWalk(v, step, min, max);
+    }
+    return arr;
+  }
+
+  private pushLiveSample(
+    target: WritableSignal<number[]>,
+    windowSize: number,
+    step: number,
+    min: number,
+    max: number,
+  ): void {
+    target.update((current) => {
+      const last = current[current.length - 1] ?? min + (max - min) / 2;
+      const next = this.nextWalk(last, step, min, max);
+      return current.length >= windowSize ? [...current.slice(1), next] : [...current, next];
+    });
+  }
 
   protected trackTodoById = (item: any) => item.id;
 
