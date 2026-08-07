@@ -1,124 +1,96 @@
 # @emc-dev/ui
 
-Design system Angular — componentes standalone, accesibles, themable, con Tailwind CSS v4 y CDK.
+Angular UI component library — standalone components, Tailwind CSS v4, CDK, WCAG 2.1 AA.
 
-[![npm version](https://img.shields.io/npm/v/@emc-dev/ui.svg)](https://www.npmjs.com/package/@emc-dev/ui)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-## Instalación
+## Installation
 
 ```bash
 pnpm add @emc-dev/ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
 ```
 
-> **Peer dependencies** (requeridas, no se instalan automáticamente):
->
-> - `@angular/*` ≥ 22.0.0
-> - `@lucide/angular` ≥ 1.28.0
+**Peer dependencies** (required):
 
-## Uso rápido
+- `@angular/*` ≥ 22.0.0
+- `@lucide/angular` ≥ 1.28.0
+
+## Quick Start
 
 ```ts
 import { ButtonComponent, InputComponent, FieldComponent } from '@emc-dev/ui';
-import '@emc-dev/ui/styles.css'; // CSS precompilado (recomendado)
+import '@emc-dev/ui/styles.css';
+
+@Component({
+  imports: [ButtonComponent, InputComponent, FieldComponent],
+  template: `
+    <ui-field label="Email" [required]="true">
+      <ui-input type="email" placeholder="you@example.com" />
+    </ui-field>
+    <ui-button variant="primary" (click)="save()">Save</ui-button>
+  `,
+})
+export class MyComponent {}
 ```
 
-```html
-<ui-field label="Email" [required]="true">
-  <ui-input type="email" placeholder="you@example.com" />
-</ui-field>
+## Import Styles
 
-<ui-button variant="primary" (click)="save()">Guardar</ui-button>
-```
-
-## Importar estilos
-
-### Opción A: CSS precompilado (recomendado)
+**Option A: Precompiled CSS (recommended)**
 
 ```ts
 import '@emc-dev/ui/styles.css';
 ```
 
-Incluye todas las utilidades Tailwind, animaciones y tokens de diseño. Listo para usar sin configuración extra.
-
-### Opción B: Tailwind source (para personalizar)
+**Option B: Tailwind source** (for customization)
 
 ```ts
 import '@emc-dev/ui/src/lib/styles/theme.css';
 ```
 
-Requiere Tailwind CSS v4 en tu proyecto. Permite extender/overridar tokens vía `@theme` o CSS variables.
-
-```css
-/* Tu global.css */
-@import '@emc-dev/ui/src/lib/styles/theme.css';
-
-/* Override tokens */
-@theme {
-  --color-brand-500: #0066ff;
-}
-```
+Requires Tailwind CSS v4 in your project.
 
 ## Theming
-
-### Light (default)
 
 ```css
 :root {
   color-scheme: light;
-  --app-bg: #ffffff;
-  --surface: #ffffff;
-  --fg: #0f172a;
-  /* ... */
 }
-```
-
-### Dark
-
-```css
 .dark {
   color-scheme: dark;
-  --app-bg: #0a0c12;
-  --surface: #12151d;
-  --fg: #e9edf4;
-  /* ... */
 }
 ```
 
-Activa el modo oscuro añadiendo la clase `.dark` al `<html>` o a un contenedor padre. El componente `ThemeSwitcherComponent` gestiona la persistencia automática.
+Add `.dark` to `<html>` or a parent. `ThemeSwitcherComponent` handles persistence.
 
-## Componentes disponibles
+## Components
 
-| Categoría        | Componentes                                                                                                                                                                                                                                                                                                                                      |
+| Category         | Components                                                                                                                                                                                                                                                                                                                                       |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Botones**      | `ButtonComponent` (primary, secondary, ghost, danger, outline, subtle; sm/md/lg/icon/icon-sm)                                                                                                                                                                                                                                                    |
+| **Buttons**      | `ButtonComponent` (primary, secondary, ghost, danger, outline, subtle; sm/md/lg/icon/icon-sm)                                                                                                                                                                                                                                                    |
 | **Inputs**       | `InputComponent`, `TextareaComponent`, `SelectComponent`, `MaskedInputComponent`, `ComboboxComponent`, `MultiSelectComponent`, `TagInputComponent`, `DatePickerComponent`, `TimePickerComponent`, `DateRangePickerComponent`, `PasswordStrengthMeterComponent`, `SwitchComponent`, `RatingComponent`, `CheckboxComponent`, `RadioGroupComponent` |
-| **Formularios**  | `FieldComponent`, `FormSectionComponent`, `LabelComponent`, `FieldErrorComponent`                                                                                                                                                                                                                                                                |
-| **Navegación**   | `BreadcrumbComponent`, `SidebarComponent`, `TabsComponent`, `PaginationComponent`, `StepperComponent`                                                                                                                                                                                                                                            |
+| **Forms**        | `FieldComponent`, `FormSectionComponent`, `LabelComponent`, `FieldErrorComponent`                                                                                                                                                                                                                                                                |
+| **Navigation**   | `BreadcrumbComponent`, `SidebarComponent`, `TabsComponent`, `PaginationComponent`, `StepperComponent`                                                                                                                                                                                                                                            |
 | **Overlays**     | `ModalComponent`, `ConfirmModalComponent`, `DrawerComponent`, `PopoverComponent`, `DropdownComponent`, `TooltipDirective`                                                                                                                                                                                                                        |
 | **Feedback**     | `ToastService` + `ToastHostComponent`, `SpinnerComponent`, `SkeletonComponent`, `PageLoaderComponent`, `EmptyStateComponent`, `BadgeComponent`, `ProgressComponent`                                                                                                                                                                              |
 | **Data Display** | `CardComponent`, `StatCardComponent`, `ExpandableCardComponent`, `TableComponent`, `InfiniteScrollTableComponent`, `VirtualScrollListComponent`, `DragDropListComponent`, `AvatarComponent`, `AvatarGroupComponent`, `AccordionComponent`, `SparklineComponent`                                                                                  |
 | **Utils**        | `ScreenReaderOnlyComponent`, `CopyToClipboardButtonComponent`, `ThemeSwitcherComponent`                                                                                                                                                                                                                                                          |
 
-Ver [Storybook](https://emc-ui.chromatic.com) para ejemplos interactivos y API completa.
+## Accessibility
 
-## Accesibilidad
+- WCAG 2.1 AA compliant
+- Focus visible (`focus-visible:ring-2`)
+- ARIA labels, roles, live regions
+- Full keyboard navigation
+- `prefers-reduced-motion` support
+- `color-scheme` for native scrollbars/inputs
 
-- **WCAG 2.1 AA**: contraste, focus visible (`focus-visible:ring-2`), ARIA labels/roles, live regions
-- **Teclado**: navegación completa (Tab, Flechas, Enter, Escape, Home/End)
-- **Screen readers**: `aria-*` attributes, `role="dialog"`, `aria-live`, `screen-reader-only` utility
-- **Reduced motion**: respeta `prefers-reduced-motion: reduce`
+## Build Config (Consumers)
 
-## Configuración de build (consumers)
-
-### Angular CLI (recomendado)
+**Angular CLI** (recommended)
 
 ```json
-// angular.json
 "styles": ["node_modules/@emc-dev/ui/styles.css"]
 ```
 
-### Vite / Tailwind CSS v4
+**Vite + Tailwind CSS v4**
 
 ```css
 /* global.css */
@@ -131,7 +103,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({ plugins: [tailwindcss()] });
 ```
 
-## Scripts útiles
+## Scripts
 
 ```json
 {
@@ -142,12 +114,12 @@ export default defineConfig({ plugins: [tailwindcss()] });
 }
 ```
 
-## Versionado y cambios
+## Versioning
 
-- **SemVer** estricto
-- **Changelog** generado con [Changesets](https://github.com/changesets/changesets)
-- Ver [CHANGELOG.md](./CHANGELOG.md)
+- SemVer strict
+- Changelog via [Changesets](https://github.com/changesets/changesets)
+- See [CHANGELOG.md](./CHANGELOG.md)
 
-## Licencia
+## License
 
-MIT © 2026 edmech-ui contributors. Ver [LICENSE](../LICENSE).
+MIT © 2026 emc-dev-ui contributors. See [LICENSE](../LICENSE).
