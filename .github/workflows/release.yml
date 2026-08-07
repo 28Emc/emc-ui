@@ -8,7 +8,9 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
   contents: write
+  issues: write
   pull-requests: write
+  id-token: write
 
 jobs:
   release:
@@ -22,6 +24,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 11.5.0
+          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,4 +43,3 @@ jobs:
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

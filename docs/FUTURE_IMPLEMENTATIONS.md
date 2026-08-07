@@ -36,6 +36,7 @@ This document outlines the next set of UI components that can be added to the **
 ## ✅ Status: Core Components Completed (2026‑08‑07)
 
 All 26 components listed above have been **implemented, tested, documented, and released**. The library now covers:
+
 - **Inputs**: Input, Textarea, Select, MaskedInput, Combobox, MultiSelect, TagInput, DatePicker, TimePicker, DateRangePicker, PasswordStrengthMeter
 - **Selection**: Checkbox, Radio, Switch, Rating, Slider (pendiente), ColorPicker (pendiente)
 - **Navigation**: Breadcrumb, Sidebar, Drawer, Tabs, Dropdown, Pagination
@@ -50,83 +51,83 @@ All 26 components listed above have been **implemented, tested, documented, and 
 
 ### 1. Bundle Size & Architecture (~510 KB gzipped JS)
 
-| Improvement | Description | Effort |
-|-------------|-------------|--------|
-| **Bundle analysis** | Add `rollup-plugin-visualizer` or `webpack-bundle-analyzer` to CI; identify heavy deps | Low |
-| **Sub-packages** | Split into `@emc-ui/inputs`, `@emc-ui/overlays`, `@emc-ui/data-display`, `@emc-ui/feedback` for tree-shaking | Medium |
-| **Entry-point granularity** | Review `public-api.ts` — export only what consumers need; remove internal types from public surface | Low |
-| **Peer dep optimization** | Verify `@angular/cdk` overlay/portal are properly marked as external; avoid bundling | Low |
+| Improvement                 | Description                                                                                                  | Effort |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------ | ------ |
+| **Bundle analysis**         | Add `rollup-plugin-visualizer` or `webpack-bundle-analyzer` to CI; identify heavy deps                       | Low    |
+| **Sub-packages**            | Split into `@emc-ui/inputs`, `@emc-ui/overlays`, `@emc-ui/data-display`, `@emc-ui/feedback` for tree-shaking | Medium |
+| **Entry-point granularity** | Review `public-api.ts` — export only what consumers need; remove internal types from public surface          | Low    |
+| **Peer dep optimization**   | Verify `@angular/cdk` overlay/portal are properly marked as external; avoid bundling                         | Low    |
 
 ### 2. Missing Common Components (High Demand)
 
-| Component | Priority | Notes |
-|-----------|----------|-------|
-| **File Upload / Dropzone** | High | `DragDropList` exists but no upload handling, progress, preview, validation |
-| **Image** (lazy, blur, srcset) | High | No optimized image component; Next.js-style loader pattern |
-| **Carousel / Slider** | Medium | Hero, testimonials, galleries; touch/swipe + keyboard nav |
-| **Tree View / File Tree** | Medium | `Sidebar` covers nav but not generic recursive tree with lazy load |
-| **Color Picker** | Medium | HEX/RGB/HSL, alpha, palette presets, eyedropper |
-| **Command Palette (⌘K)** | Medium | Fuzzy search, keyboard-first, extensible actions |
-| **Slider / Range Slider** | Medium | Price filters, audio controls, discrete/continuous |
-| **OTP / Verification Code Input** | Medium | 4-6 digit fields, paste handling, auto-focus next |
-| **Context Menu (right-click)** | Low | Extend `Dropdown` with `trigger="contextmenu"` |
+| Component                         | Priority | Notes                                                                       |
+| --------------------------------- | -------- | --------------------------------------------------------------------------- |
+| **File Upload / Dropzone**        | High     | `DragDropList` exists but no upload handling, progress, preview, validation |
+| **Image** (lazy, blur, srcset)    | High     | No optimized image component; Next.js-style loader pattern                  |
+| **Carousel / Slider**             | Medium   | Hero, testimonials, galleries; touch/swipe + keyboard nav                   |
+| **Tree View / File Tree**         | Medium   | `Sidebar` covers nav but not generic recursive tree with lazy load          |
+| **Color Picker**                  | Medium   | HEX/RGB/HSL, alpha, palette presets, eyedropper                             |
+| **Command Palette (⌘K)**          | Medium   | Fuzzy search, keyboard-first, extensible actions                            |
+| **Slider / Range Slider**         | Medium   | Price filters, audio controls, discrete/continuous                          |
+| **OTP / Verification Code Input** | Medium   | 4-6 digit fields, paste handling, auto-focus next                           |
+| **Context Menu (right-click)**    | Low      | Extend `Dropdown` with `trigger="contextmenu"`                              |
 
 ### 3. Accessibility (WCAG 2.1 AA)
 
-| Item | Description |
-|------|-------------|
-| **axe-core CI** | Add `@axe-core/playwright` or `vitest-axe` to test suite; fail on violations |
-| **Skip Link** | Utility component: `<ui-skip-link href="#main">Saltar al contenido</ui-skip-link>` |
-| **Focus Management** | Verify `Drawer`/`Modal` restore focus correctly; add `autoFocus` prop option |
-| **Color Contrast Audit** | Automated check of design tokens against APCA/WCAG in both themes |
-| **ARIA Live Regions** | Ensure all dynamic updates (toast, skeleton→content, loading states) announce correctly |
+| Item                     | Description                                                                             |
+| ------------------------ | --------------------------------------------------------------------------------------- |
+| **axe-core CI**          | Add `@axe-core/playwright` or `vitest-axe` to test suite; fail on violations            |
+| **Skip Link**            | Utility component: `<ui-skip-link href="#main">Saltar al contenido</ui-skip-link>`      |
+| **Focus Management**     | Verify `Drawer`/`Modal` restore focus correctly; add `autoFocus` prop option            |
+| **Color Contrast Audit** | Automated check of design tokens against APCA/WCAG in both themes                       |
+| **ARIA Live Regions**    | Ensure all dynamic updates (toast, skeleton→content, loading states) announce correctly |
 
 ### 4. Internationalization (i18n)
 
-| Item | Description |
-|------|-------------|
-| **Configurable Locale** | `DatePicker`/`TimePicker` hardcode `es-PE` fallback; expose `locale` input |
-| **RTL Support** | Verify logical properties (`margin-inline`, `padding-inline`) used consistently |
-| **Translation Keys** | Extract all UI strings to `i18n` keys; provide `en`/`es` defaults |
-| **Number/Date Formatting** | Centralize `Intl` usage via a `LocaleService` for consistent formatting |
+| Item                       | Description                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------- |
+| **Configurable Locale**    | `DatePicker`/`TimePicker` hardcode `es-PE` fallback; expose `locale` input      |
+| **RTL Support**            | Verify logical properties (`margin-inline`, `padding-inline`) used consistently |
+| **Translation Keys**       | Extract all UI strings to `i18n` keys; provide `en`/`es` defaults               |
+| **Number/Date Formatting** | Centralize `Intl` usage via a `LocaleService` for consistent formatting         |
 
 ### 5. Developer Experience (DX)
 
-| Item | Description |
-|------|-------------|
-| **Composable Primitives** | `useField`, `useOverlay`, `useFocusTrap`, `useKeyboardNavigation` hooks for consumers |
-| **Stricter Types** | Discriminated unions for `ComboboxOption`, `MultiSelectOption`; branded types for IDs |
+| Item                        | Description                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------------- |
+| **Composable Primitives**   | `useField`, `useOverlay`, `useFocusTrap`, `useKeyboardNavigation` hooks for consumers  |
+| **Stricter Types**          | Discriminated unions for `ComboboxOption`, `MultiSelectOption`; branded types for IDs  |
 | **Design Tokens Expansion** | Spacing scale, transition durations, z-index scale, border-radius scale in `theme.css` |
-| **Container Queries** | Migrate responsive components (`Card`, `Table`, `Sidebar`) to `@container` queries |
-| **TypeScript Config** | Enable `strictNullChecks`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` |
+| **Container Queries**       | Migrate responsive components (`Card`, `Table`, `Sidebar`) to `@container` queries     |
+| **TypeScript Config**       | Enable `strictNullChecks`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`    |
 
 ### 6. Testing
 
-| Item | Description |
-|------|-------------|
-| **E2E/Integration** | Playwright tests for critical flows: form submit, drawer+form, date range, file upload |
-| **Visual Regression** | Chromatic already configured; add more story states (error, loading, empty, RTL) |
-| **A11y Tests** | `vitest-axe` unit tests + Playwright axe for integration |
-| **Performance Budgets** | Lighthouse CI budgets for bundle size, FCP, TTI on demo app |
+| Item                    | Description                                                                            |
+| ----------------------- | -------------------------------------------------------------------------------------- |
+| **E2E/Integration**     | Playwright tests for critical flows: form submit, drawer+form, date range, file upload |
+| **Visual Regression**   | Chromatic already configured; add more story states (error, loading, empty, RTL)       |
+| **A11y Tests**          | `vitest-axe` unit tests + Playwright axe for integration                               |
+| **Performance Budgets** | Lighthouse CI budgets for bundle size, FCP, TTI on demo app                            |
 
 ### 7. CSS / Design System
 
-| Item | Description |
-|------|-------------|
-| **CSS Layers** | `@layer base, components, utilities` for cascade control and easier overrides |
-| **Typography Scale** | Complete scale: display-1..4, heading-1..6, body-lg/sm, caption, code |
-| **Motion Tokens** | Centralize durations/easings: `--duration-fast`, `--duration-normal`, `--ease-standard` |
-| **Color System** | Semantic color aliases (`--color-success`, `--color-warning`, `--color-info`, `--color-danger`) |
-| **Density Variants** | `data-density="compact" \| "comfortable" \| "spacious"` on components |
+| Item                 | Description                                                                                     |
+| -------------------- | ----------------------------------------------------------------------------------------------- |
+| **CSS Layers**       | `@layer base, components, utilities` for cascade control and easier overrides                   |
+| **Typography Scale** | Complete scale: display-1..4, heading-1..6, body-lg/sm, caption, code                           |
+| **Motion Tokens**    | Centralize durations/easings: `--duration-fast`, `--duration-normal`, `--ease-standard`         |
+| **Color System**     | Semantic color aliases (`--color-success`, `--color-warning`, `--color-info`, `--color-danger`) |
+| **Density Variants** | `data-density="compact" \| "comfortable" \| "spacious"` on components                           |
 
 ### 8. Documentation
 
-| Item | Description |
-|------|-------------|
-| **Migration Guides** | Version-to-version breaking changes + codemods |
+| Item                   | Description                                                              |
+| ---------------------- | ------------------------------------------------------------------------ |
+| **Migration Guides**   | Version-to-version breaking changes + codemods                           |
 | **Recipes / Patterns** | Form layout, wizard with stepper, data table with filters, master-detail |
-| **API Reference** | Compodoc autogenerated + manual curation for complex components |
-| **Design Guidelines** | Spacing, color usage, motion principles, accessibility checklist |
+| **API Reference**      | Compodoc autogenerated + manual curation for complex components          |
+| **Design Guidelines**  | Spacing, color usage, motion principles, accessibility checklist         |
 
 ---
 

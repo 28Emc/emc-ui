@@ -12,7 +12,7 @@ import {
   PopoverComponent,
   UiDrawerFooterDirective,
   UiModalFooterDirective,
-} from 'emc-ui';
+} from '@emc-dev/ui';
 
 @Component({
   selector: 'app-overlays-page',

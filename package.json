@@ -25,7 +25,7 @@
     "format:check": "prettier --check .",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build:ui && cd dist/ui && pnpm publish --no-git-checks"
+    "release": "pnpm build:ui"
   },
   "peerDependencies": {
     "@angular/animations": "^22.0.0",
@@ -33,6 +33,7 @@
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
     "@angular/forms": "^22.0.0",
+    "@angular/router": "^22.0.0",
     "@lucide/angular": "^1.28.0"
   },
   "dependencies": {

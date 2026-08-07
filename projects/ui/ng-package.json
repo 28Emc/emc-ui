@@ -11,6 +11,16 @@
       "input": ".",
       "output": "."
     },
-    "src/lib/styles/theme.css"
+    "src/lib/styles/theme.css",
+    {
+      "glob": "LICENSE",
+      "input": ".",
+      "output": "."
+    },
+    {
+      "glob": "README.md",
+      "input": ".",
+      "output": "."
+    }
   ]
 }

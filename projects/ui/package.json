@@ -1,7 +1,7 @@
 {
-  "name": "emc-ui",
-  "version": "0.1.0",
-  "description": "Timely Forms AI design system, ported to Angular — standalone components (Button, Input, Card, Modal, Drawer, Dropdown, Switch, Avatar, Feedback).",
+  "name": "@emc-dev/ui",
+  "version": "1.0.1",
+  "description": "Personal Angular UI component library — standalone components with Tailwind CSS v4 and CDK.",
   "license": "MIT",
   "peerDependencies": {
     "@angular/animations": "^22.0.0",
