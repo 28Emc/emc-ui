@@ -10,7 +10,7 @@ import {
   PageLoaderComponent,
   SkeletonComponent,
   SpinnerComponent,
-} from '@emc-dev/ui';
+} from 'emc-ui';
 
 @Component({
   selector: 'app-feedback-page',

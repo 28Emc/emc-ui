@@ -33,7 +33,7 @@ import {
   type UiBreadcrumbItem,
   type UiSidebarItem,
   type TableColumn,
-} from '@emc-dev/ui';
+} from 'emc-ui';
 import {
   LucideBarChart3,
   LucideBell,

@@ -1,11 +1,11 @@
-# @emc-dev/ui
+# emc-ui
 
 Angular UI component library — standalone components, Tailwind CSS v4, CDK, WCAG 2.1 AA.
 
 ## Installation
 
 ```bash
-pnpm add @emc-dev/ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
+pnpm add emc-ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
 ```
 
 **Peer dependencies** (required):
@@ -16,8 +16,8 @@ pnpm add @emc-dev/ui @angular/animations @angular/cdk @angular/common @angular/c
 ## Quick Start
 
 ```ts
-import { ButtonComponent, InputComponent, FieldComponent } from '@emc-dev/ui';
-import '@emc-dev/ui/styles.css';
+import { ButtonComponent, InputComponent, FieldComponent } from 'emc-ui';
+import 'emc-ui/styles.css';
 
 @Component({
   imports: [ButtonComponent, InputComponent, FieldComponent],
@@ -36,13 +36,13 @@ export class MyComponent {}
 **Option A: Precompiled CSS (recommended)**
 
 ```ts
-import '@emc-dev/ui/styles.css';
+import 'emc-ui/styles.css';
 ```
 
 **Option B: Tailwind source** (for customization)
 
 ```ts
-import '@emc-dev/ui/src/lib/styles/theme.css';
+import 'emc-ui/src/lib/styles/theme.css';
 ```
 
 Requires Tailwind CSS v4 in your project.
@@ -87,14 +87,14 @@ Add `.dark` to `<html>` or a parent. `ThemeSwitcherComponent` handles persistenc
 **Angular CLI** (recommended)
 
 ```json
-"styles": ["node_modules/@emc-dev/ui/styles.css"]
+"styles": ["node_modules/emc-ui/styles.css"]
 ```
 
 **Vite + Tailwind CSS v4**
 
 ```css
 /* global.css */
-@import '@emc-dev/ui/src/lib/styles/theme.css';
+@import 'emc-ui/src/lib/styles/theme.css';
 ```
 
 ```js
@@ -108,7 +108,7 @@ export default defineConfig({ plugins: [tailwindcss()] });
 ```json
 {
   "scripts": {
-    "build:styles": "tailwindcss -i node_modules/@emc-dev/ui/src/lib/styles/theme.css -o src/styles.css",
+    "build:styles": "tailwindcss -i node_modules/emc-ui/src/lib/styles/theme.css -o src/styles.css",
     "storybook": "storybook dev -p 6006"
   }
 }

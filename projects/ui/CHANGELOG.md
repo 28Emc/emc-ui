@@ -1,18 +1,10 @@
-# @emc-dev/ui
-
-## 1.0.1
-
-### Patch Changes
-
-- Initial release of @emc-dev/ui via automated workflow
-
-  Personal Angular UI component library with standalone components, Tailwind CSS v4, and CDK integration.
+# emc-ui
 
 ## 1.0.0
 
 ### Major Changes
 
-- Initial release of @emc-dev/ui
+- Initial release of emc-ui
 
   Personal Angular UI component library with standalone components, Tailwind CSS v4, and CDK integration.
 
@@ -40,27 +32,27 @@
   - Container queries ready
 
   ## Breaking changes
-  - Package renamed from `emc-ui` to `@emc-dev/ui`
+  - Package renamed from `@emc-dev/ui` to `emc-ui`
   - Requires Angular 22+ and @lucide/angular 1.28+
   - All components are standalone
 
   ## Migration
 
   ```bash
-  pnpm remove emc-ui
-  pnpm add @emc-dev/ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
+  pnpm remove @emc-dev/ui
+  pnpm add emc-ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
   ```
 
   Update imports:
 
   ```diff
-  - import { ButtonComponent } from "emc-ui";
-  + import { ButtonComponent } from "@emc-dev/ui";
+  - import { ButtonComponent } from "@emc-dev/ui";
+  + import { ButtonComponent } from "emc-ui";
   ```
 
   Import styles:
 
   ```diff
-  - import "emc-ui/styles.css";
-  + import "@emc-dev/ui/styles.css";
+  - import "@emc-dev/ui/styles.css";
+  + import "emc-ui/styles.css";
   ```

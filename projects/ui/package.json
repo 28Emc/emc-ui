@@ -1,6 +1,6 @@
 {
-  "name": "@emc-dev/ui",
-  "version": "1.0.1",
+  "name": "emc-ui",
+  "version": "1.0.0",
   "description": "Personal Angular UI component library — standalone components with Tailwind CSS v4 and CDK.",
   "license": "MIT",
   "peerDependencies": {
