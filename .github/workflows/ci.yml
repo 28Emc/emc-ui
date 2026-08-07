@@ -37,6 +37,9 @@ jobs:
       - name: Build library
         run: pnpm build:ui
 
+      - name: Link local library for demo
+        run: pnpm add @edmech/ui@file:./dist/ui
+
       - name: Build demo
         run: pnpm build:demo
 
