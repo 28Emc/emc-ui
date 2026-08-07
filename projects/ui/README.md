@@ -12,6 +12,7 @@ pnpm add @edmech/ui @angular/animations @angular/cdk @angular/common @angular/co
 ```
 
 > **Peer dependencies** (requeridas, no se instalan automáticamente):
+>
 > - `@angular/*` ≥ 22.0.0
 > - `@lucide/angular` ≥ 1.28.0
 
@@ -33,15 +34,19 @@ import '@edmech/ui/styles.css'; // CSS precompilado (recomendado)
 ## Importar estilos
 
 ### Opción A: CSS precompilado (recomendado)
+
 ```ts
 import '@edmech/ui/styles.css';
 ```
+
 Incluye todas las utilidades Tailwind, animaciones y tokens de diseño. Listo para usar sin configuración extra.
 
 ### Opción B: Tailwind source (para personalizar)
+
 ```ts
 import '@edmech/ui/src/lib/styles/theme.css';
 ```
+
 Requiere Tailwind CSS v4 en tu proyecto. Permite extender/overridar tokens vía `@theme` o CSS variables.
 
 ```css
@@ -57,6 +62,7 @@ Requiere Tailwind CSS v4 en tu proyecto. Permite extender/overridar tokens vía 
 ## Theming
 
 ### Light (default)
+
 ```css
 :root {
   color-scheme: light;
@@ -68,6 +74,7 @@ Requiere Tailwind CSS v4 en tu proyecto. Permite extender/overridar tokens vía 
 ```
 
 ### Dark
+
 ```css
 .dark {
   color-scheme: dark;
@@ -82,16 +89,16 @@ Activa el modo oscuro añadiendo la clase `.dark` al `<html>` o a un contenedor 
 
 ## Componentes disponibles
 
-| Categoría | Componentes |
-|-----------|-------------|
-| **Botones** | `ButtonComponent` (primary, secondary, ghost, danger, outline, subtle; sm/md/lg/icon/icon-sm) |
-| **Inputs** | `InputComponent`, `TextareaComponent`, `SelectComponent`, `MaskedInputComponent`, `ComboboxComponent`, `MultiSelectComponent`, `TagInputComponent`, `DatePickerComponent`, `TimePickerComponent`, `DateRangePickerComponent`, `PasswordStrengthMeterComponent`, `SwitchComponent`, `RatingComponent`, `CheckboxComponent`, `RadioGroupComponent` |
-| **Formularios** | `FieldComponent`, `FormSectionComponent`, `LabelComponent`, `FieldErrorComponent` |
-| **Navegación** | `BreadcrumbComponent`, `SidebarComponent`, `TabsComponent`, `PaginationComponent`, `StepperComponent` |
-| **Overlays** | `ModalComponent`, `ConfirmModalComponent`, `DrawerComponent`, `PopoverComponent`, `DropdownComponent`, `TooltipDirective` |
-| **Feedback** | `ToastService` + `ToastHostComponent`, `SpinnerComponent`, `SkeletonComponent`, `PageLoaderComponent`, `EmptyStateComponent`, `BadgeComponent`, `ProgressComponent` |
-| **Data Display** | `CardComponent`, `StatCardComponent`, `ExpandableCardComponent`, `TableComponent`, `InfiniteScrollTableComponent`, `VirtualScrollListComponent`, `DragDropListComponent`, `AvatarComponent`, `AvatarGroupComponent`, `AccordionComponent`, `SparklineComponent` |
-| **Utils** | `ScreenReaderOnlyComponent`, `CopyToClipboardButtonComponent`, `ThemeSwitcherComponent` |
+| Categoría        | Componentes                                                                                                                                                                                                                                                                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Botones**      | `ButtonComponent` (primary, secondary, ghost, danger, outline, subtle; sm/md/lg/icon/icon-sm)                                                                                                                                                                                                                                                    |
+| **Inputs**       | `InputComponent`, `TextareaComponent`, `SelectComponent`, `MaskedInputComponent`, `ComboboxComponent`, `MultiSelectComponent`, `TagInputComponent`, `DatePickerComponent`, `TimePickerComponent`, `DateRangePickerComponent`, `PasswordStrengthMeterComponent`, `SwitchComponent`, `RatingComponent`, `CheckboxComponent`, `RadioGroupComponent` |
+| **Formularios**  | `FieldComponent`, `FormSectionComponent`, `LabelComponent`, `FieldErrorComponent`                                                                                                                                                                                                                                                                |
+| **Navegación**   | `BreadcrumbComponent`, `SidebarComponent`, `TabsComponent`, `PaginationComponent`, `StepperComponent`                                                                                                                                                                                                                                            |
+| **Overlays**     | `ModalComponent`, `ConfirmModalComponent`, `DrawerComponent`, `PopoverComponent`, `DropdownComponent`, `TooltipDirective`                                                                                                                                                                                                                        |
+| **Feedback**     | `ToastService` + `ToastHostComponent`, `SpinnerComponent`, `SkeletonComponent`, `PageLoaderComponent`, `EmptyStateComponent`, `BadgeComponent`, `ProgressComponent`                                                                                                                                                                              |
+| **Data Display** | `CardComponent`, `StatCardComponent`, `ExpandableCardComponent`, `TableComponent`, `InfiniteScrollTableComponent`, `VirtualScrollListComponent`, `DragDropListComponent`, `AvatarComponent`, `AvatarGroupComponent`, `AccordionComponent`, `SparklineComponent`                                                                                  |
+| **Utils**        | `ScreenReaderOnlyComponent`, `CopyToClipboardButtonComponent`, `ThemeSwitcherComponent`                                                                                                                                                                                                                                                          |
 
 Ver [Storybook](https://emc-ui.chromatic.com) para ejemplos interactivos y API completa.
 
@@ -105,12 +112,14 @@ Ver [Storybook](https://emc-ui.chromatic.com) para ejemplos interactivos y API c
 ## Configuración de build (consumers)
 
 ### Angular CLI (recomendado)
+
 ```json
 // angular.json
 "styles": ["node_modules/@edmech/ui/styles.css"]
 ```
 
 ### Vite / Tailwind CSS v4
+
 ```css
 /* global.css */
 @import '@edmech/ui/src/lib/styles/theme.css';
