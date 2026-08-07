@@ -1,132 +1,144 @@
-# emc-ui
+# @edmech/ui
 
-Design system de Timely Forms AI, portado a Angular — componentes standalone,
-tree-shakeable, con soporte de dark mode y theming vía CSS custom properties.
+Design system Angular — componentes standalone, accesibles, themable, con Tailwind CSS v4 y CDK.
+
+[![npm version](https://img.shields.io/npm/v/@edmech/ui.svg)](https://www.npmjs.com/package/@edmech/ui)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Instalación
 
 ```bash
-pnpm add emc-ui @angular/cdk @lucide/angular
+pnpm add @edmech/ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
 ```
 
-`@angular/cdk` y `@lucide/angular` son **peer dependencies** — la librería los necesita
-pero no los reinstala por ti, para evitar versiones duplicadas en tu proyecto.
+> **Peer dependencies** (requeridas, no se instalan automáticamente):
+> - `@angular/*` ≥ 22.0.0
+> - `@lucide/angular` ≥ 1.28.0
 
-## Configuración (un solo paso)
-
-Importa el stylesheet compilado **una sola vez**, en tus estilos globales:
-
-```css
-/* src/styles.css */
-@import 'emc-ui/styles.css';
-```
-
-o, si prefieres registrarlo desde `angular.json`:
-
-```json
-"styles": ["emc-ui/styles.css", "src/styles.css"]
-```
-
-**No necesitas tener Tailwind instalado ni configurado en tu proyecto.** Los estilos
-vienen precompilados dentro del paquete — este `styles.css` es autocontenido.
-
-## Uso
-
-Los componentes son standalone: se importan directo, sin `NgModule`.
+## Uso rápido
 
 ```ts
-import { Component } from '@angular/core';
-import { ButtonComponent, CardComponent } from 'emc-ui';
-
-@Component({
-  selector: 'app-example',
-  standalone: true,
-  imports: [ButtonComponent, CardComponent],
-  template: `
-    <ui-card>
-      <ui-button variant="primary" size="md">Guardar</ui-button>
-    </ui-card>
-  `,
-})
-export class ExampleComponent {}
-```
-
-## Dark mode
-
-El toggle es una clase `.dark` en `<html>` — tú controlas cuándo se activa:
-
-```ts
-document.documentElement.classList.toggle('dark');
-```
-
-## Formularios reactivos
-
-`Input`, `Textarea`, `Select` y `Switch` implementan `ControlValueAccessor`, así que
-funcionan igual que un control nativo dentro de un `FormGroup`:
-
-```ts
-form = new FormGroup({ email: new FormControl('') });
+import { ButtonComponent, InputComponent, FieldComponent } from '@edmech/ui';
+import '@edmech/ui/styles.css'; // CSS precompilado (recomendado)
 ```
 
 ```html
-<ui-input formControlName="email" placeholder="tu@email.com" />
+<ui-field label="Email" [required]="true">
+  <ui-input type="email" placeholder="you@example.com" />
+</ui-field>
+
+<ui-button variant="primary" (click)="save()">Guardar</ui-button>
 ```
 
-## Personalizar el color de marca (theming)
+## Importar estilos
 
-Todos los tokens son variables CSS reales — sobreescríbelas en tu propio `:root`
-**después** de importar `emc-ui/styles.css`:
+### Opción A: CSS precompilado (recomendado)
+```ts
+import '@edmech/ui/styles.css';
+```
+Incluye todas las utilidades Tailwind, animaciones y tokens de diseño. Listo para usar sin configuración extra.
+
+### Opción B: Tailwind source (para personalizar)
+```ts
+import '@edmech/ui/src/lib/styles/theme.css';
+```
+Requiere Tailwind CSS v4 en tu proyecto. Permite extender/overridar tokens vía `@theme` o CSS variables.
 
 ```css
-:root {
-  --color-brand-50: #eef4ff;
-  --color-brand-100: #d9e6ff;
-  --color-brand-200: #b3ccff;
-  --color-brand-300: #85adff;
-  --color-brand-400: #5b8fff;
-  --color-brand-500: #3b6fe0;
-  --color-brand-600: #2f57b8;
-  --color-brand-700: #26468f;
-  --color-brand-800: #1e3870;
-  --color-brand-900: #182d59;
+/* Tu global.css */
+@import '@edmech/ui/src/lib/styles/theme.css';
+
+/* Override tokens */
+@theme {
+  --color-brand-500: #0066ff;
 }
 ```
 
-> Cambia la escala completa (50→900), no solo un tono — si solo pisas `brand-500` el
-> resto de la UI (hovers, fondos sutiles) se queda con el teal original y se ve
-> inconsistente. Herramientas como los generadores de escalas de Radix Colors ayudan a
-> derivar los 10 tonos a partir de un solo hex manteniendo el mismo contraste relativo.
+## Theming
 
-Otros grupos de tokens dinamizables: superficies (`--surface`, `--app-bg`, `--border`,
-`--fg`), radios (`--radius-xl`, `--radius-2xl`), sombras (`--shadow-soft/card/pop`) y
-tipografía (`--font-sans`).
+### Light (default)
+```css
+:root {
+  color-scheme: light;
+  --app-bg: #ffffff;
+  --surface: #ffffff;
+  --fg: #0f172a;
+  /* ... */
+}
+```
+
+### Dark
+```css
+.dark {
+  color-scheme: dark;
+  --app-bg: #0a0c12;
+  --surface: #12151d;
+  --fg: #e9edf4;
+  /* ... */
+}
+```
+
+Activa el modo oscuro añadiendo la clase `.dark` al `<html>` o a un contenedor padre. El componente `ThemeSwitcherComponent` gestiona la persistencia automática.
 
 ## Componentes disponibles
 
-| Componente                                           | Selector                                 | Notas                                                         |
-| ---------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------- |
-| Button                                               | `ui-button`                              | variantes: primary, secondary, ghost, danger, outline, subtle |
-| Input / Textarea / Select                            | `ui-input`, `ui-textarea`, `ui-select`   | ControlValueAccessor                                          |
-| Label / Field / FieldError                           | `ui-label`, `ui-field`, `ui-field-error` | composición con Input                                         |
-| Card / StatCard                                      | `ui-card`, `ui-stat-card`                | —                                                             |
-| Modal / ConfirmModal                                 | `ui-modal`, `ui-confirm-modal`           | usa CDK Overlay                                               |
-| Drawer                                               | `ui-drawer`                              | panel lateral, usa CDK Overlay                                |
-| Dropdown / MenuItem                                  | `ui-dropdown`, `ui-menu-item`            | usa CDK Overlay                                               |
-| Switch                                               | `ui-switch`                              | ControlValueAccessor                                          |
-| Checkbox                                             | `ui-checkbox`                            | ControlValueAccessor                                          |
-| RadioGroup / Radio                                   | `ui-radio-group`, `ui-radio`             | ControlValueAccessor (RadioGroup maneja el valor)             |
-| Progress                                             | `ui-progress`                            | determinate + indeterminate                                   |
-| Tooltip                                              | `[uiTooltip]`                            | directiva, usa CDK Overlay                                    |
-| Toast                                                | `ToastService` + `ui-toast-host`         | servicio injectable con pila de notificaciones                |
-| Tabs / Tab                                           | `ui-tabs`, `ui-tab`                      | navegación por pestañas                                       |
-| Accordion / AccordionItem                            | `ui-accordion`, `ui-accordion-item`      | secciones colapsables                                         |
-| Stepper                                              | `ui-stepper`                             | pasos horizontales con estado                                 |
-| Table                                                | `ui-table`                               | ordenable + paginable, columnas configurables                 |
-| Avatar                                               | `ui-avatar`                              | —                                                             |
-| Spinner / PageLoader / Skeleton / Badge / EmptyState | `ui-spinner`, etc.                       | grupo de feedback                                             |
+| Categoría | Componentes |
+|-----------|-------------|
+| **Botones** | `ButtonComponent` (primary, secondary, ghost, danger, outline, subtle; sm/md/lg/icon/icon-sm) |
+| **Inputs** | `InputComponent`, `TextareaComponent`, `SelectComponent`, `MaskedInputComponent`, `ComboboxComponent`, `MultiSelectComponent`, `TagInputComponent`, `DatePickerComponent`, `TimePickerComponent`, `DateRangePickerComponent`, `PasswordStrengthMeterComponent`, `SwitchComponent`, `RatingComponent`, `CheckboxComponent`, `RadioGroupComponent` |
+| **Formularios** | `FieldComponent`, `FormSectionComponent`, `LabelComponent`, `FieldErrorComponent` |
+| **Navegación** | `BreadcrumbComponent`, `SidebarComponent`, `TabsComponent`, `PaginationComponent`, `StepperComponent` |
+| **Overlays** | `ModalComponent`, `ConfirmModalComponent`, `DrawerComponent`, `PopoverComponent`, `DropdownComponent`, `TooltipDirective` |
+| **Feedback** | `ToastService` + `ToastHostComponent`, `SpinnerComponent`, `SkeletonComponent`, `PageLoaderComponent`, `EmptyStateComponent`, `BadgeComponent`, `ProgressComponent` |
+| **Data Display** | `CardComponent`, `StatCardComponent`, `ExpandableCardComponent`, `TableComponent`, `InfiniteScrollTableComponent`, `VirtualScrollListComponent`, `DragDropListComponent`, `AvatarComponent`, `AvatarGroupComponent`, `AccordionComponent`, `SparklineComponent` |
+| **Utils** | `ScreenReaderOnlyComponent`, `CopyToClipboardButtonComponent`, `ThemeSwitcherComponent` |
 
-## Desarrollo de esta librería
+Ver [Storybook](https://emc-ui.chromatic.com) para ejemplos interactivos y API completa.
 
-Este README es el que viaja publicado dentro del paquete npm. Si vas a **contribuir**
-a la librería (no solo consumirla), consulta el `README.md` en la raíz del monorepo:
-ahí está cómo levantar la demo, compilar la librería y hacer el publish.
+## Accesibilidad
+
+- **WCAG 2.1 AA**: contraste, focus visible (`focus-visible:ring-2`), ARIA labels/roles, live regions
+- **Teclado**: navegación completa (Tab, Flechas, Enter, Escape, Home/End)
+- **Screen readers**: `aria-*` attributes, `role="dialog"`, `aria-live`, `screen-reader-only` utility
+- **Reduced motion**: respeta `prefers-reduced-motion: reduce`
+
+## Configuración de build (consumers)
+
+### Angular CLI (recomendado)
+```json
+// angular.json
+"styles": ["node_modules/@edmech/ui/styles.css"]
+```
+
+### Vite / Tailwind CSS v4
+```css
+/* global.css */
+@import '@edmech/ui/src/lib/styles/theme.css';
+```
+
+```js
+// vite.config.ts
+import tailwindcss from '@tailwindcss/vite';
+export default defineConfig({ plugins: [tailwindcss()] });
+```
+
+## Scripts útiles
+
+```json
+{
+  "scripts": {
+    "build:styles": "tailwindcss -i node_modules/@edmech/ui/src/lib/styles/theme.css -o src/styles.css",
+    "storybook": "storybook dev -p 6006"
+  }
+}
+```
+
+## Versionado y cambios
+
+- **SemVer** estricto
+- **Changelog** generado con [Changesets](https://github.com/changesets/changesets)
+- Ver [CHANGELOG.md](./CHANGELOG.md)
+
+## Licencia
+
+MIT © 2026 edmech-ui contributors. Ver [LICENSE](../LICENSE).

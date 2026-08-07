@@ -7,7 +7,7 @@ import {
   CardHeaderComponent,
   ExpandableCardComponent,
   StatCardComponent,
-} from 'emc-ui';
+} from '@edmech/ui';
 
 @Component({
   selector: 'app-layout-page',
