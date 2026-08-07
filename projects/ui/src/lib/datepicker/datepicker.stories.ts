@@ -10,10 +10,11 @@ const meta: Meta<DatePickerComponent> = {
     min: undefined,
     max: undefined,
     disabled: false,
+    name: 'birthDate',
   },
   render: (args) => ({
     props: args,
-    template: `<ui-datepicker [placeholder]="placeholder" [value]="value" [min]="min" [max]="max" [disabled]="disabled" />`,
+    template: `<ui-datepicker [placeholder]="placeholder" [value]="value" [min]="min" [max]="max" [disabled]="disabled" [name]="name" />`,
   }),
 };
 

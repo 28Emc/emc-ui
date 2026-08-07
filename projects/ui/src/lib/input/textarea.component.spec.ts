@@ -12,6 +12,8 @@ import { TextareaComponent } from './textarea.component';
     <ui-textarea
       [rows]="rows()"
       [placeholder]="placeholder()"
+      [name]="name()"
+      [autocomplete]="autocomplete()"
       [invalid]="invalid()"
       [(ngModel)]="value"
     />
@@ -20,6 +22,8 @@ import { TextareaComponent } from './textarea.component';
 class TextareaHost {
   readonly rows = signal(4);
   readonly placeholder = signal('');
+  readonly name = signal('');
+  readonly autocomplete = signal('');
   readonly invalid = signal(false);
   value = '';
 }
@@ -63,6 +67,14 @@ describe('TextareaComponent', () => {
     host.invalid.set(true);
     fixture.detectChanges();
     expect(textarea.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('forwards name and autocomplete attributes', () => {
+    host.name.set('comments');
+    host.autocomplete.set('off');
+    fixture.detectChanges();
+    expect(textarea.getAttribute('name')).toBe('comments');
+    expect(textarea.getAttribute('autocomplete')).toBe('off');
   });
 
   it('tracks touched state on blur', () => {

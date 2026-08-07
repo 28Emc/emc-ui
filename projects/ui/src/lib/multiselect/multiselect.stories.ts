@@ -24,10 +24,11 @@ const meta: Meta<MultiSelectComponent> = {
     disabled: false,
     maxVisibleOptions: 6,
     maxChips: 3,
+    name: 'skills',
   },
   render: (args) => ({
     props: args,
-    template: `<ui-multiselect [options]="options" [placeholder]="placeholder" [value]="value" [disabled]="disabled" [maxVisibleOptions]="maxVisibleOptions" [maxChips]="maxChips" />`,
+    template: `<ui-multiselect [options]="options" [placeholder]="placeholder" [value]="value" [disabled]="disabled" [maxVisibleOptions]="maxVisibleOptions" [maxChips]="maxChips" [name]="name" />`,
   }),
 };
 

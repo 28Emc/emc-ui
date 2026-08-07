@@ -13,6 +13,8 @@ import { cursorAtRawCount, extractMaskDigits, formatMask, placeholderFromMask } 
     <ui-masked-input
       [mask]="mask()"
       [placeholder]="placeholder()"
+      [name]="name()"
+      [autocomplete]="autocomplete()"
       [emitMasked]="emitMasked()"
       [ngModel]="value()"
       (ngModelChange)="value.set($event)"
@@ -22,6 +24,8 @@ import { cursorAtRawCount, extractMaskDigits, formatMask, placeholderFromMask } 
 class MaskedHost {
   readonly mask = signal('(###) ###-####');
   readonly placeholder = signal('');
+  readonly name = signal('');
+  readonly autocomplete = signal('');
   readonly emitMasked = signal(false);
   readonly value = signal('');
 }
@@ -86,6 +90,14 @@ describe('MaskedInputComponent', () => {
     host.placeholder.set('Teléfono');
     fixture.detectChanges();
     expect(input().placeholder).toBe('Teléfono');
+  });
+
+  it('forwards name and autocomplete attributes', () => {
+    host.name.set('phone');
+    host.autocomplete.set('tel');
+    fixture.detectChanges();
+    expect(input().getAttribute('name')).toBe('phone');
+    expect(input().getAttribute('autocomplete')).toBe('tel');
   });
 
   it('formats digits as they are typed and emits the raw value', () => {

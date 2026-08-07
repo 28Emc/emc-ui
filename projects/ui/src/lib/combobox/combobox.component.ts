@@ -51,6 +51,7 @@ let uidCounter = 0;
           role="combobox"
           autocomplete="off"
           [attr.id]="id() || null"
+          [attr.name]="name() || null"
           [attr.aria-expanded]="isOpen()"
           [attr.aria-controls]="listboxId"
           [attr.aria-activedescendant]="activeDescendant()"
@@ -103,6 +104,7 @@ export class ComboboxComponent implements ControlValueAccessor {
   readonly options = input<ComboboxOption[]>([]);
   readonly placeholder = input('');
   readonly id = input<string>();
+  readonly name = input<string>();
   readonly invalid = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
 

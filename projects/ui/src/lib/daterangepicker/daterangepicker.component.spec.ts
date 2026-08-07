@@ -13,6 +13,7 @@ import { DateRangePickerComponent, DateRangeValue } from './daterangepicker.comp
       [placeholder]="placeholder()"
       [min]="min()"
       [max]="max()"
+      [name]="name()"
       [ngModel]="value()"
       (ngModelChange)="value.set($event)"
     />
@@ -23,6 +24,7 @@ class DateRangePickerHost {
   readonly placeholder = signal('Elige un rango');
   readonly min = signal('');
   readonly max = signal('');
+  readonly name = signal('');
 }
 
 describe('DateRangePickerComponent', () => {
@@ -59,6 +61,14 @@ describe('DateRangePickerComponent', () => {
   it('shows the placeholder when empty', () => {
     expect(input().placeholder).toBe('Elige un rango');
     expect(input().value).toBe('');
+  });
+
+  it('forwards name, numeric inputmode and disables autofill', () => {
+    host.name.set('period');
+    fixture.detectChanges();
+    expect(input().getAttribute('name')).toBe('period');
+    expect(input().getAttribute('inputmode')).toBe('numeric');
+    expect(input().getAttribute('autocomplete')).toBe('off');
   });
 
   it('reflects a programmatic value as dd/mm/yyyy – dd/mm/yyyy', () => {

@@ -18,10 +18,12 @@ const meta: Meta<MaskedInputComponent> = {
     invalid: false,
     disabled: false,
     emitMasked: false,
+    name: 'phone',
+    autocomplete: 'tel',
   },
   render: (args) => ({
     props: args,
-    template: `<ui-masked-input [mask]="mask" [placeholder]="placeholder" [invalid]="invalid" [disabled]="disabled" [emitMasked]="emitMasked" />`,
+    template: `<ui-masked-input [mask]="mask" [placeholder]="placeholder" [invalid]="invalid" [disabled]="disabled" [emitMasked]="emitMasked" [name]="name" [autocomplete]="autocomplete" />`,
   }),
 };
 

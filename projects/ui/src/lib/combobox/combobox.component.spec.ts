@@ -16,11 +16,17 @@ const OPTIONS = [
   standalone: true,
   imports: [ComboboxComponent, FormsModule],
   template: `
-    <ui-combobox [options]="options()" [ngModel]="value()" (ngModelChange)="value.set($event)" />
+    <ui-combobox
+      [options]="options()"
+      [name]="name()"
+      [ngModel]="value()"
+      (ngModelChange)="value.set($event)"
+    />
   `,
 })
 class ComboboxHost {
   readonly options = signal(OPTIONS);
+  readonly name = signal('');
   readonly value = signal<string | null>(null);
 }
 
@@ -134,5 +140,20 @@ describe('ComboboxComponent', () => {
     fixture.detectChanges();
     const listbox = document.querySelector('ul[role="listbox"]');
     expect(listbox?.textContent).toContain('Sin resultados');
+  });
+
+  it('forwards name and disables autofill on the search input', () => {
+    host.name.set('framework');
+    fixture.detectChanges();
+    expect(input().getAttribute('name')).toBe('framework');
+    expect(input().getAttribute('autocomplete')).toBe('off');
+    expect(input().classList.contains('focus-visible:outline-none')).toBe(true);
+  });
+
+  it('renders a focus-within ring on the field wrapper', () => {
+    const wrapper = Array.from(fixture.nativeElement.querySelectorAll('div')).find((d) =>
+      (d as HTMLElement).classList.contains('focus-within:ring-4'),
+    );
+    expect(wrapper).toBeTruthy();
   });
 });

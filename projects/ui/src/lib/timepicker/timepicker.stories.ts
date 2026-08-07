@@ -12,10 +12,11 @@ const meta: Meta<TimePickerComponent> = {
     format: undefined,
     minuteStep: 1,
     disabled: false,
+    name: 'startTime',
   },
   render: (args) => ({
     props: args,
-    template: `<ui-timepicker [placeholder]="placeholder" [value]="value" [min]="min" [max]="max" [format]="format" [minuteStep]="minuteStep" [disabled]="disabled" />`,
+    template: `<ui-timepicker [placeholder]="placeholder" [value]="value" [min]="min" [max]="max" [format]="format" [minuteStep]="minuteStep" [disabled]="disabled" [name]="name" />`,
   }),
 };
 

@@ -13,6 +13,8 @@ import { InputComponent, InputType } from './input.component';
       [type]="type()"
       [placeholder]="placeholder()"
       [id]="id()"
+      [name]="name()"
+      [autocomplete]="autocomplete()"
       [invalid]="invalid()"
       [disabled]="disabled()"
       [(ngModel)]="value"
@@ -23,6 +25,8 @@ class InputHost {
   readonly type = signal<InputType>('text');
   readonly placeholder = signal('');
   readonly id = signal('');
+  readonly name = signal('');
+  readonly autocomplete = signal('');
   readonly invalid = signal(false);
   readonly disabled = signal(false);
   value = '';
@@ -74,6 +78,14 @@ describe('InputComponent', () => {
     host.invalid.set(true);
     fixture.detectChanges();
     expect(input.getAttribute('aria-invalid')).toBe('true');
+  });
+
+  it('forwards name and autocomplete attributes', () => {
+    host.name.set('email');
+    host.autocomplete.set('email');
+    fixture.detectChanges();
+    expect(input.getAttribute('name')).toBe('email');
+    expect(input.getAttribute('autocomplete')).toBe('email');
   });
 
   it('disables the input', () => {

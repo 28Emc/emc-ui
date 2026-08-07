@@ -104,6 +104,7 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
           type="text"
           inputmode="numeric"
           autocomplete="off"
+          [attr.name]="name() || null"
           [placeholder]="effectivePlaceholder()"
           [value]="displayText()"
           [disabled]="disabled() || formDisabled()"
@@ -310,6 +311,7 @@ export class DateRangePickerComponent implements ControlValueAccessor {
   readonly max = input<string>();
   readonly invalid = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly name = input<string>();
 
   protected readonly isOpen = signal(false);
   protected readonly formDisabled = signal(false);

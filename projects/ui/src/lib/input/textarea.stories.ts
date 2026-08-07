@@ -16,10 +16,12 @@ const meta: Meta<TextareaComponent> = {
     placeholder: 'Describe el problema…',
     invalid: false,
     disabled: false,
+    name: 'comments',
+    autocomplete: 'off',
   },
   render: (args) => ({
     props: args,
-    template: `<ui-textarea [rows]="rows" [placeholder]="placeholder" [invalid]="invalid" [disabled]="disabled" />`,
+    template: `<ui-textarea [rows]="rows" [placeholder]="placeholder" [invalid]="invalid" [disabled]="disabled" [name]="name" [autocomplete]="autocomplete" />`,
   }),
 };
 

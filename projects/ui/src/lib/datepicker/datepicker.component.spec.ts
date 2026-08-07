@@ -13,6 +13,7 @@ import { DatePickerComponent } from './datepicker.component';
       [placeholder]="placeholder()"
       [min]="min()"
       [max]="max()"
+      [name]="name()"
       [ngModel]="value()"
       (ngModelChange)="value.set($event)"
     />
@@ -23,6 +24,7 @@ class DatePickerHost {
   readonly placeholder = signal('Elige una fecha');
   readonly min = signal('');
   readonly max = signal('');
+  readonly name = signal('');
 }
 
 describe('DatePickerComponent', () => {
@@ -52,6 +54,14 @@ describe('DatePickerComponent', () => {
   it('shows the placeholder when empty', () => {
     expect(input().placeholder).toBe('Elige una fecha');
     expect(input().value).toBe('');
+  });
+
+  it('forwards name, numeric inputmode and disables autofill', () => {
+    host.name.set('birthDate');
+    fixture.detectChanges();
+    expect(input().getAttribute('name')).toBe('birthDate');
+    expect(input().getAttribute('inputmode')).toBe('numeric');
+    expect(input().getAttribute('autocomplete')).toBe('off');
   });
 
   it('reflects a programmatic value as dd/mm/yyyy', () => {

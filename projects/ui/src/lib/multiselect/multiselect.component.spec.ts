@@ -17,11 +17,17 @@ const OPTIONS: MultiSelectOption[] = [
   standalone: true,
   imports: [MultiSelectComponent, FormsModule],
   template: `
-    <ui-multiselect [options]="options()" [ngModel]="value()" (ngModelChange)="value.set($event)" />
+    <ui-multiselect
+      [options]="options()"
+      [name]="name()"
+      [ngModel]="value()"
+      (ngModelChange)="value.set($event)"
+    />
   `,
 })
 class MultiSelectHost {
   readonly options = signal<MultiSelectOption[]>(OPTIONS);
+  readonly name = signal('');
   readonly value = signal<string[]>([]);
 }
 
@@ -218,5 +224,20 @@ describe('MultiSelectComponent', () => {
     fixture.detectChanges();
     expect(host.value()).toEqual(['angular']);
     expect((comp() as any).isOpen()).toBe(true);
+  });
+
+  it('forwards name and disables autofill on the search input', () => {
+    host.name.set('skills');
+    fixture.detectChanges();
+    expect(input().getAttribute('name')).toBe('skills');
+    expect(input().getAttribute('autocomplete')).toBe('off');
+    expect(input().classList.contains('focus-visible:outline-none')).toBe(true);
+  });
+
+  it('renders a focus-within ring on the field wrapper', () => {
+    const wrapper = Array.from(fixture.nativeElement.querySelectorAll('div')).find((d) =>
+      (d as HTMLElement).classList.contains('focus-within:ring-4'),
+    );
+    expect(wrapper).toBeTruthy();
   });
 });

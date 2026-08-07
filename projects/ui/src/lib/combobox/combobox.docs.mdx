@@ -38,5 +38,9 @@ language="typescript"
 | `value`       | `string \| null`              | Valor seleccionado     |
 | `placeholder` | `string`                      | Texto del campo vacío  |
 | `id`          | `string`                      | Id del input           |
+| `name`        | `string`                      | Atributo `name`        |
 | `invalid`     | `boolean`                     | Estilo de error        |
 | `disabled`    | `boolean`                     | Deshabilita el control |
+
+El input interno usa `autocomplete="off"` para evitar que el autocompletado del navegador interfiera
+con el filtrado del listado.

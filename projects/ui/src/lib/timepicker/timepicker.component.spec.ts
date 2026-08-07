@@ -15,6 +15,7 @@ import { TimePickerComponent } from './timepicker.component';
       [max]="max()"
       [format]="format()"
       [minuteStep]="minuteStep()"
+      [name]="name()"
       [ngModel]="value()"
       (ngModelChange)="value.set($event)"
     />
@@ -27,6 +28,7 @@ class TimePickerHost {
   readonly max = signal('');
   readonly format = signal('');
   readonly minuteStep = signal(1);
+  readonly name = signal('');
 }
 
 describe('TimePickerComponent', () => {
@@ -60,6 +62,14 @@ describe('TimePickerComponent', () => {
   it('shows the placeholder when empty', () => {
     expect(input().placeholder).toBe('Elige una hora');
     expect(input().value).toBe('');
+  });
+
+  it('forwards name, numeric inputmode and disables autofill', () => {
+    host.name.set('startTime');
+    fixture.detectChanges();
+    expect(input().getAttribute('name')).toBe('startTime');
+    expect(input().getAttribute('inputmode')).toBe('numeric');
+    expect(input().getAttribute('autocomplete')).toBe('off');
   });
 
   it('reflects a programmatic value as HH:mm', () => {

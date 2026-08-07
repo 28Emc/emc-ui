@@ -10,10 +10,11 @@ const meta: Meta<DateRangePickerComponent> = {
     min: undefined,
     max: undefined,
     disabled: false,
+    name: 'period',
   },
   render: (args) => ({
     props: args,
-    template: `<ui-daterangepicker [placeholder]="placeholder" [value]="value" [min]="min" [max]="max" [disabled]="disabled" />`,
+    template: `<ui-daterangepicker [placeholder]="placeholder" [value]="value" [min]="min" [max]="max" [disabled]="disabled" [name]="name" />`,
   }),
 };
 

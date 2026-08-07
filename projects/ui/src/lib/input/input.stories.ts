@@ -16,10 +16,12 @@ const meta: Meta<InputComponent> = {
     placeholder: 'Ingresa tu correo',
     invalid: false,
     disabled: false,
+    name: 'email',
+    autocomplete: 'email',
   },
   render: (args) => ({
     props: args,
-    template: `<ui-input [type]="type" [placeholder]="placeholder" [invalid]="invalid" [disabled]="disabled" />`,
+    template: `<ui-input [type]="type" [placeholder]="placeholder" [invalid]="invalid" [disabled]="disabled" [name]="name" [autocomplete]="autocomplete" />`,
   }),
 };
 

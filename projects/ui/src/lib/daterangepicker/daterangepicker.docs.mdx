@@ -36,8 +36,12 @@ El campo también acepta escribir ambos extremos separados por `–`,
 | ------------- | -------------------------- | ------------------------------------------------------------------- |
 | `value`       | `[string, string] \| null` | Rango `[inicio, fin]` en ISO `YYYY-MM-DD`                           |
 | `placeholder` | `string`                   | Texto del campo vacío                                               |
+| `name`        | `string`                   | Atributo `name`                                                     |
 | `format`      | `string`                   | `'d'…` → `dd/MM/yyyy`, `'m'…` → `MM/dd/yyyy`, `'y'…` → `yyyy/MM/dd` |
 | `min`         | `string`                   | Fecha mínima permitida (ISO)                                        |
 | `max`         | `string`                   | Fecha máxima permitida (ISO)                                        |
 | `invalid`     | `boolean`                  | Estilo de error                                                     |
 | `disabled`    | `boolean`                  | Deshabilita el control                                              |
+
+El input usa `inputmode="numeric"` y `autocomplete="off"`: la máscara inserta los separadores
+automáticamente mientras se escribe.

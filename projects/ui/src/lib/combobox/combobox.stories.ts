@@ -20,10 +20,11 @@ const meta: Meta<ComboboxComponent> = {
     placeholder: 'Buscar framework…',
     value: null,
     disabled: false,
+    name: 'framework',
   },
   render: (args) => ({
     props: args,
-    template: `<ui-combobox [options]="options" [placeholder]="placeholder" [value]="value" [disabled]="disabled" />`,
+    template: `<ui-combobox [options]="options" [placeholder]="placeholder" [value]="value" [disabled]="disabled" [name]="name" />`,
   }),
 };
 

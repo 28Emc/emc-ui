@@ -36,9 +36,13 @@ defecto es‑PE → 24h) o el input `format`.
 | ------------- | ---------------- | --------------------------------------------- |
 | `value`       | `string \| null` | Hora en formato `HH:mm` (24h)                 |
 | `placeholder` | `string`         | Texto del campo vacío                         |
+| `name`        | `string`         | Atributo `name`                               |
 | `format`      | `string`         | `'h…'` → 12h, cualquier otro → 24h            |
 | `min`         | `string`         | Hora mínima permitida (`HH:mm`)               |
 | `max`         | `string`         | Hora máxima permitida (`HH:mm`)               |
 | `minuteStep`  | `number`         | Incremento de minutos en la lista (default 1) |
 | `invalid`     | `boolean`        | Estilo de error                               |
-| `disabled`    | `boolean`        | Deshabilita el control                        |
+
+El input usa `inputmode="numeric"` y `autocomplete="off"`: la máscara inserta los separadores
+automáticamente mientras se escribe.
+| `disabled` | `boolean` | Deshabilita el control |

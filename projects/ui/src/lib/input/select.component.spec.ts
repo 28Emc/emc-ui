@@ -11,6 +11,8 @@ import { SelectComponent } from './select.component';
   template: `
     <ui-select
       [placeholder]="placeholder()"
+      [name]="name()"
+      [autocomplete]="autocomplete()"
       [invalid]="invalid()"
       [disabled]="disabled()"
       [(ngModel)]="value"
@@ -22,6 +24,8 @@ import { SelectComponent } from './select.component';
 })
 class SelectHost {
   readonly placeholder = signal('');
+  readonly name = signal('');
+  readonly autocomplete = signal('');
   readonly invalid = signal(false);
   readonly disabled = signal(false);
   value = '';
@@ -81,6 +85,14 @@ describe('SelectComponent', () => {
   it('applies the chevron background and appearance reset', () => {
     expect(select.classList.contains('appearance-none')).toBe(true);
     expect(select.style.backgroundImage).toContain('data:image/svg+xml');
+  });
+
+  it('forwards name and autocomplete attributes', () => {
+    host.name.set('country');
+    host.autocomplete.set('country-name');
+    fixture.detectChanges();
+    expect(select.getAttribute('name')).toBe('country');
+    expect(select.getAttribute('autocomplete')).toBe('country-name');
   });
 
   it('tracks touched state on blur', () => {

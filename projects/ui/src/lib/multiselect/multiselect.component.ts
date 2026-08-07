@@ -80,6 +80,7 @@ let uidCounter = 0;
             role="combobox"
             autocomplete="off"
             [attr.id]="id() || null"
+            [attr.name]="name() || null"
             [attr.aria-expanded]="isOpen()"
             [attr.aria-controls]="listboxId"
             [attr.aria-activedescendant]="activeDescendant()"
@@ -145,6 +146,7 @@ export class MultiSelectComponent implements ControlValueAccessor {
   readonly options = input<MultiSelectOption[]>([]);
   readonly placeholder = input('');
   readonly id = input<string>();
+  readonly name = input<string>();
   readonly invalid = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly maxVisibleOptions = input(6);
