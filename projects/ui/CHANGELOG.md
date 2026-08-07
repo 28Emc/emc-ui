@@ -1,5 +1,13 @@
 # emc-ui
 
+## 2.0.0
+
+### Major Changes
+
+- 40d0f2c: Initial release of emc-ui
+
+  Personal Angular UI component library with standalone components, Tailwind CSS v4, and CDK integration.
+
 ## 1.0.0
 
 ### Major Changes
