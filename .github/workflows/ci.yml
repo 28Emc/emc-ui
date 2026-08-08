@@ -34,11 +34,8 @@ jobs:
       - name: Check formatting
         run: pnpm format:check
 
-      - name: Build library
-        run: pnpm build:ui
-
-      - name: Link local library for demo
-        run: pnpm add emc-ui@file:./dist/ui
+      - name: Build libraries
+        run: pnpm build
 
       - name: Build demo
         run: pnpm build:demo

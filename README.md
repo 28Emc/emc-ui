@@ -1,142 +1,107 @@
-# emc-ui
+# emc-ui monorepo
 
-Design system de **Timely Forms AI**, portado a Angular — componentes standalone,
-tree-shakeable, con dark mode y theming vía CSS custom properties. Monorepo pnpm con
-la librería (`projects/ui`) y una app de demo (`projects/demo`).
+Design system monorepo (pnpm workspaces + Turborepo) with two publishable packages and a demo app.
 
-## Estructura
+| Package | Stack | What it is |
+|---|---|---|
+| [`packages/ng-ui`](./packages/ng-ui) → `@emc-dev/ng-ui` | Angular 22, standalone components | Angular component library (`ui-*` selectors) |
+| [`packages/emc-ui`](./packages/emc-ui) → `@emc-dev/emc-ui` | Lit, vanilla TS, Tailwind CSS v4 | Framework-agnostic Web Components (`emc-*` elements) |
+| [`projects/demo`](./projects/demo) | Angular app | Showcases the `ng-ui` components by category |
 
-```
-projects/
-  ui/     Librería publicable (emc-ui) — componentes standalone + theme.css
-  demo/   App Angular que muestra cada componente por categoría (Inputs, Overlays,
-          Feedback, Layout, **Advanced**) con dark-mode toggle en el shell
-scripts/export-styles.mjs   Añade los subpaths CSS al mapa "exports" de dist/ui
-docs/    AGENT_PROMPT.md (spec/plan) y DESIGN.md (referencia de estilo)
-```
-
-## Requisitos
+## Requirements
 
 - Node.js ≥ 20
-- pnpm ≥ 11 (mira `packageManager` en `package.json`)
+- pnpm ≥ 11 (see `packageManager` in `package.json`)
 
-## Instalación
+## Getting started
 
 ```bash
 pnpm install
+pnpm build      # build both packages (turbo)
+pnpm start      # ng serve demo → http://localhost:4200
 ```
 
-## Correr la demo
+The demo resolves `@emc-dev/ng-ui` **from source** through TS paths
+(`projects/demo/tsconfig.app.json`), so there is no install/rebuild step between
+editing the library and reloading the demo.
 
-La demo importa la librería **desde `dist/ui`** (nunca por rutas relativas a
-`projects/ui/src`), así que hay que compilar la librería antes del primer serve:
+## Scripts
+
+| Script | Description |
+|--------|-------------|
+| `pnpm build` | Build both packages (`turbo run build`) |
+| `pnpm build:ng-ui` | Build `@emc-dev/ng-ui` |
+| `pnpm build:emc-ui` | Build `@emc-dev/emc-ui` |
+| `pnpm build:demo` | Build the demo app (`ng build demo`) |
+| `pnpm start` / `pnpm serve` | Dev server for the demo (`ng serve demo`) |
+| `pnpm build:styles` | Compile the ng-ui Tailwind theme → `packages/ng-ui/styles.css` |
+| `pnpm watch` | Watch mode for packages (`turbo run dev`) |
+| `pnpm test` / `pnpm test:watch` | Run unit tests (vitest) |
+| `pnpm lint` / `pnpm lint:fix` | ESLint |
+| `pnpm format` / `pnpm format:check` | Prettier |
+| `pnpm storybook` / `pnpm build-storybook` | Storybook dev server / static build |
+| `pnpm changeset` / `pnpm version` | Changesets release management |
+| `pnpm release` | Build both packages and publish (`changeset publish`) |
+
+## Publishing
+
+Both packages publish to the public npm registry under the `@emc-dev` scope.
+
+- **`@emc-dev/ng-ui`** is compiled by ng-packagr into `dist/ng-ui`. Its
+  `publishConfig.directory` points there, so `changeset publish` uploads only the
+  compiled output (fesm + types + styles) plus `README.md` and `LICENSE`. The
+  `postbuild` step patches the `exports` map with the CSS subpaths.
+- **`@emc-dev/emc-ui`** is bundled by tsup in place. Its `files` whitelist keeps the
+  tarball to `dist`, `README.md`, `CHANGELOG.md` and `LICENSE`.
+
+Verify the tarballs before releasing:
 
 ```bash
-pnpm build:ui     # compila projects/ui → dist/ui
-pnpm serve        # ng serve demo en http://localhost:4200
+cd packages/emc-ui && npm pack --dry-run --pack-destination "$TEMP"
+cd ../../dist/ng-ui && npm pack --dry-run --pack-destination "$TEMP"
 ```
 
-> Tras editar código de `projects/ui`, vuelve a correr `pnpm build:ui` antes de
-> recargar la demo. Ojo: si `ng build ui` falla se borra `dist/ui` y la demo deja de
-> compilar.
+Release flow:
+
+```bash
+pnpm changeset   # add a changeset for your change
+pnpm version     # bump versions and update CHANGELOGs
+pnpm release     # build + publish (run by CI too)
+```
 
 ## Storybook
 
-Documentación visual de los componentes (CSF, framework `@storybook/angular-vite`):
+Visual documentation of the `ng-ui` components (CSF, `@storybook/angular-vite`):
 
 ```bash
-pnpm build:styles      # genera projects/ui/styles.css (lo importa .storybook/preview.ts)
-pnpm storybook         # dev server en http://localhost:6006
-pnpm build-storybook   # build estático → storybook-static/
+pnpm build:styles    # generates packages/ng-ui/styles.css (imported by .storybook/preview.ts)
+pnpm storybook       # dev server on http://localhost:6006
+pnpm build-storybook # static build → storybook-static/
 ```
 
-Las stories viven junto a cada componente (`*.stories.ts`) y compilan los
-componentes **desde `projects/ui/src`** (no desde `dist/ui`). Las API tables las
-genera Compodoc a partir de `.storybook/compodoc.tsconfig.json`.
+Stories live next to each component (`*.stories.ts`). API tables are generated by
+Compodoc from `.storybook/compodoc.tsconfig.json`.
 
 ## Tests
 
-Unit tests con vitest (runner `@angular/build:unit-test`) sobre `projects/ui`:
+Unit tests with vitest (`@angular/build:unit-test`) run with:
 
 ```bash
-pnpm test            # ejecuta los tests una vez
-pnpm test:watch      # modo watch
+pnpm test        # once
+pnpm test:watch  # watch mode
 ```
 
-Los specs viven junto a cada componente (`*.component.spec.ts`). En tests,
-los hosts que mutan inputs deben usar `signal()` para propagar cambios con
-`fixture.detectChanges()` (entorno zoneless); los servicios con timers usan
-`vi.useFakeTimers()`.
+Specs live next to each component (`*.component.spec.ts`). In tests, host inputs
+must use `signal()` to propagate changes with `fixture.detectChanges()` (zoneless
+environment); services with timers use `vi.useFakeTimers()`.
 
-## Compilar la librería
-
-```bash
-pnpm build:styles   # compila theme.css con Tailwind → projects/ui/styles.css (41 kB, autocontenido)
-pnpm build:ui       # ng build ui + parchea "exports" en dist/ui/package.json
-```
-
-`pnpm build:ui` genera `dist/ui` con:
-
-- `fesm2022/emc-ui.mjs` (+ source map)
-- `types/emc-ui.d.ts`
-- `styles.css` — estilos compilados y autocontenidos (sin necesidad de Tailwind en el consumidor)
-- `src/lib/styles/theme.css` — fuente de tokens, para integración a nivel de Tailwind
-- `package.json` con `exports` para `./styles.css`
-
-## Calidad de código
-
-```bash
-pnpm lint           # ESLint (angular-eslint, flat config)
-pnpm lint:fix       # ESLint con autofix
-pnpm format         # Prettier --write .
-pnpm format:check   # Prettier --check .
-```
-
-## CI y Release
+## CI/CD
 
 GitHub Actions:
 
-- `.github/workflows/ci.yml` — en cada push a `main` y en PRs: `pnpm install` →
-  `lint` → `format:check` → `build:ui` → `build:demo` → `test`.
-- `.github/workflows/release.yml` — al pushear un tag `v*`: valida `lint` + `test`,
-  compila la librería y publica `dist/ui` en npm. Requiere el secret `NPM_TOKEN`.
+- `.github/workflows/ci.yml` — on every push to `main` and PRs: install → lint →
+  format → build packages → build demo → build storybook → test.
+- `.github/workflows/release.yml` — on `main`: uses `changesets/action` to open a
+  versioning PR and, when merged, run `pnpm release` to publish both packages.
 
-Flujo de release:
-
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
-
-## Publicar
-
-Verifica primero con un dry-run (no sube nada):
-
-```bash
-cd dist/ui
-pnpm publish --dry-run --no-git-checks   # añade --no-git-checks si el árbol no está limpio
-```
-
-Publicar de verdad:
-
-```bash
-cd dist/ui
-pnpm publish
-```
-
-## Probar la librería en un proyecto limpio
-
-Para validar el DoD ("un app Angular sin Tailwind puede consumir la librería solo con
-`styles.css`"):
-
-1. `cd dist/ui && pnpm pack` para generar el tarball.
-2. Crea una app nueva (`ng new consumer`), instala el tarball y `@angular/cdk` +
-   `@lucide/angular`.
-3. Añade `"node_modules/emc-ui/styles.css"` a `styles` en `angular.json` e importa
-   componentes desde `emc-ui`.
-
-## Consumir la librería
-
-Si solo vas a **usarla** (no contribuir), el README que viaja publicado es
-[`projects/ui/README.md`](./projects/ui/README.md): instalación, peer deps, dark mode,
-theming/tokens y tabla de componentes.
+Requires an `NPM_TOKEN` secret configured in the repository.

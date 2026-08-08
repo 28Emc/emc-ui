@@ -30,7 +30,10 @@ Thumbs.db
 .DS_Store
 
 # Library compiled stylesheet
-projects/ui/styles.css
+packages/ng-ui/styles.css
+
+# Turbo
+.turbo/
 
 # Storybook
 storybook-static/

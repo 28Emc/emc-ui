@@ -1,12 +1,12 @@
-# emc-ui
+# @emc-dev/ng-ui
 
 ## 1.0.0
 
 ### Major Changes
 
-- Initial release of emc-ui
+- Initial release of @emc-dev/ng-ui
 
-  Personal Angular UI component library with standalone components, Tailwind CSS v4, and CDK integration.
+  Angular UI component library with standalone components, Tailwind CSS v4, and CDK integration.
 
   ## Features
   - **35+ components**: Button, Input, Textarea, Select, MaskedInput, Combobox, MultiSelect, TagInput, DatePicker, TimePicker, DateRangePicker, PasswordStrengthMeter, Switch, Rating, Checkbox, RadioGroup
@@ -32,27 +32,27 @@
   - Container queries ready
 
   ## Breaking changes
-  - Package renamed from `@emc-dev/ui` to `emc-ui`
+  - Package renamed from `emc-ui` to `@emc-dev/ng-ui`
   - Requires Angular 22+ and @lucide/angular 1.28+
   - All components are standalone
 
   ## Migration
 
   ```bash
-  pnpm remove @emc-dev/ui
-  pnpm add emc-ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
+  pnpm remove emc-ui
+  pnpm add @emc-dev/ng-ui @angular/animations @angular/cdk @angular/common @angular/core @angular/forms @angular/router @lucide/angular
   ```
 
   Update imports:
 
   ```diff
-  - import { ButtonComponent } from "@emc-dev/ui";
-  + import { ButtonComponent } from "emc-ui";
+  - import { ButtonComponent } from "emc-ui";
+  + import { ButtonComponent } from "@emc-dev/ng-ui";
   ```
 
   Import styles:
 
   ```diff
-  - import "@emc-dev/ui/styles.css";
-  + import "emc-ui/styles.css";
+  - import "emc-ui/styles.css";
+  + import "@emc-dev/ng-ui/styles.css";
   ```

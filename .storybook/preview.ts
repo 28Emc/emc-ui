@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/angular-vite';
 import { applicationConfig } from '@storybook/angular-vite';
 import { provideRouter } from '@angular/router';
-import '../projects/ui/styles.css';
+import '../packages/ng-ui/styles.css';
 
 const preview: Preview = {
   parameters: {

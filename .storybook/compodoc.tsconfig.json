@@ -1,5 +1,5 @@
 {
-  "extends": "../projects/ui/tsconfig.lib.json",
-  "include": ["../projects/ui/src/lib/**/*.ts"],
+  "extends": "../packages/ng-ui/tsconfig.lib.json",
+  "include": ["../packages/ng-ui/src/lib/**/*.ts"],
   "exclude": ["**/*.spec.ts", "**/*.stories.ts"]
 }

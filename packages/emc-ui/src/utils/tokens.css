@@ -1,0 +1,87 @@
+/* ============================================================================
+   EMC UI - Design Tokens
+   ============================================================================ */
+
+:root {
+  /* Color Scheme */
+  color-scheme: light;
+
+  /* Font */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Brand Colors */
+  --color-brand-50: #e8f7f4;
+  --color-brand-100: #c7ece5;
+  --color-brand-200: #95dccd;
+  --color-brand-300: #5cc8b4;
+  --color-brand-400: #32b49f;
+  --color-brand-500: #15a18b;
+  --color-brand-600: #0c8b7c;
+  --color-brand-700: #0b7064;
+  --color-brand-800: #0c5a51;
+  --color-brand-900: #0c4a43;
+
+  /* Accent Colors */
+  --color-accent-gold: #bfa23a;
+  --color-accent-coral: #c2706a;
+  --color-accent-purple: #7e6cc0;
+  --color-accent-blue: #6f86c9;
+
+  /* Radius */
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+
+  /* Shadows */
+  --shadow-soft: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 16px rgba(16, 24, 40, 0.01);
+  --shadow-card: 0 1px 3px rgba(16, 24, 40, 0.05), 0 12px 32px -12px rgba(16, 24, 40, 0.12);
+  --shadow-pop: 0 12px 40px -8px rgba(16, 24, 40, 0.22);
+
+  /* Light Theme */
+  --app-bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: #e8ebf0;
+  --fg: #0f172a;
+  --fg-muted: #64748b;
+}
+
+/* Dark Theme */
+.dark {
+  color-scheme: dark;
+  --app-bg: #0a0c12;
+  --surface: #12151d;
+  --surface-2: #171b25;
+  --border: #232936;
+  --fg: #e9edf4;
+  --fg-muted: #8a93a6;
+}
+
+/* Accent Colors (available in both themes) */
+:root {
+  --color-accent-gold: #bfa23a;
+  --color-accent-coral: #c2706a;
+  --color-accent-purple: #7e6cc0;
+  --color-accent-blue: #6f86c9;
+
+  /* Radius */
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.125rem;
+
+  /* Shadows */
+  --shadow-soft: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 16px rgba(16, 24, 40, 0.01);
+  --shadow-card: 0 1px 3px rgba(16, 24, 40, 0.05), 0 12px 32px -12px rgba(16, 24, 40, 0.12);
+  --shadow-pop: 0 12px 40px -8px rgba(16, 24, 40, 0.22);
+
+  /* Font */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Dark Theme Overrides */
+.dark {
+  --app-bg: #0a0c12;
+  --surface: #12151d;
+  --surface-2: #171b25;
+  --border: #232936;
+  --fg: #e9edf4;
+  --fg-muted: #8a93a6;
+}

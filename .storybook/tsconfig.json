@@ -1,5 +1,5 @@
 {
-  "extends": "../projects/ui/tsconfig.lib.json",
+  "extends": "../packages/ng-ui/tsconfig.lib.json",
   "compilerOptions": {
     "composite": false,
     "declaration": false,
@@ -7,5 +7,5 @@
     "outDir": null,
     "noEmit": true
   },
-  "include": ["*.ts", "../projects/ui/src/**/*.stories.ts"]
+  "include": ["*.ts", "../packages/ng-ui/src/lib/**/*.stories.ts"]
 }
