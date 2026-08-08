@@ -7,7 +7,8 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 @customElement('emc-toast-host')
 export class EmcToastHost extends LitElement {
-  @property({ type: String }) position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' = 'bottom-right';
+  @property({ type: String }) position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' =
+    'bottom-right';
   @state() private toasts: Array<{ id: string; element: HTMLElement }> = [];
 
   static styles = css`
@@ -56,13 +57,18 @@ export class EmcToastHost extends LitElement {
   }
 
   removeToast(id: string) {
-    this.toasts = this.toasts.filter(t => t.id !== id);
+    this.toasts = this.toasts.filter((t) => t.id !== id);
   }
 
   render() {
     return html`
-      <div class="toast-host ${this.position}" role="region" aria-live="polite" aria-label="Notificaciones">
-        ${this.toasts.map(t => t.element)}
+      <div
+        class="toast-host ${this.position}"
+        role="region"
+        aria-live="polite"
+        aria-label="Notificaciones"
+      >
+        ${this.toasts.map((t) => t.element)}
       </div>
     `;
   }

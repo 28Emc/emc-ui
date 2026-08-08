@@ -86,14 +86,14 @@ Override the variables anywhere in your own stylesheet to rebrand the library.
 
 ## Components
 
-| Category | Elements |
-|----------|----------|
-| **Actions** | `emc-button` (variants: primary, secondary, ghost, danger, outline, subtle; sizes: sm, md, lg, icon, icon-sm), `emc-progress` |
-| **Display** | `emc-badge`, `emc-card` + `emc-card-header` + `emc-card-body`, `emc-stat-card`, `emc-divider` |
-| **Feedback** | `emc-skeleton`, `emc-spinner`, `emc-toast` + `emc-toast-host` |
-| **Navigation** | `emc-tabs` + `emc-tab` + `emc-tab-panel`, `emc-stepper`, `emc-tooltip` |
-| **Overlays** | `emc-popover` |
-| **People** | `emc-avatar`, `emc-avatar-group` |
+| Category       | Elements                                                                                                                      |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Actions**    | `emc-button` (variants: primary, secondary, ghost, danger, outline, subtle; sizes: sm, md, lg, icon, icon-sm), `emc-progress` |
+| **Display**    | `emc-badge`, `emc-card` + `emc-card-header` + `emc-card-body`, `emc-stat-card`, `emc-divider`                                 |
+| **Feedback**   | `emc-skeleton`, `emc-spinner`, `emc-toast` + `emc-toast-host`                                                                 |
+| **Navigation** | `emc-tabs` + `emc-tab` + `emc-tab-panel`, `emc-stepper`, `emc-tooltip`                                                        |
+| **Overlays**   | `emc-popover`                                                                                                                 |
+| **People**     | `emc-avatar`, `emc-avatar-group`                                                                                              |
 
 Helpers and types exported from the package: `cn()` class-merge utility, `Placement`, `Strategy`, `Middleware`, `VirtualElement`, `ButtonVariant`, `ButtonSize`, `EventCallback`, `EventBus`.
 

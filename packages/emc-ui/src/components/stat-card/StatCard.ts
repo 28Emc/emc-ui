@@ -98,12 +98,13 @@ export class EmcStatCard extends LitElement {
 
   protected getIconClass(): string {
     const base = 'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl';
-    const accentClass = {
-      brand: 'icon-brand',
-      green: 'icon-green',
-      amber: 'icon-amber',
-      pink: 'icon-pink',
-    }[this.accent] || 'icon-brand';
+    const accentClass =
+      {
+        brand: 'icon-brand',
+        green: 'icon-green',
+        amber: 'icon-amber',
+        pink: 'icon-pink',
+      }[this.accent] || 'icon-brand';
     return `${base} ${accentClass}`;
   }
 
@@ -116,11 +117,15 @@ export class EmcStatCard extends LitElement {
             <p class="stat-value">${this.value}</p>
             ${this.sublabel ? html`<p class="stat-sublabel">${this.sublabel}</p>` : ''}
           </div>
-          ${this.icon ? html`
-            <span class="${this.getIconClass()}">
-              <slot name="icon"></slot>
-            </span>
-          ` : ''}
+          ${
+            this.icon
+              ? html`
+                  <span class="${this.getIconClass()}">
+                    <slot name="icon"></slot>
+                  </span>
+                `
+              : ''
+          }
         </div>
       </div>
     `;

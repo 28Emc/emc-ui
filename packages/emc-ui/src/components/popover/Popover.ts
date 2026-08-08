@@ -99,11 +99,7 @@ export class EmcPopover extends LitElement {
         const { x, y, placement } = await computePosition(this, this.floatingEl!, {
           placement: this.placement,
           strategy: 'fixed',
-          middleware: [
-            offset(8),
-            flip(),
-            shift({ padding: 8 }),
-          ],
+          middleware: [offset(8), flip(), shift({ padding: 8 })],
         });
 
         this.popoverX = x;
@@ -111,7 +107,9 @@ export class EmcPopover extends LitElement {
         this.floatingEl!.style.left = `${x}px`;
         this.floatingEl!.style.top = `${y}px`;
         this.floatingEl!.setAttribute('data-placement', placement);
-      }, { ancestorScroll: true, ancestorResize: true });
+      },
+      { ancestorScroll: true, ancestorResize: true },
+    );
   }
 
   protected async closePopover() {
@@ -149,23 +147,40 @@ export class EmcPopover extends LitElement {
       >
         <slot name="trigger">${this.label}</slot>
         <slot name="trigger-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M6 9l6 6 6-6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
         </slot>
       </button>
 
-      ${this.open ? html`
-        <div
-          class="popover"
-          style="left: ${this.popoverX}px; top: ${this.popoverY}px;"
-          role="dialog"
-          aria-label="${this.ariaLabel}"
-          @click="${(e: Event) => e.stopPropagation()}"
-        >
-          <slot></slot>
-        </div>
-      ` : ''}
+      ${
+        this.open
+          ? html`
+              <div
+                class="popover"
+                style="left: ${this.popoverX}px; top: ${this.popoverY}px;"
+                role="dialog"
+                aria-label="${this.ariaLabel}"
+                @click="${(e: Event) => e.stopPropagation()}"
+              >
+                <slot></slot>
+              </div>
+            `
+          : ''
+      }
     `;
   }
 }

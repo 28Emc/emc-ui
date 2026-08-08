@@ -41,7 +41,10 @@ export class EmcStepper extends LitElement {
       border-radius: 50%;
       font-size: 0.875rem;
       font-weight: 600;
-      transition: background-color 200ms, color 200ms, box-shadow 200ms;
+      transition:
+        background-color 200ms,
+        color 200ms,
+        box-shadow 200ms;
     }
 
     .step-circle.completed {
@@ -118,30 +121,51 @@ export class EmcStepper extends LitElement {
   render() {
     return html`
       <div class="stepper">
-        ${this.indices.map((idx) => html`
-          <div class="step">
-            <div
-              class="${this.stepClasses(idx)}"
-              aria-current="${this.activeIndex === idx ? 'step' : null}"
-            >
-              ${this.activeIndex > idx ? html`
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-white">
-                  <path d="M20 6L9 17l-5-5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              ` : this.activeIndex === idx ? html`
-                <span class="text-sm font-semibold text-white">${idx + 1}</span>
-              ` : html`
-                <span class="text-sm font-medium">${idx + 1}</span>
-              `}
+        ${this.indices.map(
+          (idx) => html`
+            <div class="step">
+              <div
+                class="${this.stepClasses(idx)}"
+                aria-current="${this.activeIndex === idx ? 'step' : null}"
+              >
+                ${
+                  this.activeIndex > idx
+                    ? html`
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          class="text-white"
+                        >
+                          <path
+                            d="M20 6L9 17l-5-5"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      `
+                    : this.activeIndex === idx
+                      ? html` <span class="text-sm font-semibold text-white">${idx + 1}</span> `
+                      : html` <span class="text-sm font-medium">${idx + 1}</span> `
+                }
+              </div>
+              ${
+                this.labels[idx]
+                  ? html`
+                      <span class="step-label hidden md:block text-xs text-muted px-1"
+                        >${this.labels[idx]}</span
+                      >
+                    `
+                  : ''
+              }
+              ${idx < this.steps - 1 ? html` <div class="${this.lineClasses(idx)}"></div> ` : ''}
             </div>
-            ${this.labels[idx] ? html`
-              <span class="step-label hidden md:block text-xs text-muted px-1">${this.labels[idx]}</span>
-            ` : ''}
-            ${idx < this.steps - 1 ? html`
-              <div class="${this.lineClasses(idx)}"></div>
-            ` : ''}
-          </div>
-        `)}
+          `,
+        )}
       </div>
     `;
   }

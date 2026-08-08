@@ -47,7 +47,10 @@ export function previous<T>(input: Signal<T>): Signal<T | undefined> {
  * Creates a signal that only updates when the value actually changes
  * (using Object.is comparison).
  */
-export function distinct<T>(input: Signal<T>, areEqual: (a: T, b: T) => boolean = Object.is): Signal<T> {
+export function distinct<T>(
+  input: Signal<T>,
+  areEqual: (a: T, b: T) => boolean = Object.is,
+): Signal<T> {
   const result = signal(input.value);
   let prev = input.value;
   effect(() => {

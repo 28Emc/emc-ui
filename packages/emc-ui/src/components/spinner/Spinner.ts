@@ -35,13 +35,7 @@ export class EmcSpinner extends LitElement {
     const style = `width: ${this.size}px; height: ${this.size}px; stroke-width: ${this.strokeWidth}; color: ${this.color};`;
 
     return html`
-      <svg
-        class="spinner"
-        viewBox="0 0 24 24"
-        fill="none"
-        style="${style}"
-        aria-hidden="true"
-      >
+      <svg class="spinner" viewBox="0 0 24 24" fill="none" style="${style}" aria-hidden="true">
         <circle
           class="opacity-25"
           cx="12"

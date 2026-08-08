@@ -34,7 +34,9 @@ export class EmcTabs extends LitElement {
       border: none;
       border-radius: var(--radius-xl, 0.75rem) var(--radius-xl, 0.75rem) 0 0;
       cursor: pointer;
-      transition: color 150ms, background-color 150ms;
+      transition:
+        color 150ms,
+        background-color 150ms;
       position: relative;
       padding-bottom: calc(1rem - 1px);
       margin-bottom: -1px;
@@ -115,7 +117,6 @@ export class EmcTabs extends LitElement {
   }
 
   protected handleKeydown(event: KeyboardEvent, index: number) {
-    const tabs = this.tabs;
     let newIndex = this.activeIndex;
 
     switch (event.key) {

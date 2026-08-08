@@ -84,9 +84,7 @@ export class EmcDivider extends LitElement {
     if (isVertical) {
       return html`
         <div class="divider vertical">
-          ${this.label ? html`
-            <span class="divider-label">${this.label}</span>
-          ` : ''}
+          ${this.label ? html` <span class="divider-label">${this.label}</span> ` : ''}
           <hr class="divider-line vertical ${this.variant}" />
         </div>
       `;
@@ -94,9 +92,7 @@ export class EmcDivider extends LitElement {
 
     return html`
       <div class="divider">
-        ${this.label ? html`
-          <span class="divider-label">${this.label}</span>
-        ` : ''}
+        ${this.label ? html` <span class="divider-label">${this.label}</span> ` : ''}
         <hr class="divider-line horizontal ${this.variant}" />
       </div>
     `;

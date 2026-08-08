@@ -33,7 +33,9 @@ export class EmcProgress extends LitElement {
       height: 100%;
       background-color: var(--progress-color, var(--color-brand-500));
       border-radius: inherit;
-      transition: width 0.3s ease-out, background-color 0.3s ease;
+      transition:
+        width 0.3s ease-out,
+        background-color 0.3s ease;
     }
 
     .progress-indeterminate .progress-bar {
@@ -88,15 +90,21 @@ export class EmcProgress extends LitElement {
     const sizeClass = `size-${this.size}`;
 
     return html`
-      ${this.label ? html`
-        <div class="progress-label">
-          <span>${this.label}</span>
-          <span class="progress-value">${this.indeterminate ? '—' : `${Math.round(this.percentage)}%`}</span>
-        </div>
-      ` : ''}
+      ${
+        this.label
+          ? html`
+              <div class="progress-label">
+                <span>${this.label}</span>
+                <span class="progress-value"
+                  >${this.indeterminate ? '—' : `${Math.round(this.percentage)}%`}</span
+                >
+              </div>
+            `
+          : ''
+      }
       <div class="progress ${this.indeterminate ? 'progress-indeterminate' : ''}">
         <div
-          class="progress-bar ${this.size}"
+          class="progress-bar ${sizeClass}"
           style="width: ${this.indeterminate ? '30%' : `${this.percentage}%`}; background-color: ${this.color};"
           role="progressbar"
           aria-valuenow="${this.indeterminate ? '0' : this.percentage}"

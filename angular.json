@@ -29,6 +29,12 @@
           "options": {
             "tsConfig": "packages/ng-ui/tsconfig.spec.json"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["packages/ng-ui/src/**/*.ts"]
+          }
         }
       }
     },

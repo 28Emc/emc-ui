@@ -2,11 +2,11 @@
 
 Design system monorepo (pnpm workspaces + Turborepo) with two publishable packages and a demo app.
 
-| Package | Stack | What it is |
-|---|---|---|
-| [`packages/ng-ui`](./packages/ng-ui) → `@emc-dev/ng-ui` | Angular 22, standalone components | Angular component library (`ui-*` selectors) |
-| [`packages/emc-ui`](./packages/emc-ui) → `@emc-dev/emc-ui` | Lit, vanilla TS, Tailwind CSS v4 | Framework-agnostic Web Components (`emc-*` elements) |
-| [`projects/demo`](./projects/demo) | Angular app | Showcases the `ng-ui` components by category |
+| Package                                                    | Stack                             | What it is                                           |
+| ---------------------------------------------------------- | --------------------------------- | ---------------------------------------------------- |
+| [`packages/ng-ui`](./packages/ng-ui) → `@emc-dev/ng-ui`    | Angular 22, standalone components | Angular component library (`ui-*` selectors)         |
+| [`packages/emc-ui`](./packages/emc-ui) → `@emc-dev/emc-ui` | Lit, vanilla TS, Tailwind CSS v4  | Framework-agnostic Web Components (`emc-*` elements) |
+| [`projects/demo`](./projects/demo)                         | Angular app                       | Showcases the `ng-ui` components by category         |
 
 ## Requirements
 
@@ -27,21 +27,21 @@ editing the library and reloading the demo.
 
 ## Scripts
 
-| Script | Description |
-|--------|-------------|
-| `pnpm build` | Build both packages (`turbo run build`) |
-| `pnpm build:ng-ui` | Build `@emc-dev/ng-ui` |
-| `pnpm build:emc-ui` | Build `@emc-dev/emc-ui` |
-| `pnpm build:demo` | Build the demo app (`ng build demo`) |
-| `pnpm start` / `pnpm serve` | Dev server for the demo (`ng serve demo`) |
-| `pnpm build:styles` | Compile the ng-ui Tailwind theme → `packages/ng-ui/styles.css` |
-| `pnpm watch` | Watch mode for packages (`turbo run dev`) |
-| `pnpm test` / `pnpm test:watch` | Run unit tests (vitest) |
-| `pnpm lint` / `pnpm lint:fix` | ESLint |
-| `pnpm format` / `pnpm format:check` | Prettier |
-| `pnpm storybook` / `pnpm build-storybook` | Storybook dev server / static build |
-| `pnpm changeset` / `pnpm version` | Changesets release management |
-| `pnpm release` | Build both packages and publish (`changeset publish`) |
+| Script                                    | Description                                                    |
+| ----------------------------------------- | -------------------------------------------------------------- |
+| `pnpm build`                              | Build both packages (`turbo run build`)                        |
+| `pnpm build:ng-ui`                        | Build `@emc-dev/ng-ui`                                         |
+| `pnpm build:emc-ui`                       | Build `@emc-dev/emc-ui`                                        |
+| `pnpm build:demo`                         | Build the demo app (`ng build demo`)                           |
+| `pnpm start` / `pnpm serve`               | Dev server for the demo (`ng serve demo`)                      |
+| `pnpm build:styles`                       | Compile the ng-ui Tailwind theme → `packages/ng-ui/styles.css` |
+| `pnpm watch`                              | Watch mode for packages (`turbo run dev`)                      |
+| `pnpm test` / `pnpm test:watch`           | Run unit tests (vitest)                                        |
+| `pnpm lint` / `pnpm lint:fix`             | ESLint                                                         |
+| `pnpm format` / `pnpm format:check`       | Prettier                                                       |
+| `pnpm storybook` / `pnpm build-storybook` | Storybook dev server / static build                            |
+| `pnpm changeset` / `pnpm version`         | Changesets release management                                  |
+| `pnpm release`                            | Build both packages and publish (`changeset publish`)          |
 
 ## Publishing
 

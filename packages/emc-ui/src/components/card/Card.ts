@@ -28,16 +28,13 @@ export class EmcCard extends LitElement {
     }
 
     .card.hover-enabled {
-      transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+      transition:
+        transform 150ms ease-out,
+        box-shadow 150ms ease-out;
     }
   `;
 
   render() {
-    const classes = ['card'];
-    if (this.hover) {
-      this.classList.add('hover-enabled');
-    }
-
     return html`
       <div class="${this.hover ? 'card hover-enabled' : 'card'}">
         <slot></slot>

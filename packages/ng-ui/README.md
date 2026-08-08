@@ -12,6 +12,7 @@ pnpm add @emc-dev/ng-ui @angular/animations @angular/cdk @angular/common @angula
 ```
 
 **Peer dependencies** (required):
+
 - `@angular/*` ≥ 22.0.0
 - `@lucide/angular` ≥ 1.28.0
 
@@ -28,7 +29,7 @@ import '@emc-dev/ng-ui/styles.css';
       <ui-input type="email" placeholder="you@example.com" />
     </ui-field>
     <ui-button variant="primary" (click)="save()">Save</ui-button>
-  `
+  `,
 })
 export class MyComponent {}
 ```
@@ -64,16 +65,16 @@ Add `.dark` to `<html>` or a parent. `ThemeSwitcherComponent` handles persistenc
 
 ## Components
 
-| Category | Components |
-|----------|------------|
-| **Buttons** | `ButtonComponent` (primary, secondary, ghost, danger, outline, subtle; sm/md/lg/icon/icon-sm) |
-| **Inputs** | `InputComponent`, `TextareaComponent`, `SelectComponent`, `MaskedInputComponent`, `ComboboxComponent`, `MultiSelectComponent`, `TagInputComponent`, `DatePickerComponent`, `TimePickerComponent`, `DateRangePickerComponent`, `PasswordStrengthMeterComponent`, `SwitchComponent`, `RatingComponent`, `CheckboxComponent`, `RadioGroupComponent` |
-| **Forms** | `FieldComponent`, `FormSectionComponent`, `LabelComponent`, `FieldErrorComponent` |
-| **Navigation** | `BreadcrumbComponent`, `SidebarComponent`, `TabsComponent`, `PaginationComponent`, `StepperComponent` |
-| **Overlays** | `ModalComponent`, `ConfirmModalComponent`, `DrawerComponent`, `PopoverComponent`, `DropdownComponent`, `TooltipDirective` |
-| **Feedback** | `ToastService` + `ToastHostComponent`, `SpinnerComponent`, `SkeletonComponent`, `PageLoaderComponent`, `EmptyStateComponent`, `BadgeComponent`, `ProgressComponent` |
-| **Data Display** | `CardComponent`, `StatCardComponent`, `ExpandableCardComponent`, `TableComponent`, `InfiniteScrollTableComponent`, `VirtualScrollListComponent`, `DragDropListComponent`, `AvatarComponent`, `AvatarGroupComponent`, `AccordionComponent`, `SparklineComponent` |
-| **Utils** | `ScreenReaderOnlyComponent`, `CopyToClipboardButtonComponent`, `ThemeSwitcherComponent` |
+| Category         | Components                                                                                                                                                                                                                                                                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Buttons**      | `ButtonComponent` (primary, secondary, ghost, danger, outline, subtle; sm/md/lg/icon/icon-sm)                                                                                                                                                                                                                                                    |
+| **Inputs**       | `InputComponent`, `TextareaComponent`, `SelectComponent`, `MaskedInputComponent`, `ComboboxComponent`, `MultiSelectComponent`, `TagInputComponent`, `DatePickerComponent`, `TimePickerComponent`, `DateRangePickerComponent`, `PasswordStrengthMeterComponent`, `SwitchComponent`, `RatingComponent`, `CheckboxComponent`, `RadioGroupComponent` |
+| **Forms**        | `FieldComponent`, `FormSectionComponent`, `LabelComponent`, `FieldErrorComponent`                                                                                                                                                                                                                                                                |
+| **Navigation**   | `BreadcrumbComponent`, `SidebarComponent`, `TabsComponent`, `PaginationComponent`, `StepperComponent`                                                                                                                                                                                                                                            |
+| **Overlays**     | `ModalComponent`, `ConfirmModalComponent`, `DrawerComponent`, `PopoverComponent`, `DropdownComponent`, `TooltipDirective`                                                                                                                                                                                                                        |
+| **Feedback**     | `ToastService` + `ToastHostComponent`, `SpinnerComponent`, `SkeletonComponent`, `PageLoaderComponent`, `EmptyStateComponent`, `BadgeComponent`, `ProgressComponent`                                                                                                                                                                              |
+| **Data Display** | `CardComponent`, `StatCardComponent`, `ExpandableCardComponent`, `TableComponent`, `InfiniteScrollTableComponent`, `VirtualScrollListComponent`, `DragDropListComponent`, `AvatarComponent`, `AvatarGroupComponent`, `AccordionComponent`, `SparklineComponent`                                                                                  |
+| **Utils**        | `ScreenReaderOnlyComponent`, `CopyToClipboardButtonComponent`, `ThemeSwitcherComponent`                                                                                                                                                                                                                                                          |
 
 ## Accessibility
 

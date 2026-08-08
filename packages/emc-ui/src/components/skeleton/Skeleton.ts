@@ -57,12 +57,9 @@ export class EmcSkeleton extends LitElement {
   `;
 
   render() {
-    const variantClass = `skeleton skeleton-${this.variant}`;
     const style = `width: ${this.width}; height: ${this.height}; border-radius: ${this.borderRadius}px;`;
 
-    return html`
-      <div class="skeleton ${this.variant}" style="${style}" aria-hidden="true"></div>
-    `;
+    return html` <div class="skeleton ${this.variant}" style="${style}" aria-hidden="true"></div> `;
   }
 }
 

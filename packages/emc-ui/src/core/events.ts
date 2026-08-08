@@ -78,7 +78,11 @@ export class EventBus<Events extends Record<string, unknown> = Record<string, un
  * Used by Toast service and other global services.
  */
 export const globalEventBus = new EventBus<{
-  'toast:show': { message: string; variant?: 'info' | 'success' | 'warning' | 'error'; duration?: number };
+  'toast:show': {
+    message: string;
+    variant?: 'info' | 'success' | 'warning' | 'error';
+    duration?: number;
+  };
   'toast:hide': string;
   'theme:change': 'light' | 'dark';
 }>();
@@ -97,7 +101,7 @@ export function createEventBus<Events extends Record<string, unknown>>(): EventB
 export function useEventBus<Events extends Record<string, unknown>>(
   bus: EventBus<Events>,
   event: keyof Events,
-  callback: EventCallback<Events[keyof Events]>
+  callback: EventCallback<Events[keyof Events]>,
 ): () => void {
   return bus.on(event, callback);
 }

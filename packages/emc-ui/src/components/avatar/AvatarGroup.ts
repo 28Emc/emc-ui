@@ -12,18 +12,6 @@ export interface AvatarGroupUser {
 
 export type AvatarSize = 'sm' | 'md' | 'lg';
 
-const SIZE_CLASSES: Record<AvatarSize, string> = {
-  sm: 'h-8 w-8 text-xs',
-  md: 'h-10 w-10 text-sm',
-  lg: 'h-12 w-12 text-base',
-};
-
-const OVERLAP: Record<AvatarSize, string> = {
-  sm: 'ml-[-6px]',
-  md: 'ml-[-8px]',
-  lg: 'ml-[-10px]',
-};
-
 @customElement('emc-avatar-group')
 export class EmcAvatarGroup extends LitElement {
   @property({ type: Array }) avatars: AvatarGroupUser[] = [];
@@ -57,10 +45,15 @@ export class EmcAvatarGroup extends LitElement {
 
     .avatar-item {
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 9999px;
       border: 2px solid var(--surface);
       transition: transform 150ms ease-out;
       flex-shrink: 0;
+      color: #fff;
+      font-weight: 600;
     }
 
     .avatar-item:first-child {
@@ -105,27 +98,22 @@ export class EmcAvatarGroup extends LitElement {
     const visibleUsers = this.avatars.slice(0, Math.max(1, this.max));
     const overflowCount = Math.max(0, this.avatars.length - this.max);
 
-    const itemClass = (index: number) => {
-      return `avatar-item ${SIZE_CLASSES[this.size] || SIZE_CLASSES.md} ${index === 0 ? '' : 'ml-[-8px]'}`;
-    };
-
     return html`
       <div class="avatar-group">
-        ${visibleUsers.map((user, index) => html`
-          <div class="${itemClass(index)}">
-            <span
-              class="avatar ${SIZE_CLASSES[this.size] || SIZE_CLASSES.md}"
-              style="${this.getStyleForUser(user)}"
-            >
-              ${this.getInitials(user.name)}
-            </span>
-          </div>
-        `)}
-        ${overflowCount > 0 ? html`
-          <div class="avatar-item overflow">
-            +${overflowCount}
-          </div>
-        ` : ''}
+        ${visibleUsers.map(
+          (user) => html`
+            <div class="avatar-item ${this.size}">
+              <span class="avatar" style="${this.getStyleForUser(user)}">
+                ${this.getInitials(user.name)}
+              </span>
+            </div>
+          `,
+        )}
+        ${
+          overflowCount > 0
+            ? html` <div class="avatar-item avatar-overflow">+${overflowCount}</div> `
+            : ''
+        }
       </div>
     `;
   }

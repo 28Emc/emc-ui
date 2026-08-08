@@ -49,7 +49,9 @@ export class EmcTooltip extends LitElement {
       word-wrap: break-word;
       opacity: 0;
       transform: scale(0.95);
-      transition: opacity 150ms ease-out, transform 150ms ease-out;
+      transition:
+        opacity 150ms ease-out,
+        transform 150ms ease-out;
       pointer-events: none;
     }
 
@@ -58,25 +60,25 @@ export class EmcTooltip extends LitElement {
       transform: translate(-50%, 0) scale(1);
     }
 
-    .tooltip[data-placement="top"] {
+    .tooltip[data-placement='top'] {
       bottom: calc(100% + 8px);
       left: 50%;
       transform-origin: bottom center;
     }
 
-    .tooltip[data-placement="bottom"] {
+    .tooltip[data-placement='bottom'] {
       top: calc(100% + 8px);
       left: 50%;
       transform-origin: top center;
     }
 
-    .tooltip[data-placement="left"] {
+    .tooltip[data-placement='left'] {
       right: calc(100% + 8px);
       top: 50%;
       transform-origin: center right;
     }
 
-    .tooltip[data-placement="right"] {
+    .tooltip[data-placement='right'] {
       left: calc(100% + 8px);
       top: 50%;
       transform-origin: center left;
@@ -87,19 +89,19 @@ export class EmcTooltip extends LitElement {
       transform: translate(-50%, 0) scale(1);
     }
 
-    .tooltip[data-placement="top"].visible {
+    .tooltip[data-placement='top'].visible {
       transform: translate(-50%, calc(-100% - 8px)) scale(1);
     }
 
-    .tooltip[data-placement="bottom"].visible {
+    .tooltip[data-placement='bottom'].visible {
       transform: translate(-50%, 8px) scale(1);
     }
 
-    .tooltip[data-placement="left"].visible {
+    .tooltip[data-placement='left'].visible {
       transform: translate(calc(-100% - 8px), -50%) scale(1);
     }
 
-    .tooltip[data-placement="right"].visible {
+    .tooltip[data-placement='right'].visible {
       transform: translate(8px, -50%) scale(1);
     }
 
@@ -117,25 +119,25 @@ export class EmcTooltip extends LitElement {
       background: inherit;
     }
 
-    .tooltip[data-placement="top"] .tooltip-arrow {
+    .tooltip[data-placement='top'] .tooltip-arrow {
       bottom: -4px;
       left: 50%;
       transform: translateX(-50%) rotate(45deg);
     }
 
-    .tooltip[data-placement="bottom"] .tooltip-arrow {
+    .tooltip[data-placement='bottom'] .tooltip-arrow {
       top: -4px;
       left: 50%;
       transform: translateX(-50%) rotate(45deg);
     }
 
-    .tooltip[data-placement="left"] .tooltip-arrow {
+    .tooltip[data-placement='left'] .tooltip-arrow {
       right: -4px;
       top: 50%;
       transform: translateY(-50%) rotate(45deg);
     }
 
-    .tooltip[data-placement="right"] .tooltip-arrow {
+    .tooltip[data-placement='right'] .tooltip-arrow {
       left: -4px;
       top: 50%;
       transform: translateY(-50%) rotate(45deg);
@@ -150,8 +152,8 @@ export class EmcTooltip extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.cleanup?.();
-    this.showTimeout && clearTimeout(this.showTimeout);
-    this.hideTimeout && clearTimeout(this.hideTimeout);
+    if (this.showTimeout) clearTimeout(this.showTimeout);
+    if (this.hideTimeout) clearTimeout(this.hideTimeout);
   }
 
   protected async updateTooltipPosition() {
@@ -160,27 +162,28 @@ export class EmcTooltip extends LitElement {
     const { computePosition, flip, shift, offset, autoUpdate } = await import('@floating-ui/dom');
 
     this.cleanup?.();
-    this.cleanup = autoUpdate(this, this.renderRoot.querySelector('.tooltip') as HTMLElement, async () => {
-      const { x, y, placement } = await computePosition(this, this.floatingEl!, {
-        placement: this.placement,
-        strategy: 'fixed',
-        middleware: [
-          offset(8),
-          flip(),
-          shift({ padding: 8 }),
-        ],
-      });
+    this.cleanup = autoUpdate(
+      this,
+      this.renderRoot.querySelector('.tooltip') as HTMLElement,
+      async () => {
+        const { x, y, placement } = await computePosition(this, this.floatingEl!, {
+          placement: this.placement,
+          strategy: 'fixed',
+          middleware: [offset(8), flip(), shift({ padding: 8 })],
+        });
 
-      this.tooltipX = x;
-      this.tooltipY = y;
-      this.floatingEl!.style.left = `${x}px`;
-      this.floatingEl!.style.top = `${y}px`;
-      this.floatingEl!.setAttribute('data-placement', placement);
-    }, { ancestorScroll: true, ancestorResize: true });
+        this.tooltipX = x;
+        this.tooltipY = y;
+        this.floatingEl!.style.left = `${x}px`;
+        this.floatingEl!.style.top = `${y}px`;
+        this.floatingEl!.setAttribute('data-placement', placement);
+      },
+      { ancestorScroll: true, ancestorResize: true },
+    );
   }
 
   protected show() {
-    this.hideTimeout && clearTimeout(this.hideTimeout);
+    if (this.hideTimeout) clearTimeout(this.hideTimeout);
     this.showTimeout = setTimeout(() => {
       this.tooltipOpen = true;
       this.updateTooltipPosition();
@@ -188,7 +191,7 @@ export class EmcTooltip extends LitElement {
   }
 
   protected hide() {
-    this.showTimeout && clearTimeout(this.showTimeout);
+    if (this.showTimeout) clearTimeout(this.showTimeout);
     this.hideTimeout = setTimeout(() => {
       this.tooltipOpen = false;
     }, 100);
@@ -212,26 +215,32 @@ export class EmcTooltip extends LitElement {
 
   render() {
     return html`
-      <span class="tooltip-trigger" 
-            @mouseenter="${this.handleMouseEnter}"
-            @mouseleave="${this.handleMouseLeave}"
-            @focusin="${this.handleFocusIn}"
-            @focusout="${this.handleFocusOut}">
+      <span
+        class="tooltip-trigger"
+        @mouseenter="${this.handleMouseEnter}"
+        @mouseleave="${this.handleMouseLeave}"
+        @focusin="${this.handleFocusIn}"
+        @focusout="${this.handleFocusOut}"
+      >
         <slot></slot>
       </span>
 
-      ${this.tooltipOpen ? html`
-        <div
-          class="tooltip"
-          data-placement="${this.placement}"
-          style="left: ${this.tooltipX}px; top: ${this.tooltipY}px;"
-          role="tooltip"
-          aria-hidden="false"
-        >
-          <span class="tooltip-content">${this.content}</span>
-          <span class="tooltip-arrow"></span>
-        </div>
-      ` : ''}
+      ${
+        this.tooltipOpen
+          ? html`
+              <div
+                class="tooltip"
+                data-placement="${this.placement}"
+                style="left: ${this.tooltipX}px; top: ${this.tooltipY}px;"
+                role="tooltip"
+                aria-hidden="false"
+              >
+                <span class="tooltip-content">${this.content}</span>
+                <span class="tooltip-arrow"></span>
+              </div>
+            `
+          : ''
+      }
     `;
   }
 }

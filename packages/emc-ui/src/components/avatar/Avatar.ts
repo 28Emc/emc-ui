@@ -7,12 +7,6 @@ import { customElement, property } from 'lit/decorators.js';
 
 export type AvatarSize = 'sm' | 'md' | 'lg';
 
-const SIZE_CLASSES: Record<AvatarSize, string> = {
-  sm: 'h-8 w-8 text-xs',
-  md: 'h-10 w-10 text-sm',
-  lg: 'h-12 w-12 text-base',
-};
-
 @customElement('emc-avatar')
 export class EmcAvatar extends LitElement {
   @property({ type: String }) name = '';
@@ -66,7 +60,6 @@ export class EmcAvatar extends LitElement {
   }
 
   render() {
-    const sizeClass = SIZE_CLASSES[this.size] || SIZE_CLASSES.md;
     const initials = this.getInitials(this.name);
     const hasColor = Boolean(this.color);
 
@@ -74,14 +67,7 @@ export class EmcAvatar extends LitElement {
       ? `background-color: ${this.color};`
       : 'background: var(--brand-gradient);';
 
-    return html`
-      <span
-        class="avatar ${this.size}"
-        style="${style}"
-      >
-        ${initials}
-      </span>
-    `;
+    return html` <span class="avatar avatar-${this.size}" style="${style}"> ${initials} </span> `;
   }
 }
 
