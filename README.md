@@ -102,6 +102,5 @@ GitHub Actions:
 - `.github/workflows/ci.yml` — on every push to `main` and PRs: install → lint →
   format → build packages → build demo → build storybook → test.
 - `.github/workflows/release.yml` — on `main`: uses `changesets/action` to open a
-  versioning PR and, when merged, run `pnpm release` to publish both packages.
-
-Requires an `NPM_TOKEN` secret configured in the repository.
+  versioning PR and, when merged, run `pnpm release` to publish both packages via
+  **GitHub trusted publishing** (OIDC, no npm token required).
