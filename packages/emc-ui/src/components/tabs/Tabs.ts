@@ -12,6 +12,10 @@ export class EmcTabs extends LitElement {
 
   @state() private tabs: HTMLButtonElement[] = [];
   private panels: HTMLElement[] = [];
+  private tabHandlers = new WeakMap<
+    HTMLButtonElement,
+    { click: () => void; keydown: (e: KeyboardEvent) => void }
+  >();
 
   static styles = css`
     :host {
@@ -94,24 +98,55 @@ export class EmcTabs extends LitElement {
   }
 
   firstUpdated() {
+    const tabsSlot = this.renderRoot.querySelector('slot[name="tabs"]');
+    const panelsSlot = this.renderRoot.querySelector('slot[name="panels"]');
+    tabsSlot?.addEventListener('slotchange', () => this.updateTabs());
+    panelsSlot?.addEventListener('slotchange', () => this.updateTabs());
     this.updateTabs();
   }
 
   protected updateTabs() {
-    const tabsContainer = this.renderRoot.querySelector('.tabs-list');
-    const panelsContainer = this.renderRoot.querySelector('.tabs-panels');
+    const tabsSlot = this.renderRoot.querySelector('slot[name="tabs"]') as HTMLSlotElement | null;
+    const panelsSlot = this.renderRoot.querySelector(
+      'slot[name="panels"]',
+    ) as HTMLSlotElement | null;
 
-    if (tabsContainer) {
-      this.tabs = Array.from(tabsContainer.querySelectorAll('button[role="tab"]'));
-      this.tabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => this.select(index));
-        tab.addEventListener('keydown', (e) => this.handleKeydown(e, index));
-      });
+    this.tabs = [];
+    if (tabsSlot) {
+      for (const el of tabsSlot.assignedElements()) {
+        if (el.matches('button[role="tab"]')) {
+          this.tabs.push(el as HTMLButtonElement);
+        } else if (el.tagName === 'EMC-TAB') {
+          const button = el.shadowRoot?.querySelector('button[role="tab"]');
+          if (button) this.tabs.push(button as HTMLButtonElement);
+        }
+      }
     }
 
-    if (panelsContainer) {
-      this.panels = Array.from(panelsContainer.querySelectorAll('[role="tabpanel"]'));
+    this.panels = [];
+    if (panelsSlot) {
+      for (const el of panelsSlot.assignedElements()) {
+        if (el.matches('[role="tabpanel"]')) {
+          this.panels.push(el as HTMLElement);
+        } else if (el.tagName === 'EMC-TAB-PANEL') {
+          const panel = el.shadowRoot?.querySelector('[role="tabpanel"]');
+          if (panel) this.panels.push(panel as HTMLElement);
+        }
+      }
     }
+
+    this.tabs.forEach((tab, index) => {
+      const previous = this.tabHandlers.get(tab);
+      if (previous) {
+        tab.removeEventListener('click', previous.click);
+        tab.removeEventListener('keydown', previous.keydown);
+      }
+      const click = () => this.select(index);
+      const keydown = (e: KeyboardEvent) => this.handleKeydown(e, index);
+      tab.addEventListener('click', click);
+      tab.addEventListener('keydown', keydown);
+      this.tabHandlers.set(tab, { click, keydown });
+    });
 
     this.updateActiveTab();
   }

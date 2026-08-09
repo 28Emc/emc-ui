@@ -97,7 +97,7 @@ export class EmcStatCard extends LitElement {
   `;
 
   protected getIconClass(): string {
-    const base = 'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl';
+    const base = 'stat-icon flex h-11 w-11 shrink-0 items-center justify-center rounded-xl';
     const accentClass =
       {
         brand: 'icon-brand',
@@ -112,7 +112,7 @@ export class EmcStatCard extends LitElement {
     return html`
       <div class="stat-card">
         <div class="stat-card-content">
-          <div class="stat-info">
+          <div class="stat-card-info">
             <p class="stat-label">${this.label}</p>
             <p class="stat-value">${this.value}</p>
             ${this.sublabel ? html`<p class="stat-sublabel">${this.sublabel}</p>` : ''}

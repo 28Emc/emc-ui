@@ -3,15 +3,13 @@
    ============================================================================ */
 
 import { html, css, LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('emc-stepper')
 export class EmcStepper extends LitElement {
   @property({ type: Number }) steps = 3;
   @property({ type: Array }) labels: string[] = [];
   @property({ type: Number }) activeIndex = 0;
-
-  @state() private active = 0;
 
   static styles = css`
     :host {
@@ -115,7 +113,7 @@ export class EmcStepper extends LitElement {
   }
 
   protected lineClasses(index: number): string {
-    return `step-line ${index < this.active ? 'completed' : 'pending'}`;
+    return `step-line ${index < this.activeIndex ? 'completed' : 'pending'}`;
   }
 
   render() {
@@ -126,7 +124,7 @@ export class EmcStepper extends LitElement {
             <div class="step">
               <div
                 class="${this.stepClasses(idx)}"
-                aria-current="${this.activeIndex === idx ? 'step' : null}"
+                aria-current="${this.activeIndex === idx ? 'step' : 'false'}"
               >
                 ${
                   this.activeIndex > idx
