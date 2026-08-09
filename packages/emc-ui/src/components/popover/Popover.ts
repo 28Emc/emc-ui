@@ -17,12 +17,10 @@ export class EmcPopover extends LitElement {
   @property({ type: String }) ariaLabel = 'Popover';
   @property({ type: Boolean }) open = false;
 
-  @state() private popoverOpen = false;
   @state() private popoverX = 0;
   @state() private popoverY = 0;
 
   private cleanup: (() => void) | null = null;
-  private floatingEl: HTMLElement | null = null;
 
   static styles = css`
     :host {
@@ -78,69 +76,88 @@ export class EmcPopover extends LitElement {
     if (this.open) {
       this.openPopover();
     }
+    document.addEventListener('pointerdown', this.handleDocumentPointerDown);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    document.removeEventListener('pointerdown', this.handleDocumentPointerDown);
     this.cleanup?.();
   }
 
   protected async openPopover() {
-    if (this.popoverOpen) return;
-
-    this.popoverOpen = true;
-
-    const { autoUpdate, computePosition, flip, shift, offset } = await import('@floating-ui/dom');
-
-    this.cleanup = autoUpdate(
-      this,
-      this.renderRoot.querySelector('.popover') as HTMLElement,
-      async () => {
-        const { x, y, placement } = await computePosition(this, this.floatingEl!, {
-          placement: this.placement,
-          strategy: 'fixed',
-          middleware: [offset(8), flip(), shift({ padding: 8 })],
-        });
-
-        this.popoverX = x;
-        this.popoverY = y;
-        this.floatingEl!.style.left = `${x}px`;
-        this.floatingEl!.style.top = `${y}px`;
-        this.floatingEl!.setAttribute('data-placement', placement);
-      },
-      { ancestorScroll: true, ancestorResize: true },
-    );
+    this.open = true;
+    await this.updateComplete;
+    await this.position();
   }
 
-  protected async closePopover() {
+  protected closePopover() {
+    this.open = false;
     this.cleanup?.();
     this.cleanup = null;
-    this.open = false;
+  }
+
+  protected async position() {
+    const { autoUpdate, computePosition, flip, shift, offset } = await import('@floating-ui/dom');
+    const popoverEl = this.renderRoot.querySelector('.popover') as HTMLElement | null;
+    if (!popoverEl) return;
+
+    this.cleanup?.();
+    this.cleanup =
+      (await autoUpdate(
+        this,
+        popoverEl,
+        async () => {
+          const { x, y, placement } = await computePosition(this, popoverEl, {
+            placement: this.placement,
+            strategy: 'fixed',
+            middleware: [offset(8), flip(), shift({ padding: 8 })],
+          });
+
+          this.popoverX = x;
+          this.popoverY = y;
+          popoverEl.style.left = `${x}px`;
+          popoverEl.style.top = `${y}px`;
+          popoverEl.setAttribute('data-placement', placement);
+        },
+        { ancestorScroll: true, ancestorResize: true },
+      )) ?? null;
   }
 
   protected toggle() {
     if (this.open) {
       this.closePopover();
     } else {
-      this.open = true;
+      this.openPopover();
     }
   }
 
   protected handleTriggerClick() {
-    this.open = !this.open;
+    if (this.open) {
+      this.closePopover();
+    } else {
+      this.openPopover();
+    }
   }
 
   protected handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Escape') {
-      this.open = false;
+      this.closePopover();
     }
   }
+
+  protected handleDocumentPointerDown = (event: Event) => {
+    if (this.open && !event.composedPath().includes(this)) {
+      this.closePopover();
+    }
+  };
 
   render() {
     return html`
       <button
         class="popover-trigger"
         @click="${this.handleTriggerClick}"
+        @keydown="${this.handleKeyDown}"
         aria-expanded="${this.open}"
         aria-haspopup="dialog"
         aria-label="${this.ariaLabel}"

@@ -22,7 +22,6 @@ export class EmcTooltip extends LitElement {
   private cleanup: (() => void) | null = null;
   private showTimeout: ReturnType<typeof setTimeout> | null = null;
   private hideTimeout: ReturnType<typeof setTimeout> | null = null;
-  private floatingEl: HTMLElement | null = null;
 
   static styles = css`
     :host {
@@ -157,35 +156,38 @@ export class EmcTooltip extends LitElement {
   }
 
   protected async updateTooltipPosition() {
-    if (!this.floatingEl || !this.content) return;
+    const tooltipEl = this.renderRoot.querySelector('.tooltip') as HTMLElement | null;
+    if (!tooltipEl || !this.content) return;
 
     const { computePosition, flip, shift, offset, autoUpdate } = await import('@floating-ui/dom');
 
     this.cleanup?.();
-    this.cleanup = autoUpdate(
-      this,
-      this.renderRoot.querySelector('.tooltip') as HTMLElement,
-      async () => {
-        const { x, y, placement } = await computePosition(this, this.floatingEl!, {
-          placement: this.placement,
-          strategy: 'fixed',
-          middleware: [offset(8), flip(), shift({ padding: 8 })],
-        });
+    this.cleanup =
+      (await autoUpdate(
+        this,
+        tooltipEl,
+        async () => {
+          const { x, y, placement } = await computePosition(this, tooltipEl, {
+            placement: this.placement,
+            strategy: 'fixed',
+            middleware: [offset(8), flip(), shift({ padding: 8 })],
+          });
 
-        this.tooltipX = x;
-        this.tooltipY = y;
-        this.floatingEl!.style.left = `${x}px`;
-        this.floatingEl!.style.top = `${y}px`;
-        this.floatingEl!.setAttribute('data-placement', placement);
-      },
-      { ancestorScroll: true, ancestorResize: true },
-    );
+          this.tooltipX = x;
+          this.tooltipY = y;
+          tooltipEl.style.left = `${x}px`;
+          tooltipEl.style.top = `${y}px`;
+          tooltipEl.setAttribute('data-placement', placement);
+        },
+        { ancestorScroll: true, ancestorResize: true },
+      )) ?? null;
   }
 
   protected show() {
     if (this.hideTimeout) clearTimeout(this.hideTimeout);
-    this.showTimeout = setTimeout(() => {
+    this.showTimeout = setTimeout(async () => {
       this.tooltipOpen = true;
+      await this.updateComplete;
       this.updateTooltipPosition();
     }, this.delay);
   }
@@ -194,6 +196,8 @@ export class EmcTooltip extends LitElement {
     if (this.showTimeout) clearTimeout(this.showTimeout);
     this.hideTimeout = setTimeout(() => {
       this.tooltipOpen = false;
+      this.cleanup?.();
+      this.cleanup = null;
     }, 100);
   }
 
