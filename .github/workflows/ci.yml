@@ -40,6 +40,9 @@ jobs:
       - name: Build demo
         run: pnpm build:demo
 
+      - name: Compile ng-ui styles
+        run: pnpm build:styles
+
       - name: Build Storybook
         run: pnpm build-storybook
 
