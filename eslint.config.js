@@ -5,7 +5,16 @@ const angular = require('angular-eslint');
 const eslintConfigPrettier = require('eslint-config-prettier');
 
 module.exports = tseslint.config(
-  { ignores: ['node_modules/**', 'dist/**', 'out-tsc/**', '.angular/**', 'storybook-static/**'] },
+  {
+    ignores: [
+      'node_modules/**',
+      'dist/**',
+      '**/coverage/**',
+      'out-tsc/**',
+      '.angular/**',
+      'storybook-static/**',
+    ],
+  },
   {
     files: ['**/*.ts'],
     extends: [
