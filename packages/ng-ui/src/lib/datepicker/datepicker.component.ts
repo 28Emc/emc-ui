@@ -37,6 +37,8 @@ import {
 
 export type DatePickerValue = string | null;
 
+let datepickerPanelSeq = 0;
+
 @Component({
   selector: 'ui-datepicker',
   standalone: true,
@@ -62,7 +64,10 @@ export type DatePickerValue = string | null;
           [value]="displayText()"
           [disabled]="disabled() || formDisabled()"
           [attr.aria-label]="'Seleccionar fecha'"
+          role="combobox"
+          aria-haspopup="dialog"
           [attr.aria-expanded]="isOpen()"
+          [attr.aria-controls]="panelId"
           (input)="onInput($event)"
           (focus)="open()"
           (keydown)="onTriggerKeydown($event)"
@@ -73,7 +78,10 @@ export type DatePickerValue = string | null;
     </div>
 
     <ng-template #panel>
-      <div class="w-72 rounded-xl border border-default bg-surface p-4 shadow-pop animate-scale-in">
+      <div
+        [id]="panelId"
+        class="w-72 rounded-xl border border-default bg-surface p-4 shadow-pop animate-scale-in"
+      >
         <div class="mb-3 flex items-center justify-between">
           <button
             type="button"
@@ -81,8 +89,9 @@ export type DatePickerValue = string | null;
             (click)="shiftView(-1)"
             class="p-1 text-muted hover:text-fg cursor-pointer"
             [disabled]="disableOverlayButtons()"
+            [attr.aria-label]="'Mes anterior'"
           >
-            <svg lucideChevronLeft [size]="16" />
+            <svg lucideChevronLeft [size]="16" aria-hidden="true" />
           </button>
           <button
             type="button"
@@ -99,8 +108,9 @@ export type DatePickerValue = string | null;
             (click)="shiftView(1)"
             class="p-1 text-muted hover:text-fg cursor-pointer"
             [disabled]="disableOverlayButtons()"
+            [attr.aria-label]="'Mes siguiente'"
           >
-            <svg lucideChevronRight [size]="16" />
+            <svg lucideChevronRight [size]="16" aria-hidden="true" />
           </button>
         </div>
 
@@ -179,6 +189,7 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   protected readonly isOpen = signal(false);
   protected readonly formDisabled = signal(false);
+  protected readonly panelId = `ui-datepicker-panel-${++datepickerPanelSeq}`;
   protected readonly editing = signal(false);
   protected readonly query = signal('');
   protected readonly view = signal<{ year: number; month: number }>({

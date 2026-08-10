@@ -51,14 +51,16 @@ describe('PaginationComponent', () => {
   });
 
   it('marks the current page', () => {
-    const current = fixture.nativeElement.querySelector(
-      'ui-button[aria-current="page"]',
-    ) as HTMLElement;
+    const root = fixture.nativeElement as HTMLElement;
+    const current = root.querySelector('ui-button button[aria-current="page"]') as HTMLElement;
     expect(current?.textContent?.trim()).toBe('3');
   });
 
   it('goes to the previous page', () => {
-    const prev = buttons().find((b) => b.getAttribute('aria-label') === 'Página anterior');
+    const root = fixture.nativeElement as HTMLElement;
+    const prev = Array.from(root.querySelectorAll('ui-button button')).find(
+      (b) => b.getAttribute('aria-label') === 'Página anterior',
+    ) as HTMLButtonElement | undefined;
     prev?.click();
     fixture.detectChanges();
     expect(host.page()).toBe(2);

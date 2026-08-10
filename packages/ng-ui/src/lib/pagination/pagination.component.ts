@@ -21,9 +21,9 @@ type PageItem = number | 'ellipsis-start' | 'ellipsis-end';
         size="sm"
         [disabled]="page() <= 1"
         (click)="go(page() - 1)"
-        [attr.aria-label]="'Página anterior'"
+        [ariaLabel]="'Página anterior'"
       >
-        <svg lucideChevronLeft [size]="16" [strokeWidth]="2" />
+        <svg lucideChevronLeft [size]="16" [strokeWidth]="2" aria-hidden="true" />
       </ui-button>
 
       @for (item of pageItems(); track $index) {
@@ -34,7 +34,7 @@ type PageItem = number | 'ellipsis-start' | 'ellipsis-end';
             variant="ghost"
             size="sm"
             [class]="item === page() ? pageButtonActiveClass() : ''"
-            [attr.aria-current]="item === page() ? 'page' : null"
+            [ariaCurrent]="item === page() ? 'page' : null"
             (click)="go(item)"
           >
             {{ item }}
@@ -47,9 +47,9 @@ type PageItem = number | 'ellipsis-start' | 'ellipsis-end';
         size="sm"
         [disabled]="page() >= totalPages()"
         (click)="go(page() + 1)"
-        [attr.aria-label]="'Página siguiente'"
+        [ariaLabel]="'Página siguiente'"
       >
-        <svg lucideChevronRight [size]="16" [strokeWidth]="2" />
+        <svg lucideChevronRight [size]="16" [strokeWidth]="2" aria-hidden="true" />
       </ui-button>
     </nav>
   `,
