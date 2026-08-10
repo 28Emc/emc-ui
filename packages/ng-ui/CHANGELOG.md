@@ -1,5 +1,25 @@
 # @emc-dev/ng-ui
 
+## 1.1.0
+
+### Minor Changes
+
+- 8e7919b: Add i18n locale support. `DatePicker` and `DateRangePicker` accept a `locale`
+  input that overrides `LOCALE_ID` for date formatting, month/weekday names and
+  UI strings. Intl logic is centralized in a new `LocaleService` with cached
+  month names, Monday-first weekday labels and an `es`/`en` UI-string dictionary;
+  the date-range calendar navigation buttons also gained accessible names.
+
+### Patch Changes
+
+- 70baa84: Fix axe-core violations detected by the new WCAG A/AA accessibility suite. The
+  pagination prev/next buttons now pass the accessible name via the button's
+  `ariaLabel` input instead of `[attr.aria-label]` on the host element, and
+  `aria-current` is applied to the inner button. The datepicker trigger now uses
+  the combobox pattern (`role="combobox"`, `aria-haspopup="dialog"`,
+  `aria-expanded`, and `aria-controls` pointing to the panel id) and the calendar
+  navigation chevron buttons have `aria-label`s with `aria-hidden` icons.
+
 ## 1.0.0
 
 ### Major Changes
