@@ -37,6 +37,18 @@ jobs:
       - name: Build libraries
         run: pnpm build
 
+      - name: Analyze bundle sizes
+        run: pnpm analyze
+
+      - name: Upload bundle size reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-stats
+          path: |
+            packages/emc-ui/dist/stats.html
+            dist/bundle-stats/ng-ui.html
+          if-no-files-found: error
+
       - name: Build demo
         run: pnpm build:demo
 

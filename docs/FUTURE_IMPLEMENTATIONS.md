@@ -4,6 +4,21 @@
 
 This document outlines the next set of UI components that can be added to the **emc‑ui** library. Each component is described with its purpose, key features, and why it adds value to the library. The list is ordered by impact and implementation complexity.
 
+---
+
+## ✅ Certified Decisions (2026‑08‑10)
+
+Architecture decisions ratified for the migration plan. These are binding for the roadmap below.
+
+| Decision          | Resolution                                                                                                                                                                                        |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Package model** | **One package per framework**: `@emc-dev/emc-ui` (Lit) and `@emc-dev/ng-ui` (Angular). No sub-package split.                                                                                      |
+| **Sub-packages**  | **Deferred sine die**. Only reintroduced if the bundle analysis shows a measurable, consumer-visible gain — and always keeping the root barrel `"."` export so existing consumers are not broken. |
+| **Evidence rule** | The bundle analysis report (CI artifact) is the data that decides any future split — never assumption.                                                                                            |
+| **Semver**        | One version per package; both bump together through the existing changesets flow.                                                                                                                 |
+
+**Backlog order (certified):** 1) Bundle analysis → 2) axe-core CI → 3) i18n locale → 4) Full a11y pass → 5) Missing components → 6) CSS/design-system maturity → 7) E2E + performance budgets.
+
 | Category             | Component                       | Description                                                                              | Key Features                                                                             | Priority |
 | -------------------- | ------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------- |
 | **Entrada de datos** | **TimePicker**                  | Selector de hora (HH:mm) con overlay, soporte de rangos y accesibilidad por teclado.     | Overlay similar a DatePicker, validación de rango, formato 24h/12h, soporte de locales.  | High     |
@@ -51,12 +66,12 @@ All 26 components listed above have been **implemented, tested, documented, and 
 
 ### 1. Bundle Size & Architecture (~510 KB gzipped JS)
 
-| Improvement                 | Description                                                                                                  | Effort |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------ | ------ |
-| **Bundle analysis**         | Add `rollup-plugin-visualizer` or `webpack-bundle-analyzer` to CI; identify heavy deps                       | Low    |
-| **Sub-packages**            | Split into `@emc-ui/inputs`, `@emc-ui/overlays`, `@emc-ui/data-display`, `@emc-ui/feedback` for tree-shaking | Medium |
-| **Entry-point granularity** | Review `public-api.ts` — export only what consumers need; remove internal types from public surface          | Low    |
-| **Peer dep optimization**   | Verify `@angular/cdk` overlay/portal are properly marked as external; avoid bundling                         | Low    |
+| Improvement                 | Description                                                                                                               | Effort | Status               |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------- |
+| **Bundle analysis**         | `esbuild-visualizer` report for emc-ui (from tsup metafile) + size report for ng-ui (FESM files); uploaded as CI artifact | Low    | ✅ Done (2026‑08‑10) |
+| **Sub-packages**            | **Deferred per certified decisions** — only if the bundle report shows measurable gain; root barrel kept either way       | Medium | ⏸ Deferred           |
+| **Entry-point granularity** | Review `public-api.ts` — export only what consumers need; remove internal types from public surface                       | Low    | —                    |
+| **Peer dep optimization**   | Verify `@angular/cdk` overlay/portal are properly marked as external; avoid bundling                                      | Low    | —                    |
 
 ### 2. Missing Common Components (High Demand)
 
@@ -131,18 +146,17 @@ All 26 components listed above have been **implemented, tested, documented, and 
 
 ---
 
-## Suggested Next Implementation Order
+## Suggested Next Implementation Order (certified 2026‑08‑10)
 
-1. **Bundle analysis + sub-package split** — immediate ROI for consumers
-2. **File Upload** — high demand, reuses `DragDropList` + `Progress` + `Toast`
-3. **axe-core CI** — lock in accessibility baseline
-4. **i18n Locale Input** — unblock non-es-PE consumers
-5. **Carousel / Slider** — common marketing/UI need
-6. **Color Picker** — pairs with `ThemeSwitcher`
-7. **Command Palette** — differentiator for power-user apps
+1. ~~**Bundle analysis**~~ — ✅ done (CI artifact, see Certified Decisions)
+2. **axe-core CI** — lock in accessibility baseline
+3. **i18n Locale Input** — unblock non-es-PE consumers
+4. **Full a11y pass** — skip link, focus management, ARIA live regions
+5. **File Upload** — high demand, reuses `DragDropList` + `Progress` + `Toast`
+6. **Missing components** — Image, Carousel/Slider, Tree View, OTP Input, Context Menu
+7. **CSS/design-system maturity** — motion tokens, semantic color aliases, typography scale, density
 8. **Container Queries migration** — future-proof responsive components
-9. **CSS Layers + expanded tokens** — design system maturity
-10. **E2E + Visual Regression** — confidence for releases
+9. **E2E + Visual Regression** — confidence for releases
 
 ---
 
@@ -156,4 +170,4 @@ All 26 components listed above have been **implemented, tested, documented, and 
 
 ---
 
-_Updated: 2026‑08‑07. Core roadmap completed; improvement opportunities added._
+_Updated: 2026‑08‑10. Core roadmap completed; certified decisions added; bundle analysis shipped.

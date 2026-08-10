@@ -17,6 +17,7 @@
     "build:emc-ui": "turbo run build --filter=@emc-dev/emc-ui",
     "build:demo": "ng build demo",
     "build:styles": "tailwindcss -i packages/ng-ui/src/lib/styles/theme.css -o packages/ng-ui/styles.css",
+    "analyze": "pnpm -r run analyze",
     "watch": "turbo run dev",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",

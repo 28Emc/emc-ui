@@ -21,6 +21,7 @@
     "build": "ng build ng-ui",
     "postbuild": "node ../../scripts/patch-ng-ui-exports.mjs",
     "build:prod": "ng build ng-ui --configuration production",
+    "analyze": "node ../../scripts/analyze-ng-ui.mjs",
     "test": "ng test ng-ui",
     "lint": "ng lint ng-ui"
   },

@@ -7,6 +7,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
+  metafile: true,
   external: ['clsx', 'tailwind-merge', '@floating-ui/dom', '@preact/signals-core'],
   banner: {
     js: '"use client"',
