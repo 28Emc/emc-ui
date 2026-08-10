@@ -1,4 +1,4 @@
-import { Component, input, output, computed } from '@angular/core';
+import { Component, input, output, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   LucideCheckCircle2,
@@ -7,6 +7,7 @@ import {
   LucideInfo,
 } from '@lucide/angular';
 import { cn } from '../utils/cn';
+import { LocaleService, UiStringKey } from '../locale/locale.service';
 import { Toast, ToastVariant } from './toast.service';
 
 const ICON_MAP: Record<ToastVariant, any> = {
@@ -64,7 +65,7 @@ const VARIANT_CLASSES: Record<ToastVariant, string> = {
         type="button"
         class="p-1 rounded-lg text-muted hover:text-fg hover:bg-surface-2 transition-colors duration-150"
         (click)="dismiss.emit(toast().id)"
-        [attr.aria-label]="'Cerrar ' + toast().title"
+        [attr.aria-label]="t('close') + ' ' + toast().title"
       >
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -83,6 +84,12 @@ export class ToastComponent {
   readonly dismiss = output<string>();
   readonly pauseToast = output<string>();
   readonly resumeToast = output<string>();
+
+  private readonly localeService = inject(LocaleService);
+
+  protected t(key: UiStringKey): string {
+    return this.localeService.translate(key);
+  }
 
   protected readonly iconComponent = computed(() => ICON_MAP[this.toast().variant]);
   protected readonly iconClasses = computed(() =>

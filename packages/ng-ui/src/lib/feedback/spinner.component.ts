@@ -6,7 +6,9 @@ import { cn } from '../utils/cn';
   selector: 'ui-spinner',
   standalone: true,
   imports: [LucideLoader2],
-  template: ` <svg lucideLoader2 [class]="classes()" [size]="size()" [strokeWidth]="2" /> `,
+  template: `
+    <svg lucideLoader2 [class]="classes()" [size]="size()" [strokeWidth]="2" aria-hidden="true" />
+  `,
 })
 export class SpinnerComponent {
   readonly size = input<number>(16);

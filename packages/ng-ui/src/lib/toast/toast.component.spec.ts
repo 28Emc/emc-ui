@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { ToastComponent } from './toast.component';
 import { Toast } from './toast.service';
@@ -44,7 +45,10 @@ describe('ToastComponent', () => {
   let host: ToastHost;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [ToastHost] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [ToastHost],
+      providers: [{ provide: LOCALE_ID, useValue: 'es-PE' }],
+    }).compileComponents();
     fixture = TestBed.createComponent(ToastHost);
     host = fixture.componentInstance;
     fixture.detectChanges();

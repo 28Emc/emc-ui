@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { OverlayContainer } from '@angular/cdk/overlay';
@@ -10,7 +11,13 @@ import { UiModalFooterDirective } from './modal-footer.directive';
   standalone: true,
   imports: [ModalComponent, UiModalFooterDirective],
   template: `
-    <ui-modal [open]="open()" (openChange)="open.set($event)" [title]="title()" [size]="size()">
+    <ui-modal
+      [open]="open()"
+      (openChange)="open.set($event)"
+      [title]="title()"
+      [size]="size()"
+      [autoFocus]="autoFocus()"
+    >
       Contenido del modal
       <button type="button" uiModalFooter>Cancelar</button>
     </ui-modal>
@@ -20,6 +27,7 @@ class ModalHost {
   readonly open = signal(false);
   readonly title = signal('Confirmación');
   readonly size = signal<ModalSize>('md');
+  readonly autoFocus = signal(true);
 }
 
 describe('ModalComponent', () => {
@@ -27,7 +35,10 @@ describe('ModalComponent', () => {
   let host: ModalHost;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [ModalHost] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [ModalHost],
+      providers: [{ provide: LOCALE_ID, useValue: 'es-PE' }],
+    }).compileComponents();
     fixture = TestBed.createComponent(ModalHost);
     host = fixture.componentInstance;
     fixture.detectChanges();
@@ -96,5 +107,20 @@ describe('ModalComponent', () => {
     const comp = fixture.debugElement.query(By.directive(ModalComponent))
       .componentInstance as unknown as { widthStyle: () => string };
     expect(comp.widthStyle()).toContain('42rem');
+  });
+
+  it('focuses the first focusable element when autoFocus is true', () => {
+    host.open.set(true);
+    fixture.detectChanges();
+    const close = closeButton();
+    expect(close).toBeTruthy();
+    expect(document.activeElement).toBe(close);
+  });
+
+  it('focuses the dialog when autoFocus is false', () => {
+    host.autoFocus.set(false);
+    host.open.set(true);
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(dialog());
   });
 });

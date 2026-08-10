@@ -3,6 +3,7 @@ import {
   DestroyRef,
   TemplateRef,
   ViewContainerRef,
+  booleanAttribute,
   computed,
   contentChildren,
   effect,
@@ -17,7 +18,9 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { filter } from 'rxjs';
 import { LucideX } from '@lucide/angular';
 import { ButtonComponent } from '../button/button.component';
+import { LocaleService, UiStringKey } from '../locale/locale.service';
 import { UiModalFooterDirective } from './modal-footer.directive';
+import { focusFirstFocusable } from '../utils/focus';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -52,7 +55,12 @@ let modalUid = 0;
               <p class="text-sm text-muted">{{ subtitle() }}</p>
             }
           </div>
-          <ui-button variant="ghost" size="icon-sm" aria-label="Cerrar" (click)="requestClose()">
+          <ui-button
+            variant="ghost"
+            size="icon-sm"
+            [attr.aria-label]="t('close')"
+            (click)="requestClose()"
+          >
             <svg lucideX [size]="16" [strokeWidth]="2" />
           </ui-button>
         </header>
@@ -73,10 +81,12 @@ export class ModalComponent {
   readonly size = input<ModalSize>('md');
   readonly title = input('');
   readonly subtitle = input('');
+  readonly autoFocus = input(true, { transform: booleanAttribute });
 
   private readonly overlay = inject(Overlay);
   private readonly viewContainerRef = inject(ViewContainerRef);
   private readonly panelTemplate = viewChild.required<TemplateRef<unknown>>('panel');
+  private readonly localeService = inject(LocaleService);
 
   private overlayRef: OverlayRef | null = null;
   private previouslyFocused: HTMLElement | null = null;
@@ -121,7 +131,11 @@ export class ModalComponent {
       .subscribe(() => this.requestClose());
     this.overlayRef.attach(new TemplatePortal(this.panelTemplate(), this.viewContainerRef));
     const dialog = this.overlayRef.overlayElement.querySelector<HTMLElement>('[role="dialog"]');
-    dialog?.focus();
+    if (this.autoFocus()) {
+      focusFirstFocusable(dialog ?? this.overlayRef.overlayElement);
+    } else {
+      dialog?.focus();
+    }
   }
 
   private detach(): void {
@@ -136,5 +150,9 @@ export class ModalComponent {
 
   protected requestClose(): void {
     this.open.set(false);
+  }
+
+  protected t(key: UiStringKey): string {
+    return this.localeService.translate(key);
   }
 }

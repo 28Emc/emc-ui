@@ -97,6 +97,8 @@ All 26 components listed above have been **implemented, tested, documented, and 
 | **Color Contrast Audit** | Automated check of design tokens against APCA/WCAG in both themes                       |
 | **ARIA Live Regions**    | Ensure all dynamic updates (toast, skeleton→content, loading states) announce correctly |
 
+> **Full a11y pass** ✅ done (2026‑08‑10): `ui-skip-link` shipped, `Modal`/`Drawer` gained an `autoFocus` input (focus moves to the first focusable element, restoring focus on close), and overlay/close labels (`Cerrar`, `Saltar al contenido`) are localized via `LocaleService`.
+
 ### 4. Internationalization (i18n)
 
 | Item                       | Description                                                                     | Status               |
@@ -151,7 +153,7 @@ All 26 components listed above have been **implemented, tested, documented, and 
 1. ~~**Bundle analysis**~~ — ✅ done (CI artifact, see Certified Decisions)
 2. ~~**axe-core CI**~~ — ✅ done (axe-core suites in vitest + jest, WCAG A/AA, violations fixed)
 3. ~~**i18n Locale Input**~~ — ✅ done (`LocaleService` + `locale` input on DatePicker/DateRangePicker)
-4. **Full a11y pass** — skip link, focus management, ARIA live regions
+4. ~~**Full a11y pass**~~ — ✅ done (`ui-skip-link`, `autoFocus` en Modal/Drawer, labels de cierre localizados)
 5. **File Upload** — high demand, reuses `DragDropList` + `Progress` + `Toast`
 6. **Missing components** — Image, Carousel/Slider, Tree View, OTP Input, Context Menu
 7. **CSS/design-system maturity** — motion tokens, semantic color aliases, typography scale, density
@@ -170,4 +172,4 @@ All 26 components listed above have been **implemented, tested, documented, and 
 
 ---
 
-_Updated: 2026‑08‑10. Core roadmap completed; certified decisions added; bundle analysis, axe-core CI and i18n locale shipped.
+_Updated: 2026‑08‑10. Core roadmap completed; certified decisions added; bundle analysis, axe-core CI, i18n locale and full a11y pass shipped.

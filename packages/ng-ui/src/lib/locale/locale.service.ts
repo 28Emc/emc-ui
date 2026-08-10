@@ -11,7 +11,9 @@ export type UiStringKey =
   | 'toggleRange'
   | 'noRange'
   | 'clear'
-  | 'years';
+  | 'years'
+  | 'close'
+  | 'skipToContent';
 
 const DEFAULT_LOCALE = 'es-PE';
 const MONDAY_2026 = new Date(2026, 7, 3);
@@ -45,6 +47,8 @@ const UI_STRINGS: Record<string, Partial<Record<UiStringKey, string>>> = {
     noRange: 'Sin rango',
     clear: 'Limpiar',
     years: 'Años',
+    close: 'Cerrar',
+    skipToContent: 'Saltar al contenido',
   },
   en: {
     selectDate: 'Select date',
@@ -57,6 +61,8 @@ const UI_STRINGS: Record<string, Partial<Record<UiStringKey, string>>> = {
     noRange: 'No range',
     clear: 'Clear',
     years: 'Years',
+    close: 'Close',
+    skipToContent: 'Skip to content',
   },
 };
 

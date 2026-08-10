@@ -5,9 +5,11 @@
  */
 
 export * from './lib/utils/cn';
+export * from './lib/utils/focus';
 export * from './lib/button/button.component';
 export * from './lib/feedback/badge.component';
 export * from './lib/feedback/spinner.component';
+export * from './lib/feedback/skip-link.component';
 export * from './lib/avatar/avatar.component';
 export * from './lib/avatar/avatar-group.component';
 export * from './lib/input/field-base';

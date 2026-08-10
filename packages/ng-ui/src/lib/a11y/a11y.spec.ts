@@ -44,6 +44,7 @@ import { ScreenReaderOnlyComponent } from '../screen-reader-only/screen-reader-o
 import { FormSectionComponent } from '../form-section/form-section.component';
 import { SkeletonComponent } from '../feedback/skeleton.component';
 import { SpinnerComponent } from '../feedback/spinner.component';
+import { SkipLinkComponent } from '../feedback/skip-link.component';
 import { TagInputComponent } from '../taginput/taginput.component';
 import { RatingComponent } from '../rating/rating.component';
 
@@ -429,6 +430,13 @@ describe('ng-ui a11y (axe-core, WCAG A/AA)', () => {
 
   @Component({
     standalone: true,
+    imports: [SkipLinkComponent],
+    template: `<ui-skip-link target="#main" label="Saltar al contenido"></ui-skip-link>`,
+  })
+  class SkipLinkHost {}
+
+  @Component({
+    standalone: true,
     imports: [TagInputComponent],
     template: `<ui-taginput
       [value]="['angular', 'tailwind']"
@@ -592,6 +600,10 @@ describe('ng-ui a11y (axe-core, WCAG A/AA)', () => {
 
   it('spinner has no violations', async () => {
     await expectClean(createHost(SpinnerHost).nativeElement, 'ui-spinner');
+  });
+
+  it('skip-link has no violations', async () => {
+    await expectClean(createHost(SkipLinkHost).nativeElement, 'ui-skip-link');
   });
 
   it('taginput has no violations', async () => {

@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { LOCALE_ID } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { DrawerComponent } from './drawer.component';
@@ -15,6 +16,7 @@ import { UiDrawerFooterDirective } from './drawer-footer.directive';
       [title]="title()"
       [subtitle]="subtitle()"
       [width]="width()"
+      [autoFocus]="autoFocus()"
     >
       Contenido del drawer
       <div uiDrawerFooter>Pie</div>
@@ -26,6 +28,7 @@ class DrawerHost {
   readonly title = signal('Ajustes');
   readonly subtitle = signal('Preferencias de cuenta');
   readonly width = signal('w-96');
+  readonly autoFocus = signal(true);
 }
 
 describe('DrawerComponent', () => {
@@ -33,7 +36,10 @@ describe('DrawerComponent', () => {
   let host: DrawerHost;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [DrawerHost] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [DrawerHost],
+      providers: [{ provide: LOCALE_ID, useValue: 'es-PE' }],
+    }).compileComponents();
     fixture = TestBed.createComponent(DrawerHost);
     host = fixture.componentInstance;
     fixture.detectChanges();
@@ -98,5 +104,20 @@ describe('DrawerComponent', () => {
     backdrop()?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     fixture.detectChanges();
     expect(host.open()).toBe(false);
+  });
+
+  it('focuses the first focusable element when autoFocus is true', () => {
+    host.open.set(true);
+    fixture.detectChanges();
+    const close = closeButton();
+    expect(close).toBeTruthy();
+    expect(document.activeElement).toBe(close);
+  });
+
+  it('focuses the dialog when autoFocus is false', () => {
+    host.autoFocus.set(false);
+    host.open.set(true);
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(dialog());
   });
 });
