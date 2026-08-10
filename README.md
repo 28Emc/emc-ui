@@ -1,12 +1,6 @@
-# emc-ui monorepo
+# @emc-dev/emc-ui
 
-Design system monorepo (pnpm workspaces + Turborepo) with two publishable packages and a demo app.
-
-| Package                                                    | Stack                             | What it is                                           |
-| ---------------------------------------------------------- | --------------------------------- | ---------------------------------------------------- |
-| [`packages/ng-ui`](./packages/ng-ui) → `@emc-dev/ng-ui`    | Angular 22, standalone components | Angular component library (`ui-*` selectors)         |
-| [`packages/emc-ui`](./packages/emc-ui) → `@emc-dev/emc-ui` | Lit, vanilla TS, Tailwind CSS v4  | Framework-agnostic Web Components (`emc-*` elements) |
-| [`projects/demo`](./projects/demo)                         | Angular app                       | Showcases the `ng-ui` components by category         |
+Framework-agnostic Web Component library built with Lit, vanilla TypeScript, and Tailwind CSS v4. Distributes custom elements (`emc-*` prefix) that work in any frontend framework or vanilla HTML.
 
 ## Requirements
 
@@ -17,90 +11,58 @@ Design system monorepo (pnpm workspaces + Turborepo) with two publishable packag
 
 ```bash
 pnpm install
-pnpm build      # build both packages (turbo)
-pnpm start      # ng serve demo → http://localhost:4200
+pnpm build      # builds @emc-dev/emc-ui
 ```
-
-The demo resolves `@emc-dev/ng-ui` **from source** through TS paths
-(`projects/demo/tsconfig.app.json`), so there is no install/rebuild step between
-editing the library and reloading the demo.
 
 ## Scripts
 
-| Script                                    | Description                                                    |
-| ----------------------------------------- | -------------------------------------------------------------- |
-| `pnpm build`                              | Build both packages (`turbo run build`)                        |
-| `pnpm build:ng-ui`                        | Build `@emc-dev/ng-ui`                                         |
-| `pnpm build:emc-ui`                       | Build `@emc-dev/emc-ui`                                        |
-| `pnpm build:demo`                         | Build the demo app (`ng build demo`)                           |
-| `pnpm start` / `pnpm serve`               | Dev server for the demo (`ng serve demo`)                      |
-| `pnpm build:styles`                       | Compile the ng-ui Tailwind theme → `packages/ng-ui/styles.css` |
-| `pnpm watch`                              | Watch mode for packages (`turbo run dev`)                      |
-| `pnpm test` / `pnpm test:watch`           | Run unit tests (vitest)                                        |
-| `pnpm lint` / `pnpm lint:fix`             | ESLint                                                         |
-| `pnpm format` / `pnpm format:check`       | Prettier                                                       |
-| `pnpm storybook` / `pnpm build-storybook` | Storybook dev server / static build                            |
-| `pnpm changeset` / `pnpm version`         | Changesets release management                                  |
-| `pnpm release`                            | Build both packages and publish (`changeset publish`)          |
+| Script                              | Description                                 |
+| ----------------------------------- | ------------------------------------------- |
+| `pnpm build`                        | Build `@emc-dev/emc-ui` (`turbo run build`) |
+| `pnpm build:emc-ui`                 | Build the emc-ui package directly           |
+| `pnpm analyze`                      | Bundle-size report (esbuild-visualizer)     |
+| `pnpm watch`                        | Watch mode (`turbo run dev`)                |
+| `pnpm test` / `pnpm test:watch`     | Run unit tests (vitest)                     |
+| `pnpm lint` / `pnpm lint:fix`       | ESLint                                      |
+| `pnpm format` / `pnpm format:check` | Prettier                                    |
+| `pnpm changeset`                    | Create a changeset entry                    |
+| `pnpm version`                      | Bump versions and update CHANGELOG          |
+| `pnpm release`                      | Build and publish via Changesets            |
+
+## Package structure
+
+```
+packages/
+  emc-ui/          the @emc-dev/emc-ui library (src/**, tsup.config.ts)
+docs/              DESIGN.md, FUTURE_IMPLEMENTATIONS.md
+```
 
 ## Publishing
 
-Both packages publish to the public npm registry under the `@emc-dev` scope.
-
-- **`@emc-dev/ng-ui`** is compiled by ng-packagr into `dist/ng-ui`. Its
-  `publishConfig.directory` points there, so `changeset publish` uploads only the
-  compiled output (fesm + types + styles) plus `README.md` and `LICENSE`. The
-  `postbuild` step patches the `exports` map with the CSS subpaths.
-- **`@emc-dev/emc-ui`** is bundled by tsup in place. Its `files` whitelist keeps the
-  tarball to `dist`, `README.md`, `CHANGELOG.md` and `LICENSE`.
-
-Verify the tarballs before releasing:
-
-```bash
-cd packages/emc-ui && npm pack --dry-run --pack-destination "$TEMP"
-cd ../../dist/ng-ui && npm pack --dry-run --pack-destination "$TEMP"
-```
-
-Release flow:
+Publishes to the public npm registry under the `@emc-dev` scope via GitHub trusted publishing (OIDC).
 
 ```bash
 pnpm changeset   # add a changeset for your change
-pnpm version     # bump versions and update CHANGELOGs
-pnpm release     # build + publish (run by CI too)
+pnpm version     # bump version and update CHANGELOG
+pnpm release     # build + publish (also runs in CI)
 ```
 
-## Storybook
-
-Visual documentation of the `ng-ui` components (CSF, `@storybook/angular-vite`):
-
-```bash
-pnpm build:styles    # generates packages/ng-ui/styles.css (imported by .storybook/preview.ts)
-pnpm storybook       # dev server on http://localhost:6006
-pnpm build-storybook # static build → storybook-static/
-```
-
-Stories live next to each component (`*.stories.ts`). API tables are generated by
-Compodoc from `.storybook/compodoc.tsconfig.json`.
-
-## Tests
-
-Unit tests with vitest (`@angular/build:unit-test`) run with:
-
-```bash
-pnpm test        # once
-pnpm test:watch  # watch mode
-```
-
-Specs live next to each component (`*.component.spec.ts`). In tests, host inputs
-must use `signal()` to propagate changes with `fixture.detectChanges()` (zoneless
-environment); services with timers use `vi.useFakeTimers()`.
+The package is bundled by tsup with ESM + CJS outputs and `.d.ts` declarations. The `files` field limits the tarball to `dist/`, `README.md`, `CHANGELOG.md`, and `LICENSE`.
 
 ## CI/CD
 
 GitHub Actions:
 
-- `.github/workflows/ci.yml` — on every push to `main` and PRs: install → lint →
-  format → build packages → build demo → build storybook → test.
-- `.github/workflows/release.yml` — on `main`: uses `changesets/action` to open a
-  versioning PR and, when merged, run `pnpm release` to publish both packages via
-  **GitHub trusted publishing** (OIDC, no npm token required).
+- `.github/workflows/ci.yml` — on every push to `main` and PRs: install → lint → format → build → analyze → test.
+- `.github/workflows/release.yml` — on `main`: uses `changesets/action` to open a versioning PR; when merged, runs `pnpm release` to publish via **GitHub trusted publishing** (no npm token required).
+
+## Tests
+
+Unit tests with vitest:
+
+```bash
+pnpm test        # run once
+pnpm test:watch  # watch mode
+```
+
+Specs live in `packages/emc-ui/src/test/**`.

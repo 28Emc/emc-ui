@@ -34,7 +34,7 @@ jobs:
       - name: Check formatting
         run: pnpm format:check
 
-      - name: Build libraries
+      - name: Build library
         run: pnpm build
 
       - name: Analyze bundle sizes
@@ -46,23 +46,7 @@ jobs:
           name: bundle-stats
           path: |
             packages/emc-ui/dist/stats.html
-            dist/bundle-stats/ng-ui.html
           if-no-files-found: error
-
-      - name: Build demo
-        run: pnpm build:demo
-
-      - name: Compile ng-ui styles
-        run: pnpm build:styles
-
-      - name: Build Storybook
-        run: pnpm build-storybook
-
-      - name: Chromatic (visual regression)
-        if: env.CHROMATIC_PROJECT_TOKEN != ''
-        run: pnpm chromatic
-        env:
-          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
       - name: Run tests
         run: pnpm test

@@ -4,7 +4,5 @@
       "path": ".",
     },
   ],
-  "settings": {
-    "angular.enable-strict-mode-prompt": false,
-  },
+  "settings": {},
 }

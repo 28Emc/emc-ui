@@ -15,9 +15,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@emc-dev/ng-ui": ["packages/ng-ui/src"],
       "@emc-dev/emc-ui": ["packages/emc-ui/src"],
-      "@emc-dev/ng-ui/*": ["packages/ng-ui/src/*"],
       "@emc-dev/emc-ui/*": ["packages/emc-ui/src/*"]
     }
   },

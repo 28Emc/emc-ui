@@ -30,7 +30,7 @@ Thumbs.db
 .DS_Store
 
 # Library compiled stylesheet
-packages/ng-ui/styles.css
+# (ng-ui removed; styles.css no longer at packages/ng-ui/styles.css)
 
 # Turbo
 .turbo/

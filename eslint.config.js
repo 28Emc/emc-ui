@@ -1,7 +1,6 @@
 // @ts-check
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
-const angular = require('angular-eslint');
 const eslintConfigPrettier = require('eslint-config-prettier');
 
 module.exports = tseslint.config(
@@ -10,69 +9,26 @@ module.exports = tseslint.config(
       'node_modules/**',
       'dist/**',
       '**/coverage/**',
-      'out-tsc/**',
       '.angular/**',
       'storybook-static/**',
+      '.turbo/**',
     ],
   },
   {
     files: ['**/*.ts'],
-    extends: [
-      eslint.configs.recommended,
-      ...tseslint.configs.recommended,
-      ...angular.configs.tsRecommended,
-    ],
-    processor: angular.processInlineTemplates,
+    extends: [eslint.configs.recommended, ...tseslint.configs.recommended],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   {
-    files: ['projects/ui/**/*.ts'],
+    files: ['packages/emc-ui/**/*.ts'],
     rules: {
-      '@angular-eslint/directive-selector': [
-        'error',
-        { type: 'attribute', prefix: 'ui', style: 'camelCase' },
-      ],
-      '@angular-eslint/component-selector': [
-        'error',
-        { type: 'element', prefix: 'ui', style: 'kebab-case' },
-      ],
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   {
-    files: ['projects/demo/**/*.ts'],
-    rules: {
-      '@angular-eslint/directive-selector': [
-        'error',
-        { type: 'attribute', prefix: 'app', style: 'camelCase' },
-      ],
-      '@angular-eslint/component-selector': [
-        'error',
-        { type: 'element', prefix: 'app', style: 'kebab-case' },
-      ],
-    },
-  },
-  {
-    files: ['**/*.spec.ts'],
-    rules: {
-      '@angular-eslint/component-selector': 'off',
-      '@angular-eslint/directive-selector': 'off',
-    },
-  },
-  {
-    files: ['**/*.stories.ts'],
-    rules: {
-      '@angular-eslint/component-selector': 'off',
-      '@angular-eslint/directive-selector': 'off',
-    },
-  },
-  {
-    files: ['**/*.html'],
-    extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility],
-  },
-  {
-    files: ['**/*.{ts,js,mjs,cjs,html}'],
+    files: ['**/*.{ts,js,mjs,cjs}'],
     extends: [eslintConfigPrettier],
   },
 );
