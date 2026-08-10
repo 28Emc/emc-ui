@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, LOCALE_ID, signal } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { DatePickerComponent } from './datepicker.component';
   template: `
     <ui-datepicker
       [placeholder]="placeholder()"
+      [locale]="locale() || null"
       [min]="min()"
       [max]="max()"
       [name]="name()"
@@ -22,6 +23,7 @@ import { DatePickerComponent } from './datepicker.component';
 class DatePickerHost {
   readonly value = signal<string | null>(null);
   readonly placeholder = signal('Elige una fecha');
+  readonly locale = signal('');
   readonly min = signal('');
   readonly max = signal('');
   readonly name = signal('');
@@ -32,7 +34,10 @@ describe('DatePickerComponent', () => {
   let host: DatePickerHost;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [DatePickerHost] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [DatePickerHost],
+      providers: [{ provide: LOCALE_ID, useValue: 'es-PE' }],
+    }).compileComponents();
     fixture = TestBed.createComponent(DatePickerHost);
     host = fixture.componentInstance;
     fixture.detectChanges();
@@ -141,6 +146,31 @@ describe('DatePickerComponent', () => {
     fixture.detectChanges();
     expect(host.value()).toBe('1991-02-10');
     expect(input().value).toBe('10/02/1991');
+  });
+
+  it('uses the locale input override to switch to MM/DD/yyyy', () => {
+    host.placeholder.set('');
+    host.locale.set('en-US');
+    fixture.detectChanges();
+    expect(input().placeholder).toBe('mm/dd/yyyy');
+    input().value = '02/10/1991';
+    input().dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('blur'));
+    fixture.detectChanges();
+    expect(host.value()).toBe('1991-02-10');
+    expect(input().value).toBe('02/10/1991');
+  });
+
+  it('localizes calendar month names and action labels', () => {
+    host.locale.set('en-US');
+    fixture.detectChanges();
+    input().dispatchEvent(new Event('focus'));
+    fixture.detectChanges();
+    const panelText = document.body.textContent ?? '';
+    expect(panelText).toContain('August');
+    expect(panelText).toContain('Today');
+    expect(input().getAttribute('aria-label')).toBe('Select date');
   });
 
   it('commits typed dd/MM/yyyy and updates calendar view', () => {

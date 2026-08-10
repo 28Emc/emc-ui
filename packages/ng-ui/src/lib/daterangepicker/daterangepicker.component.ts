@@ -12,7 +12,6 @@ import {
   signal,
   viewChild,
   booleanAttribute,
-  LOCALE_ID,
 } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -25,13 +24,11 @@ import {
   LucideChevronRight,
 } from '@lucide/angular';
 import { cn } from '../utils/cn';
+import { LocaleService, UiStringKey } from '../locale/locale.service';
 import { FIELD_CLASSES, FIELD_INVALID_CLASSES } from '../input/field-base';
 import {
-  MONTH_LABELS,
-  WEEKDAY_LABELS,
   buildMonthCells,
   formatDisplay,
-  getDateFormatPattern,
   isSameDay,
   parseIso,
   parseText,
@@ -108,7 +105,7 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
           [placeholder]="effectivePlaceholder()"
           [value]="displayText()"
           [disabled]="disabled() || formDisabled()"
-          [attr.aria-label]="'Seleccionar rango de fechas'"
+          [attr.aria-label]="t('selectRange')"
           [attr.aria-expanded]="isOpen()"
           (input)="onInput($event)"
           (focus)="open()"
@@ -119,7 +116,7 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
         <button
           type="button"
           [disabled]="disabled() || formDisabled()"
-          [attr.aria-label]="'Alternar rango de fechas'"
+          [attr.aria-label]="t('toggleRange')"
           (click)="toggle()"
           class="-mr-1 shrink-0 rounded-md p-1 text-muted transition-colors duration-150 hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50"
         >
@@ -140,8 +137,9 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
                 (mousedown)="$event.preventDefault()"
                 (click)="shiftView('start', -1)"
                 class="p-1 text-muted hover:text-fg cursor-pointer"
+                [attr.aria-label]="t('prevMonth')"
               >
-                <svg lucideChevronLeft [size]="16" />
+                <svg lucideChevronLeft [size]="16" aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -156,13 +154,14 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
                 (mousedown)="$event.preventDefault()"
                 (click)="shiftView('start', 1)"
                 class="p-1 text-muted hover:text-fg cursor-pointer"
+                [attr.aria-label]="t('nextMonth')"
               >
-                <svg lucideChevronRight [size]="16" />
+                <svg lucideChevronRight [size]="16" aria-hidden="true" />
               </button>
             </div>
             @if (startMode() === 'day') {
               <div class="grid grid-cols-7 gap-1 text-center text-xs font-medium text-muted">
-                @for (label of weekdayLabels; track $index) {
+                @for (label of weekdayLabels(); track $index) {
                   <span class="py-1">{{ label }}</span>
                 }
               </div>
@@ -183,7 +182,7 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
               </div>
             } @else if (startMode() === 'month') {
               <div class="grid grid-cols-3 gap-2">
-                @for (m of monthNames; track $index) {
+                @for (m of monthNames(); track $index) {
                   <button
                     type="button"
                     (mousedown)="$event.preventDefault()"
@@ -217,8 +216,9 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
                 (mousedown)="$event.preventDefault()"
                 (click)="shiftView('end', -1)"
                 class="p-1 text-muted hover:text-fg cursor-pointer"
+                [attr.aria-label]="t('prevMonth')"
               >
-                <svg lucideChevronLeft [size]="16" />
+                <svg lucideChevronLeft [size]="16" aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -233,13 +233,14 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
                 (mousedown)="$event.preventDefault()"
                 (click)="shiftView('end', 1)"
                 class="p-1 text-muted hover:text-fg cursor-pointer"
+                [attr.aria-label]="t('nextMonth')"
               >
-                <svg lucideChevronRight [size]="16" />
+                <svg lucideChevronRight [size]="16" aria-hidden="true" />
               </button>
             </div>
             @if (endMode() === 'day') {
               <div class="grid grid-cols-7 gap-1 text-center text-xs font-medium text-muted">
-                @for (label of weekdayLabels; track $index) {
+                @for (label of weekdayLabels(); track $index) {
                   <span class="py-1">{{ label }}</span>
                 }
               </div>
@@ -260,7 +261,7 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
               </div>
             } @else if (endMode() === 'month') {
               <div class="grid grid-cols-3 gap-2">
-                @for (m of monthNames; track $index) {
+                @for (m of monthNames(); track $index) {
                   <button
                     type="button"
                     (mousedown)="$event.preventDefault()"
@@ -289,14 +290,14 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
         </div>
 
         <div class="mt-3 flex items-center justify-between border-t border-default pt-3">
-          <span class="text-xs text-muted">{{ displayText() || 'Sin rango' }}</span>
+          <span class="text-xs text-muted">{{ displayText() || t('noRange') }}</span>
           <button
             type="button"
             (mousedown)="$event.preventDefault()"
             (click)="clear()"
             class="text-xs font-medium text-brand-600 transition-colors duration-150 hover:text-brand-700 dark:text-brand-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 rounded-md px-2 py-1"
           >
-            Limpiar
+            {{ t('clear') }}
           </button>
         </div>
       </div>
@@ -306,6 +307,7 @@ function maskRange(digits: string, pattern: DateFormatPattern, isDeleting: boole
 export class DateRangePickerComponent implements ControlValueAccessor {
   readonly value = model<DateRangeValue>(null);
   readonly placeholder = input('');
+  readonly locale = input<string | null>();
   readonly format = input<string>();
   readonly min = input<string>();
   readonly max = input<string>();
@@ -333,7 +335,7 @@ export class DateRangePickerComponent implements ControlValueAccessor {
   protected readonly endYearPageStart = signal(0);
   protected readonly hoverCell = signal<Date | null>(null);
 
-  private readonly localeId = inject(LOCALE_ID, { optional: true }) ?? 'es-PE';
+  private readonly localeService = inject(LocaleService);
   private readonly triggerEl = viewChild.required<ElementRef<HTMLInputElement>>('triggerEl');
   private readonly panelTemplate = viewChild.required<TemplateRef<unknown>>('panel');
   private readonly elementRef = inject(ElementRef<HTMLElement>);
@@ -346,11 +348,19 @@ export class DateRangePickerComponent implements ControlValueAccessor {
 
   protected onTouched: () => void = () => {};
 
-  protected readonly weekdayLabels = WEEKDAY_LABELS;
-  protected readonly monthNames = MONTH_LABELS;
+  protected readonly effectiveLocale = computed(
+    () => this.locale() ?? this.localeService.defaultLocale,
+  );
+
+  protected readonly weekdayLabels = computed(() =>
+    this.localeService.weekdayLabels(this.effectiveLocale()),
+  );
+  protected readonly monthNames = computed(() =>
+    this.localeService.monthNames(this.effectiveLocale()),
+  );
 
   protected readonly datePattern = computed<DateFormatPattern>(() =>
-    getDateFormatPattern(this.localeId, this.format()),
+    this.localeService.datePattern(this.effectiveLocale(), this.format()),
   );
 
   protected readonly effectivePlaceholder = computed(() => {
@@ -519,12 +529,16 @@ export class DateRangePickerComponent implements ControlValueAccessor {
   protected modeLabel(side: Side): string {
     const { view, mode } = this.sideState(side);
     if (mode() === 'day') {
-      return `${MONTH_LABELS[view().month]} ${view().year}`;
+      return `${this.monthNames()[view().month]} ${view().year}`;
     }
     if (mode() === 'month') {
       return `${view().year}`;
     }
-    return 'Años';
+    return this.t('years');
+  }
+
+  protected t(key: UiStringKey): string {
+    return this.localeService.translate(key, this.effectiveLocale());
   }
 
   protected shiftView(side: Side, delta: number): void {

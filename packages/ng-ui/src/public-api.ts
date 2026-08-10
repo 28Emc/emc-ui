@@ -19,6 +19,7 @@ export * from './lib/screen-reader-only/screen-reader-only.component';
 export * from './lib/copy-to-clipboard-button/copy-to-clipboard-button.component';
 export * from './lib/theme-switcher/theme.service';
 export * from './lib/theme-switcher/theme-switcher.component';
+export * from './lib/locale/locale.service';
 export * from './lib/drag-drop-list/drag-drop-list.component';
 export * from './lib/sparkline/sparkline.component';
 export * from './lib/virtual-scroll-list/virtual-scroll-list.component';

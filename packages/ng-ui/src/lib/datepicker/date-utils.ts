@@ -1,21 +1,5 @@
 export type DateFormatPattern = 'dd/MM/yyyy' | 'MM/dd/yyyy' | 'yyyy/MM/dd';
 
-export const WEEKDAY_LABELS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
-export const MONTH_LABELS = [
-  'Enero',
-  'Febrero',
-  'Marzo',
-  'Abril',
-  'Mayo',
-  'Junio',
-  'Julio',
-  'Agosto',
-  'Septiembre',
-  'Octubre',
-  'Noviembre',
-  'Diciembre',
-];
-
 export function pad(value: number): string {
   return value < 10 ? `0${value}` : `${value}`;
 }
@@ -35,28 +19,6 @@ export function isSameDay(a: Date, b: Date): boolean {
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate()
   );
-}
-
-export function getDateFormatPattern(locale: string, customFormat?: string): DateFormatPattern {
-  if (customFormat) {
-    const lower = customFormat.toLowerCase();
-    if (lower.startsWith('m')) return 'MM/dd/yyyy';
-    if (lower.startsWith('y')) return 'yyyy/MM/dd';
-    if (lower.startsWith('d')) return 'dd/MM/yyyy';
-  }
-  if (!locale || locale === 'en-US' || locale === 'en') {
-    return 'dd/MM/yyyy';
-  }
-  try {
-    const formatter = new Intl.DateTimeFormat(locale);
-    const parts = formatter.formatToParts(new Date(2026, 11, 31));
-    const order = parts.filter((p) => ['day', 'month', 'year'].includes(p.type)).map((p) => p.type);
-    if (order[0] === 'month' && order[1] === 'day') return 'MM/dd/yyyy';
-    if (order[0] === 'year') return 'yyyy/MM/dd';
-  } catch {
-    // fallback to dd/MM/yyyy
-  }
-  return 'dd/MM/yyyy';
 }
 
 export function formatDisplay(

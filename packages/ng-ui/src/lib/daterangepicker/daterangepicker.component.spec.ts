@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, LOCALE_ID, signal } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { DateRangePickerComponent, DateRangeValue } from './daterangepicker.comp
   template: `
     <ui-daterangepicker
       [placeholder]="placeholder()"
+      [locale]="locale() || null"
       [min]="min()"
       [max]="max()"
       [name]="name()"
@@ -22,6 +23,7 @@ import { DateRangePickerComponent, DateRangeValue } from './daterangepicker.comp
 class DateRangePickerHost {
   readonly value = signal<DateRangeValue>(null);
   readonly placeholder = signal('Elige un rango');
+  readonly locale = signal('');
   readonly min = signal('');
   readonly max = signal('');
   readonly name = signal('');
@@ -32,7 +34,10 @@ describe('DateRangePickerComponent', () => {
   let host: DateRangePickerHost;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [DateRangePickerHost] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [DateRangePickerHost],
+      providers: [{ provide: LOCALE_ID, useValue: 'es-PE' }],
+    }).compileComponents();
     fixture = TestBed.createComponent(DateRangePickerHost);
     host = fixture.componentInstance;
     fixture.detectChanges();
@@ -75,6 +80,16 @@ describe('DateRangePickerComponent', () => {
     comp().writeValue(['2026-08-10', '2026-08-20']);
     fixture.detectChanges();
     expect(input().value).toBe('10/08/2026 – 20/08/2026');
+  });
+
+  it('uses the locale input override to switch to MM/DD/yyyy', () => {
+    host.placeholder.set('');
+    host.locale.set('en-US');
+    fixture.detectChanges();
+    expect(input().placeholder).toBe('mm/dd/yyyy – mm/dd/yyyy');
+    comp().writeValue(['2026-08-10', '2026-08-20']);
+    fixture.detectChanges();
+    expect(input().value).toBe('08/10/2026 – 08/20/2026');
   });
 
   it('opens two calendars on focus', () => {

@@ -99,12 +99,12 @@ All 26 components listed above have been **implemented, tested, documented, and 
 
 ### 4. Internationalization (i18n)
 
-| Item                       | Description                                                                     |
-| -------------------------- | ------------------------------------------------------------------------------- |
-| **Configurable Locale**    | `DatePicker`/`TimePicker` hardcode `es-PE` fallback; expose `locale` input      |
-| **RTL Support**            | Verify logical properties (`margin-inline`, `padding-inline`) used consistently |
-| **Translation Keys**       | Extract all UI strings to `i18n` keys; provide `en`/`es` defaults               |
-| **Number/Date Formatting** | Centralize `Intl` usage via a `LocaleService` for consistent formatting         |
+| Item                       | Description                                                                     | Status               |
+| -------------------------- | ------------------------------------------------------------------------------- | -------------------- |
+| **Configurable Locale**    | `DatePicker`/`DateRangePicker` expose `locale` input (overrides `LOCALE_ID`)    | ✅ Done (2026‑08‑10) |
+| **RTL Support**            | Verify logical properties (`margin-inline`, `padding-inline`) used consistently | —                    |
+| **Translation Keys**       | UI strings extracted to keys with `es`/`en` defaults in `LocaleService`         | ✅ Done (2026‑08‑10) |
+| **Number/Date Formatting** | Centralize `Intl` usage via a `LocaleService` for consistent formatting         | ✅ Done (2026‑08‑10) |
 
 ### 5. Developer Experience (DX)
 
@@ -149,8 +149,8 @@ All 26 components listed above have been **implemented, tested, documented, and 
 ## Suggested Next Implementation Order (certified 2026‑08‑10)
 
 1. ~~**Bundle analysis**~~ — ✅ done (CI artifact, see Certified Decisions)
-2. **axe-core CI** — lock in accessibility baseline
-3. **i18n Locale Input** — unblock non-es-PE consumers
+2. ~~**axe-core CI**~~ — ✅ done (axe-core suites in vitest + jest, WCAG A/AA, violations fixed)
+3. ~~**i18n Locale Input**~~ — ✅ done (`LocaleService` + `locale` input on DatePicker/DateRangePicker)
 4. **Full a11y pass** — skip link, focus management, ARIA live regions
 5. **File Upload** — high demand, reuses `DragDropList` + `Progress` + `Toast`
 6. **Missing components** — Image, Carousel/Slider, Tree View, OTP Input, Context Menu
@@ -170,4 +170,4 @@ All 26 components listed above have been **implemented, tested, documented, and 
 
 ---
 
-_Updated: 2026‑08‑10. Core roadmap completed; certified decisions added; bundle analysis shipped.
+_Updated: 2026‑08‑10. Core roadmap completed; certified decisions added; bundle analysis, axe-core CI and i18n locale shipped.

@@ -12,7 +12,6 @@ import {
   signal,
   viewChild,
   booleanAttribute,
-  LOCALE_ID,
 } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -20,13 +19,11 @@ import { filter } from 'rxjs';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LucideCalendarDays, LucideChevronLeft, LucideChevronRight } from '@lucide/angular';
 import { cn } from '../utils/cn';
+import { LocaleService, UiStringKey } from '../locale/locale.service';
 import { FIELD_CLASSES, FIELD_INVALID_CLASSES } from '../input/field-base';
 import {
-  MONTH_LABELS,
-  WEEKDAY_LABELS,
   buildMonthCells,
   formatDisplay,
-  getDateFormatPattern,
   isSameDay,
   parseIso,
   parseText,
@@ -63,7 +60,7 @@ let datepickerPanelSeq = 0;
           [placeholder]="effectivePlaceholder()"
           [value]="displayText()"
           [disabled]="disabled() || formDisabled()"
-          [attr.aria-label]="'Seleccionar fecha'"
+          [attr.aria-label]="t('selectDate')"
           role="combobox"
           aria-haspopup="dialog"
           [attr.aria-expanded]="isOpen()"
@@ -89,7 +86,7 @@ let datepickerPanelSeq = 0;
             (click)="shiftView(-1)"
             class="p-1 text-muted hover:text-fg cursor-pointer"
             [disabled]="disableOverlayButtons()"
-            [attr.aria-label]="'Mes anterior'"
+            [attr.aria-label]="t('prevMonth')"
           >
             <svg lucideChevronLeft [size]="16" aria-hidden="true" />
           </button>
@@ -108,7 +105,7 @@ let datepickerPanelSeq = 0;
             (click)="shiftView(1)"
             class="p-1 text-muted hover:text-fg cursor-pointer"
             [disabled]="disableOverlayButtons()"
-            [attr.aria-label]="'Mes siguiente'"
+            [attr.aria-label]="t('nextMonth')"
           >
             <svg lucideChevronRight [size]="16" aria-hidden="true" />
           </button>
@@ -116,7 +113,7 @@ let datepickerPanelSeq = 0;
 
         @if (mode() === 'day') {
           <div class="grid grid-cols-7 gap-1 text-center text-xs font-medium text-muted">
-            @for (label of weekdayLabels; track $index) {
+            @for (label of weekdayLabels(); track $index) {
               <span class="py-1">{{ label }}</span>
             }
           </div>
@@ -135,7 +132,7 @@ let datepickerPanelSeq = 0;
           </div>
         } @else if (mode() === 'month') {
           <div class="grid grid-cols-3 gap-2">
-            @for (m of monthNames; track $index) {
+            @for (m of monthNames(); track $index) {
               <button
                 type="button"
                 (mousedown)="$event.preventDefault()"
@@ -162,14 +159,14 @@ let datepickerPanelSeq = 0;
         }
 
         <div class="mt-3 flex items-center justify-between border-t border-default pt-3">
-          <span class="text-xs text-muted">{{ displayText() || 'Sin fecha' }}</span>
+          <span class="text-xs text-muted">{{ displayText() || t('noDate') }}</span>
           <button
             type="button"
             (mousedown)="$event.preventDefault()"
             (click)="selectToday()"
             class="text-xs font-medium text-brand-600 transition-colors duration-150 hover:text-brand-700 dark:text-brand-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/50 rounded-md px-2 py-1"
           >
-            Hoy
+            {{ t('today') }}
           </button>
         </div>
       </div>
@@ -179,6 +176,7 @@ let datepickerPanelSeq = 0;
 export class DatePickerComponent implements ControlValueAccessor {
   readonly value = model<string | null>(null);
   readonly placeholder = input('');
+  readonly locale = input<string | null>();
   readonly disableOverlayButtons = input(false, { transform: booleanAttribute });
   readonly format = input<string>();
   readonly min = input<string>();
@@ -202,14 +200,12 @@ export class DatePickerComponent implements ControlValueAccessor {
     const start = this.yearPageStart();
     return Array.from({ length: 12 }, (_, i) => start + i);
   });
-  protected readonly monthNames = MONTH_LABELS;
-  protected readonly weekdayLabels = WEEKDAY_LABELS;
 
   // Effective min/max with far‑past/far‑future defaults when inputs are not provided
   protected readonly effectiveMin = computed(() => this.min() ?? '1900-01-01');
   protected readonly effectiveMax = computed(() => this.max() ?? '9999-12-31');
 
-  private readonly localeId = inject(LOCALE_ID, { optional: true }) ?? 'es-PE';
+  private readonly localeService = inject(LocaleService);
   private readonly triggerEl = viewChild.required<ElementRef<HTMLInputElement>>('triggerEl');
   private readonly panelTemplate = viewChild.required<TemplateRef<unknown>>('panel');
   private readonly elementRef = inject(ElementRef<HTMLElement>);
@@ -222,8 +218,19 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   protected onTouched: () => void = () => {};
 
+  protected readonly effectiveLocale = computed(
+    () => this.locale() ?? this.localeService.defaultLocale,
+  );
+
+  protected readonly monthNames = computed(() =>
+    this.localeService.monthNames(this.effectiveLocale()),
+  );
+  protected readonly weekdayLabels = computed(() =>
+    this.localeService.weekdayLabels(this.effectiveLocale()),
+  );
+
   protected readonly datePattern = computed<DateFormatPattern>(() =>
-    getDateFormatPattern(this.localeId, this.format()),
+    this.localeService.datePattern(this.effectiveLocale(), this.format()),
   );
 
   protected readonly effectivePlaceholder = computed(() => {
@@ -240,7 +247,7 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   protected readonly monthLabel = computed(() => {
     const { year, month } = this.view();
-    return `${MONTH_LABELS[month]} ${year}`;
+    return `${this.monthNames()[month]} ${year}`;
   });
 
   protected readonly cells = computed<Date[]>(() => buildMonthCells(this.view()));
@@ -344,7 +351,11 @@ export class DatePickerComponent implements ControlValueAccessor {
     if (this.mode() === 'month') {
       return `${this.view().year}`;
     }
-    return 'Años';
+    return this.t('years');
+  }
+
+  protected t(key: UiStringKey): string {
+    return this.localeService.translate(key, this.effectiveLocale());
   }
 
   protected shiftView(delta: number): void {
