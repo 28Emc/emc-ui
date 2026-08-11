@@ -43,16 +43,14 @@ describe('EmcButton', () => {
     const el = createButton({ variant: 'secondary' });
     await flush(el);
     const button = getButton(el);
-    expect(button.classList.contains('border')).toBe(true);
-    expect(button.classList.contains('border-default')).toBe(true);
+    expect(button.classList.contains('variant-secondary')).toBe(true);
   });
 
   it('applies size classes', async () => {
     const el = createButton({ size: 'lg' });
     await flush(el);
     const button = getButton(el);
-    expect(button.classList.contains('h-12')).toBe(true);
-    expect(button.classList.contains('px-6')).toBe(true);
+    expect(button.classList.contains('size-lg')).toBe(true);
   });
 
   it('shows loading spinner when loading', async () => {

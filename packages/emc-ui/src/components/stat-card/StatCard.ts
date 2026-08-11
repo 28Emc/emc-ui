@@ -97,7 +97,6 @@ export class EmcStatCard extends LitElement {
   `;
 
   protected getIconClass(): string {
-    const base = 'stat-icon flex h-11 w-11 shrink-0 items-center justify-center rounded-xl';
     const accentClass =
       {
         brand: 'icon-brand',
@@ -105,7 +104,7 @@ export class EmcStatCard extends LitElement {
         amber: 'icon-amber',
         pink: 'icon-pink',
       }[this.accent] || 'icon-brand';
-    return `${base} ${accentClass}`;
+    return `stat-icon ${accentClass}`;
   }
 
   render() {

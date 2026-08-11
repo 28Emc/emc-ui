@@ -88,6 +88,68 @@ export class EmcStepper extends LitElement {
     .step-line.pending {
       background-color: var(--surface-2);
     }
+
+    .step-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      flex-shrink: 0;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition:
+        background-color 200ms,
+        color 200ms,
+        box-shadow 200ms;
+    }
+
+    .step-active {
+      background-color: var(--color-brand-500);
+      color: #fff;
+    }
+
+    .step-current {
+      box-shadow: 0 0 0 1rem color-mix(in srgb, var(--color-brand-500) 20%, transparent);
+    }
+
+    .step-pending {
+      background-color: var(--surface-2);
+      color: var(--fg-muted);
+    }
+
+    .step-number {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: inherit;
+    }
+
+    .step-number.active {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .step-check {
+      width: 14px;
+      height: 14px;
+      color: #fff;
+    }
+
+    .step-label {
+      display: none;
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+      padding: 0 0.25rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      .step-label {
+        display: block;
+      }
+    }
   `;
 
   protected get indices(): number[] {
@@ -95,18 +157,14 @@ export class EmcStepper extends LitElement {
   }
 
   protected stepClasses(index: number): string {
-    const classes = [
-      'step-circle',
-      'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium',
-      'transition-[background-color,color,box-shadow] duration-200',
-    ];
+    const classes = ['step-circle'];
 
     if (index < this.activeIndex) {
-      classes.push('bg-brand-500 text-white');
+      classes.push('step-active');
     } else if (index === this.activeIndex) {
-      classes.push('bg-brand-500 text-white ring-4 ring-brand-500/20');
+      classes.push('step-active step-current');
     } else {
-      classes.push('bg-surface-2 text-muted');
+      classes.push('step-pending');
     }
 
     return classes.join(' ');
@@ -130,13 +188,11 @@ export class EmcStepper extends LitElement {
                   this.activeIndex > idx
                     ? html`
                         <svg
-                          width="14"
-                          height="14"
+                          class="step-check"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
                           stroke-width="2.5"
-                          class="text-white"
                         >
                           <path
                             d="M20 6L9 17l-5-5"
@@ -147,19 +203,11 @@ export class EmcStepper extends LitElement {
                         </svg>
                       `
                     : this.activeIndex === idx
-                      ? html` <span class="text-sm font-semibold text-white">${idx + 1}</span> `
-                      : html` <span class="text-sm font-medium">${idx + 1}</span> `
+                      ? html` <span class="step-number active">${idx + 1}</span> `
+                      : html` <span class="step-number">${idx + 1}</span> `
                 }
               </div>
-              ${
-                this.labels[idx]
-                  ? html`
-                      <span class="step-label hidden md:block text-xs text-muted px-1"
-                        >${this.labels[idx]}</span
-                      >
-                    `
-                  : ''
-              }
+              ${this.labels[idx] ? html` <span class="step-label">${this.labels[idx]}</span> ` : ''}
               ${idx < this.steps - 1 ? html` <div class="${this.lineClasses(idx)}"></div> ` : ''}
             </div>
           `,
