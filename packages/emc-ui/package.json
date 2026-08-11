@@ -3,6 +3,10 @@
   "version": "1.0.3",
   "description": "Framework-agnostic UI components — vanilla TS, Lit, Tailwind CSS v4, Floating UI.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/28Emc/emc-ui.git"
+  },
   "type": "module",
   "keywords": [
     "ui",
