@@ -1,6 +1,6 @@
 {
   "name": "@emc-dev/emc-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Framework-agnostic UI components — vanilla TS, Lit, Tailwind CSS v4, Floating UI.",
   "license": "MIT",
   "type": "module",
